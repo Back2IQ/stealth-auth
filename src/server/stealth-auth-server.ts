@@ -1,6 +1,9 @@
 /**
- * Back2IQ StealthAuth - Enterprise Server Engine & Verifier
+ * Back2IQ StealthAuth - Enterprise Server Engine & Zero-Knowledge Verifier
  * (c) Back2IQ - Ahead by Design (Deniz Kiran)
+ * 
+ * Implements Zero-Plaintext Storage: The server stores ONLY precomputed salted
+ * verifier hashes V_N = HMAC-SHA256(Salt, P_N) and NEVER holds the master password in plaintext.
  */
 
 import {
@@ -20,16 +23,15 @@ import { generateCandidateWindow } from '../core/state-engine.js';
 import {
   generateSecureNonce,
   generateSessionId,
-  computeClientResponseHash,
-  constantTimeCompare,
   computeHmacSha256,
+  constantTimeCompare,
+  computeStateVerifier,
 } from '../crypto/hasher.js';
 import { InMemoryStorageAdapter } from './storage.js';
 
 export class StealthAuthServer {
   private storage: IStorageAdapter;
   private config: Required<StealthAuthServerConfig>;
-  private masterVault: Map<string, string> = new Map();
 
   constructor(
     storage?: IStorageAdapter,
@@ -47,26 +49,41 @@ export class StealthAuthServer {
     };
   }
 
+  /**
+   * Registers a user by storing ONLY precomputed salted verifier hashes.
+   * NEVER stores or retains the master password in plaintext!
+   */
   async registerUser(
     userId: string,
-    masterPassword: string,
+    masterPasswordOrTable: string | Record<number, string>,
     cognitiveRule: CognitiveRule,
-    initialCounter = 0
+    initialCounter = 0,
+    customSalt?: string
   ): Promise<{ userId: string; initialCounter: number }> {
-    if (!userId || !masterPassword) {
-      throw new Error('UserId and MasterPassword are required');
+    if (!userId) {
+      throw new Error('UserId is required');
     }
 
-    const salt = generateSecureNonce(16);
-    this.masterVault.set(userId, masterPassword);
+    const salt = customSalt ?? generateSecureNonce(16);
+    let verifierTable: Record<number, string> = {};
+
+    if (typeof masterPasswordOrTable === 'string') {
+      // Precompute verifier table locally for 500 states and discard plaintext password immediately
+      for (let c = initialCounter; c < initialCounter + 500; c++) {
+        const state = encodeRadix26(c);
+        const transformed = applyCognitiveTransformation(masterPasswordOrTable, state, cognitiveRule);
+        verifierTable[c] = computeStateVerifier(salt, transformed);
+      }
+    } else {
+      verifierTable = masterPasswordOrTable;
+    }
 
     const userRecord: UserAuthRecord = {
       userId,
       counter: initialCounter,
       passwordSalt: salt,
       cognitiveRule,
-      baseSecretSalt: salt,
-      masterVerifierHash: computeHmacSha256(salt, masterPassword),
+      verifierTable,
       failedAttempts: 0,
       createdAt: Date.now(),
       updatedAt: Date.now(),
@@ -76,6 +93,9 @@ export class StealthAuthServer {
     return { userId, initialCounter };
   }
 
+  /**
+   * Generates a new dynamic challenge with a disguised Radix-26 hint
+   */
   async createChallenge(
     userId: string,
     disguiseConfig?: DisguiseConfig
@@ -126,12 +146,16 @@ export class StealthAuthServer {
       gridMatrix: state.gridMatrix,
       disguisedHint,
       nonce,
+      passwordSalt: user.passwordSalt,
       expiresAt,
       cycle: state.cycle,
       index: state.index,
     };
   }
 
+  /**
+   * Verifies the client's cognitive response against precomputed verifier hashes
+   */
   async verifyResponse(
     payload: AuthResponsePayload
   ): Promise<AuthVerificationResult> {
@@ -162,32 +186,22 @@ export class StealthAuthServer {
       };
     }
 
-    const masterPassword = this.masterVault.get(user.userId);
-    if (!masterPassword) {
-      return {
-        success: false,
-        error: 'CREDENTIAL_VAULT_UNAVAILABLE',
-      };
-    }
-
     const candidates = generateCandidateWindow(session.expectedCounter, {
       lookforwardWindow: this.config.lookaheadWindowForward,
       lookbackwardWindow: this.config.lookbackWindowBackward,
     });
 
     let matchedCandidate: (typeof candidates)[0] | null = null;
+    const table = user.verifierTable as Record<number, string>;
 
     for (const candidate of candidates) {
-      const candidateTransformed = applyCognitiveTransformation(
-        masterPassword,
-        candidate.state,
-        user.cognitiveRule
-      );
+      const verifierToken = table[candidate.counter];
+      if (!verifierToken) continue;
 
-      const expectedResponseHash = computeClientResponseHash(
-        candidateTransformed,
-        session.nonce,
-        session.sessionId
+      // Check response: HMAC(VerifierToken, Nonce:SessionId)
+      const expectedResponseHash = computeHmacSha256(
+        verifierToken,
+        `${session.nonce}:${session.sessionId}`
       );
 
       if (constantTimeCompare(expectedResponseHash, responseHash)) {

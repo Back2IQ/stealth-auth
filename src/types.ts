@@ -14,7 +14,6 @@ export interface Radix26State {
   wordHint?: string;
   objectHint?: VisualObjectHint;
   captchaToken?: string;
-  /** 3x3 or 4x4 Grid Matrix representation for geometric traversal */
   gridMatrix?: string[][];
 }
 
@@ -25,29 +24,29 @@ export interface VisualObjectHint {
 }
 
 export type GridTraversalPath = 
-  | 'diagonal-main'          // Top-left to bottom-right (e.g. (0,0), (1,1), (2,2))
-  | 'diagonal-anti'          // Top-right to bottom-left (e.g. (0,2), (1,1), (2,0))
+  | 'diagonal-main'
+  | 'diagonal-anti'
   | 'row-1' | 'row-2' | 'row-3'
   | 'col-1' | 'col-2' | 'col-3'
-  | 'cross-center'           // Center row + center col intersection
-  | 'perimeter-clockwise'    // Outer perimeter
+  | 'cross-center'
+  | 'perimeter-clockwise'
   | 'zigzag-horizontal'
   | 'zigzag-vertical';
 
 export type MathOperatorType = 
-  | 'digit-sum'              // Quersumme: Q(14) = 5
-  | 'digital-root'           // Einstellige Quersumme: Q(99) = 18 -> 9
-  | 'digit-sum-reverse'      // Quersumme gespiegelt: "14" -> "41" -> 4+1 = 5 oder String "41"
-  | 'alternating-digit-sum'  // Alternierende Quersumme: 1-4 = -3 -> 3
-  | 'square-root-floor'      // floor(sqrt(Index)) e.g. sqrt(16) = 4
-  | 'power-modulo'           // (Index^power) % modulo
-  | 'reverse-segment'        // Spiegeln/Umdrehen eines Teilbereichs
-  | 'split-and-conquer'      // Bisektion / Teile-und-Herrsche Blöcke
-  | 'grid-matrix-traverse'   // 3x3 Geometrischer Pfad (Diagonal / Vertikal / Horizontal)
-  | 'word-boundary'          // Erster + Letzter Buchstabe
-  | 'pictorial-object'       // Bild/Icon in Benutzersprache
-  | 'pseudo-captcha'         // Anti-Bot Token Randzeichen
-  | 'insert-at-anchor'       // Radix-26 Buchstabe an Anker
+  | 'digit-sum'
+  | 'digital-root'
+  | 'digit-sum-reverse'
+  | 'alternating-digit-sum'
+  | 'square-root-floor'
+  | 'power-modulo'
+  | 'reverse-segment'
+  | 'split-and-conquer'
+  | 'grid-matrix-traverse'
+  | 'word-boundary'
+  | 'pictorial-object'
+  | 'pseudo-captcha'
+  | 'insert-at-anchor'
   | 'prefix'
   | 'suffix'
   | 'caesar-shift'
@@ -55,24 +54,15 @@ export type MathOperatorType =
 
 export interface PipelineStep {
   op: MathOperatorType;
-  /** Anchor index (0-indexed) */
   anchorIndex?: number;
-  /** Secondary anchor index for multi-anchor splits */
   anchorIndex2?: number;
-  /** Start and length for segment operations */
   segmentStart?: number;
   segmentLength?: number;
-  /** Power exponent (default: 2) */
   exponent?: number;
-  /** Modulo divider (default: 10 or 26) */
   modulo?: number;
-  /** Grid traversal path for geometric 3x3 challenges */
   gridPath?: GridTraversalPath;
-  /** User configured cognitive language */
   locale?: SupportedLocale;
-  /** Case preservation mode */
   caseMode?: 'upper' | 'lower' | 'first-upper-last-lower' | 'as-is';
-  /** Custom transformation function */
   customTransform?: (currentSecret: string, state: Radix26State) => string;
 }
 
@@ -93,21 +83,33 @@ export interface CognitiveRule {
   gridPath?: GridTraversalPath;
   exponent?: number;
   modulo?: number;
-  /** Multi-step combinatorics pipeline */
   recipe?: CognitiveRecipe;
   customTransform?: (baseSecret: string, state: Radix26State) => string;
 }
 
+export interface UserAuthRecord {
+  userId: string;
+  counter: number;
+  passwordSalt: string;
+  cognitiveRule: CognitiveRule;
+  /** Server stores ONLY salted precomputed verifier hashes, NEVER plaintext password */
+  verifierTable: Map<number, string> | Record<number, string>;
+  failedAttempts: number;
+  lockedUntil?: number;
+  createdAt: number;
+  updatedAt: number;
+}
+
 export type DisguiseMode = 
-  | 'build-version'
-  | 'session-ticket'
-  | 'patch-id'
-  | 'status-badge'
-  | 'codename-word'
-  | 'pictorial-object'
-  | 'pseudo-captcha'
-  | 'grid-matrix-3x3'
-  | 'raw'
+  | 'build-version' 
+  | 'session-ticket' 
+  | 'patch-id' 
+  | 'status-badge' 
+  | 'codename-word' 
+  | 'pictorial-object' 
+  | 'pseudo-captcha' 
+  | 'grid-matrix-3x3' 
+  | 'raw' 
   | 'custom';
 
 export interface DisguiseConfig {
@@ -126,6 +128,7 @@ export interface ChallengePayload {
   gridMatrix?: string[][];
   disguisedHint: string;
   nonce: string;
+  passwordSalt?: string;
   expiresAt: number;
   cycle: number;
   index: number;
@@ -145,19 +148,6 @@ export interface AuthVerificationResult {
   delta?: number;
   error?: string;
   authToken?: string;
-}
-
-export interface UserAuthRecord {
-  userId: string;
-  counter: number;
-  passwordSalt: string;
-  cognitiveRule: CognitiveRule;
-  baseSecretSalt: string;
-  masterVerifierHash: string;
-  failedAttempts: number;
-  lockedUntil?: number;
-  createdAt: number;
-  updatedAt: number;
 }
 
 export interface ActiveSessionRecord {
@@ -191,6 +181,6 @@ export interface StealthAuthServerConfig {
 }
 
 export interface StealthAuthClientConfig {
-  defaultDisguiseMode?: DisguiseMode;
+  defaultDisguiseMode?: DisguiseConfig['mode'];
   defaultLocale?: SupportedLocale;
 }

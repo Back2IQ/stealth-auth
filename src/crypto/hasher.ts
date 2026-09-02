@@ -5,30 +5,18 @@
 
 import { createHmac, randomBytes, timingSafeEqual, scryptSync } from 'node:crypto';
 
-/**
- * Generates a cryptographically secure random string (hex encoded)
- */
 export function generateSecureNonce(byteLength = 32): string {
   return randomBytes(byteLength).toString('hex');
 }
 
-/**
- * Generates a unique secure session identifier
- */
 export function generateSessionId(): string {
   return `sess_${randomBytes(16).toString('hex')}`;
 }
 
-/**
- * Computes HMAC-SHA256 of data using key
- */
 export function computeHmacSha256(key: string, data: string): string {
   return createHmac('sha256', key).update(data).digest('hex');
 }
 
-/**
- * Computes a constant-time secure hash of a password using scrypt KDF
- */
 export function computePasswordHash(password: string, salt: string): string {
   const derivedKey = scryptSync(password, salt, 64, {
     N: 16384,
@@ -39,21 +27,32 @@ export function computePasswordHash(password: string, salt: string): string {
 }
 
 /**
- * Computes the client challenge-response hash:
- * Response = HMAC-SHA256(TransformedPassword, Nonce || SessionId)
+ * Derives the single-state client verifier token:
+ * V_N = HMAC-SHA256(PasswordSalt, TransformedPassword)
  */
-export function computeClientResponseHash(
-  transformedPassword: string,
-  nonce: string,
-  sessionId: string
-): string {
-  const payload = `${nonce}:${sessionId}`;
-  return computeHmacSha256(transformedPassword, payload);
+export function computeStateVerifier(passwordSalt: string, transformedPassword: string): string {
+  return computeHmacSha256(passwordSalt, transformedPassword);
 }
 
 /**
- * Constant-time string comparison to prevent side-channel timing attacks
+ * Computes the client challenge-response hash using the state verifier:
+ * Response = HMAC-SHA256(StateVerifier, Nonce || SessionId)
  */
+export function computeClientResponseHash(
+  transformedPasswordOrVerifier: string,
+  nonce: string,
+  sessionId: string,
+  passwordSalt?: string
+): string {
+  const payload = `${nonce}:${sessionId}`;
+  // If salt is provided, derive verifier first; otherwise assume it's already the verifier token
+  const verifierToken = passwordSalt
+    ? computeStateVerifier(passwordSalt, transformedPasswordOrVerifier)
+    : transformedPasswordOrVerifier;
+
+  return computeHmacSha256(verifierToken, payload);
+}
+
 export function constantTimeCompare(a: string, b: string): boolean {
   if (typeof a !== 'string' || typeof b !== 'string') {
     return false;
@@ -68,17 +67,11 @@ export function constantTimeCompare(a: string, b: string): boolean {
   return timingSafeEqual(bufA, bufB);
 }
 
-/**
- * Signs a payload with HMAC-SHA256 for tamper-proof storage checksums
- */
 export function signPayload(secret: string, payload: Record<string, unknown>): string {
   const json = JSON.stringify(payload, Object.keys(payload).sort());
   return computeHmacSha256(secret, json);
 }
 
-/**
- * Verifies payload checksum against tamper secret
- */
 export function verifyPayloadSignature(
   secret: string,
   payload: Record<string, unknown>,

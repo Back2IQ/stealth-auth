@@ -11,13 +11,13 @@ import {
   DisguiseMode,
   Radix26State,
 } from '../types.js';
-import { decodeRadix26, extractHintFromDisguise, formatDisguisedHint } from '../core/radix26.js';
+import { decodeRadix26, extractHintFromDisguise, formatDisguisedHint, encodeRadix26 } from '../core/radix26.js';
 import { applyCognitiveTransformation } from '../core/cognitive.js';
-import { computeClientResponseHash } from '../crypto/hasher.js';
+import { computeClientResponseHash, computeStateVerifier } from '../crypto/hasher.js';
 
 export class StealthAuthClient {
   /**
-   * Resolves a Radix-26 state from a disguised UI text string (e.g., "Build v1.14" or "1-14")
+   * Resolves a Radix-26 state from a disguised UI text string
    */
   static parseHint(
     disguisedOrRawText: string,
@@ -27,7 +27,7 @@ export class StealthAuthClient {
   }
 
   /**
-   * Performs the cognitive transformation on the master password using the provided hint/state
+   * Performs cognitive transformation on master password
    */
   static transformPassword(
     masterPassword: string,
@@ -42,16 +42,40 @@ export class StealthAuthClient {
   }
 
   /**
+   * Generates a precomputed Zero-Knowledge verifier table for a counter range.
+   * Allows the server to verify candidate window states without EVER seeing the plaintext password!
+   */
+  static generateVerifierTable(
+    masterPassword: string,
+    rule: CognitiveRule,
+    passwordSalt: string,
+    startCounter = 0,
+    count = 500
+  ): Record<number, string> {
+    const table: Record<number, string> = {};
+
+    for (let c = startCounter; c < startCounter + count; c++) {
+      const state = encodeRadix26(c);
+      const transformed = applyCognitiveTransformation(masterPassword, state, rule);
+      table[c] = computeStateVerifier(passwordSalt, transformed);
+    }
+
+    return table;
+  }
+
+  /**
    * Prepares the encrypted/hashed response payload to be sent to the authentication server
    */
   static createAuthResponse(
     transformedPassword: string,
-    challenge: ChallengePayload
+    challenge: ChallengePayload,
+    passwordSalt?: string
   ): AuthResponsePayload {
     const responseHash = computeClientResponseHash(
       transformedPassword,
       challenge.nonce,
-      challenge.sessionId
+      challenge.sessionId,
+      passwordSalt || challenge.passwordSalt
     );
 
     return {

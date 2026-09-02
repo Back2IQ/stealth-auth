@@ -8,17 +8,16 @@
 
 ---
 
-## 1. Executive Summary: Das MFA-Paradoxon & Die Lösung
+## 1. Executive Summary: Die Marktlücke des "Break-Glass Credentials"
 
-In modernen Unternehmen ist Multi-Faktor-Authentifizierung (MFA) regulatorische Pflicht. Dennoch führen herkömmliche MFA-Lösungen (SMS-Codes, Smartphone-Apps, YubiKey-Hardwaresticks) in Hochsicherheitsumgebungen zu massiven Blockaden:
+In modernen Unternehmen ist Multi-Faktor-Authentifizierung (MFA) via FIDO2-YubiKeys, PIV/CAC-Smartcards oder Smartphone-Authenticators Standard. Doch jedes System besitzt eine **unbestrittene Achillesferse: Den Notfall (Break-Glass / Device Loss / Seizure)**:
 
-- **Halbleiter- & Pharma-Reinräume (ISO 1–5):** Smartphones & Kameras sind wegen Kontamination und Spionage physisch streng verboten; Hardware-Keys kontaminieren Reinraum-Atmosphäre.
-- **Militärische SCIF-Zonen & Defense:** Sämtliche Funksignale (BLE, NFC, GSM, WLAN) sind in Faraday-Käfigen physisch unterbunden.
-- **Executive & VIP Travel (Feindstaaten):** Grenzbeamte beschlagnahmen Hardware (*Device Forensics*) und erzwingen Biometrie-Freigaben.
-- **Enorme Hardware- & Logistikkosten:** Verlust, Ersatz und Versand von physischen Tokens kosten Unternehmen $50–$90 pro Mitarbeiter/Jahr.
+- **Der veraltete Stand der Technik für Notfälle:** Ausgedruckte Papier-Backup-Codes, SMS-Fallback oder Helpdesk-Anrufe.
+  - *Das Risiko:* Ausgedruckte Codes sind auffindbar, fotografierbar, an Grenzkontrollen beschlagnahmbar und können nicht rotiert werden.
+- **Physische Sonderzonen:** Halbleiter-/Pharma-Reinräume (ISO 1–5), militärische SCIF-Zonen und feindliches Ausland, in denen Hardware-Tokens verboten, kontaminierend oder physisch beschlagnahmbar sind.
 
-### Die Back2IQ-Lösung:
-**Back2IQ StealthAuth** ist das weltweit erste **vollständig geräte- und tokenfreie MFA-Verfahren (Cognitive Zero-Device MFA)**. Es erzeugt echte Multi-Faktor-Sicherheit (Besitz/Zustand + Wissen) rein über Muskelgedächtnis, steganografische Challenges und deterministische Kopfrechen- bzw. Erkennungsregeln – **ohne 1 Gramm Hardware**.
+### Die Back2IQ-Positionierung:
+**Back2IQ StealthAuth** positioniert sich als **ultimatives, geräteloses "Cognitive Break-Glass & Travel Credential"** – die perfekte Ergänzung für jedes bestehende Enterprise-IAM (Okta, Keycloak, Ping Identity, Entra ID). Es ersetzt unsichere Papier-Notfallcodes durch ein beschlagnahmungssicheres Verfahren im Muskelgedächtnis.
 
 ---
 
@@ -29,12 +28,14 @@ graph TD
     S["1. Master-Salt im Muskelgedächtnis<br/>(z.B. !!!!!1g0750n17!!!!!)"] --> T
     H["2. Getarnte Challenge im UI<br/>(v1.14 / Codename: Falcon / Icon: 🎩)"] --> T
     T["3. Kognitive Transformation T(S, Challenge)<br/>(0-Sekunden Wort/Bild-Grenze oder Radix-26)"] --> Resp["4. Deterministischer Einmal-Response P_N"]
-    Resp --> Srv["5. Server State Engine mit Lookahead-Window W=[N-1, N+3]"]
-    Srv --> Auth["Erfolgreicher Login & Auto-Synchronisation (N+1)"]
+    Resp --> Srv["5. Zero-Knowledge Verifier Table V_N = HMAC(Salt, P_N)"]
+    Srv --> Auth["Lookahead Window W=[N-1, N+3] -> Freigabe & Sync (N+1)"]
 ```
 
-### 1. Radix-26 Zustandsmaschine & Steganografie
-Der Login-Zähler $N \in \mathbb{N}_0$ wird in Zyklus $C = \lfloor N/26 \rfloor$ und Index $I = (N \bmod 26) + 1$ zerlegt. Der Hint $H_N$ (`1..26`, `1-1..1-26`) wird im UI als scheinbare Versionsnummer (`v1.14`) oder System-Ticket getarnt.
+### 1. Zero-Knowledge Verifier Table (0 Byte Klartext auf dem Server)
+Im Gegensatz zu unsicheren Systemen speichert der Server **NIEMALS das Master-Passwort in Klartext**. Beim Onboarding berechnet der Client eine vorberechnete Hash-Tabelle:
+$$V_N = \text{HMAC-SHA256}(\text{PasswordSalt}, P_N)$$
+Der Server speichert **ausschließlich diese Einweg-Verifier-Hashes $V_N$**. Ein Angreifer, der die Server-Datenbank kompromittiert, erhält keinen Zugriff auf das Master-Passwort oder die kognitive Regel.
 
 ### 2. Visuelle 0-Latenz-Modi (Wort- & Bild-Grenzen)
 - **Codename-Wort (`word-boundary`):** `Falcon` $\rightarrow$ Erster Buchstabe (`F`) als Präfix, letzter Buchstabe (`n`) als Suffix $\implies$ **$< 0.2\,\text{s}$ Latenz**, kein Zählen des Alphabets nötig.
@@ -58,18 +59,18 @@ Löst die historische Schwachstelle kognitiver Verfahren: Bei Verbindungsabbrüc
 
 ---
 
-## 3. Head-to-Head Benchmark: StealthAuth vs. Herkömmliche Auth-Systeme
+## 3. Head-to-Head Benchmark: StealthAuth vs. Herkömmliche Auth- & Backup-Systeme
 
-| Sicherheits- & Betriebskriterium | Statisches Passwort | SMS-OTP | TOTP App (Google/MS) | Push-MFA (Okta/Duo) | FIDO2 YubiKey | **Back2IQ StealthAuth** |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Hardware / Gerät nötig?** | ❌ Nein | 📱 Ja (Smartphone) | 📱 Ja (Smartphone) | 📱 Ja (Smartphone) | 🔑 Ja (USB-Stick) | **❌ 0% GERÄTELOS** |
-| **Cleanroom & SCIF-tauglich?** | ⚠️ (Unsicher) | ❌ Verboten | ❌ Verboten | ❌ Verboten | ❌ Kontamination | **✅ 100% KONFORM** |
-| **Schutz vor SIM-Swapping / SS7** | N/A | ❌ Anfällig | ✅ Sicher | ✅ Sicher | ✅ Sicher | **✅ 100% IMMUN** |
-| **Schutz vor MFA-Fatigue / Push-Spam** | N/A | N/A | ✅ Sicher | ❌ Hohes Risiko | ✅ Sicher | **✅ 100% IMMUN** |
-| **Schutz vor Border Phone Seizure** | ⚠️ Erpressbar | ❌ Gerät weg | ❌ Gerät weg | ❌ Gerät weg | ❌ Stick weg | **✅ ZERO EVIDENCE** |
-| **Shoulder-Surfing-Schutz** | ❌ 0% | ❌ Code lesbar | ❌ Code lesbar | ⚠️ Teils | ✅ Ja | **✅ STEGANOGRAFISCH** |
-| **Hardwarekosten pro Mitarbeiter** | 0 € | SMS-Gebühren | 0 € | Lizenz | $50–$90 / User | **0 € HARDWARE** |
-| **Login-Latenz** | ~1–2 s | ~15–30 s | ~8–15 s | ~5–10 s | ~3–5 s | **~1–2 s (Wort/Bild)** |
+| Sicherheits- & Betriebskriterium | Ausgedruckte Papier-Codes (Stand der Technik) | PIV/CAC Kontakt-Smartcard | FIDO2 YubiKey | TOTP App (Google/MS) | **Back2IQ StealthAuth (Break-Glass)** |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Physisches Objekt nötig?** | 📄 Ja (Papierzettel) | 💳 Ja (Plastikkarte) | 🔑 Ja (USB-Stick) | 📱 Ja (Smartphone) | **❌ 0% GERÄTELOS (KOPF)** |
+| **Beschlagnahmungssicher (Grenze)?** | ❌ Entdeckbar & Kopierbar | ❌ Beschlagnahmbar | ❌ Beschlagnahmbar | ❌ Beschlagnahmbar | **✅ ZERO EVIDENCE** |
+| **Cleanroom & SCIF-tauglich?** | ⚠️ Partikel-Gefahr | ✅ Ja (Zertifiziert) | ❌ Kontamination | ❌ Verboten | **✅ 100% KONFORM** |
+| **Schutz vor Keyloggern** | ❌ Einmalig abgreifbar | ✅ Sicher | ✅ Sicher | ⚠️ Teils | **✅ Einmal-Zustand (N)** |
+| **AitM Reverse-Proxy Schutz** | ❌ Anfällig | ✅ Origin-Binding | ✅ Origin-Binding | ❌ Anfällig | ⚠️ Erfordert TLS-Binding |
+| **Server speichert Klartext?** | ❌ Oft Klartext-Hashes | ✅ Public Key | ✅ Public Key | ⚠️ Shared Secret | **✅ Zero-Knowledge Verifier Table** |
+| **Hardwarekosten pro User** | Papier / Safe | $20–$50 / Karte | $50–$90 / Key | 0 € | **0 € HARDWARE** |
+| **Einsatzbereich im Enterprise** | Notfall-Fallback | Primärer Firmenzugang | Primäres Phishing-MFA | Standard-Cloud | **Emergency Break-Glass & Travel** |
 
 ---
 
