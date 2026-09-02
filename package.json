@@ -1,0 +1,40 @@
+{
+  "name": "@back2iq/stealth-auth",
+  "version": "1.0.0",
+  "description": "Back2IQ StealthAuth - Cognitive Zero-Device MFA Engine & B2B SDK",
+  "author": "Deniz Kiran <deniz@back2iq.com> (Back2IQ - Ahead by Design)",
+  "homepage": "https://back2iq.com",
+  "license": "Proprietary",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "cybersecurity",
+    "zero-device-mfa",
+    "cognitive-auth",
+    "challenge-response",
+    "back2iq",
+    "stealth-auth"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "typescript": "^5.3.3",
+    "vitest": "^1.3.1"
+  }
+}
