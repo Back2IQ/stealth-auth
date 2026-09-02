@@ -18,3 +18,4 @@ export * from './crypto/hasher.js';
 export * from './server/storage.js';
 export * from './server/stealth-auth-server.js';
 export * from './client/stealth-auth-client.js';
+export * from './client/onboarding.js';
