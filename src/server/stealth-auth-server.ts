@@ -97,7 +97,8 @@ export class StealthAuthServer {
       activeDisguise,
       state.wordHint,
       state.objectHint,
-      state.captchaToken
+      state.captchaToken,
+      state.gridMatrix
     );
 
     const sessionId = generateSessionId();
@@ -122,6 +123,7 @@ export class StealthAuthServer {
       wordHint: state.wordHint,
       objectHint: state.objectHint,
       captchaToken: state.captchaToken,
+      gridMatrix: state.gridMatrix,
       disguisedHint,
       nonce,
       expiresAt,

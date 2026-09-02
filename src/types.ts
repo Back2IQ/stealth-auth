@@ -1,72 +1,119 @@
 /**
- * Back2IQ StealthAuth - Types & Interface Definitions
+ * Back2IQ StealthAuth - Types & Combinatorics Matrix Interface Definitions
  * (c) Back2IQ - Ahead by Design (Deniz Kiran)
  */
 
 export type SupportedLocale = 'de' | 'en' | 'tr' | 'fr' | 'es';
 
 export interface Radix26State {
-  /** The absolute sequential authentication counter (0, 1, 2, ...) */
   counter: number;
-  /** The cycle index C = floor(counter / 26) */
   cycle: number;
-  /** The character index I = (counter % 26) + 1 (1 to 26) */
   index: number;
-  /** The corresponding cognitive letter L = 'A'..'Z' */
   letter: string;
-  /** The standard formatted hint string (e.g., "1".."26", "1-1".."1-26", "2-1"..) */
   hint: string;
-  /** Optional deterministic word hint */
   wordHint?: string;
-  /** Optional visual object descriptor (for image/icon MFA) */
   objectHint?: VisualObjectHint;
-  /** Optional pseudo-captcha token */
   captchaToken?: string;
+  /** 3x3 or 4x4 Grid Matrix representation for geometric traversal */
+  gridMatrix?: string[][];
 }
 
 export interface VisualObjectHint {
-  objectId: string;        // e.g. 'hat', 'car', 'cat', 'tree', 'sun', 'tiger'
-  iconSvg?: string;        // SVG icon or visual representation
-  localizedNames: Record<SupportedLocale, string>; // e.g. { de: 'Hut', en: 'Hat', tr: 'Sapka', fr: 'Chapeau', es: 'Sombrero' }
+  objectId: string;
+  iconSvg?: string;
+  localizedNames: Record<SupportedLocale, string>;
+}
+
+export type GridTraversalPath = 
+  | 'diagonal-main'          // Top-left to bottom-right (e.g. (0,0), (1,1), (2,2))
+  | 'diagonal-anti'          // Top-right to bottom-left (e.g. (0,2), (1,1), (2,0))
+  | 'row-1' | 'row-2' | 'row-3'
+  | 'col-1' | 'col-2' | 'col-3'
+  | 'cross-center'           // Center row + center col intersection
+  | 'perimeter-clockwise'    // Outer perimeter
+  | 'zigzag-horizontal'
+  | 'zigzag-vertical';
+
+export type MathOperatorType = 
+  | 'digit-sum'              // Quersumme: Q(14) = 5
+  | 'digital-root'           // Einstellige Quersumme: Q(99) = 18 -> 9
+  | 'digit-sum-reverse'      // Quersumme gespiegelt: "14" -> "41" -> 4+1 = 5 oder String "41"
+  | 'alternating-digit-sum'  // Alternierende Quersumme: 1-4 = -3 -> 3
+  | 'square-root-floor'      // floor(sqrt(Index)) e.g. sqrt(16) = 4
+  | 'power-modulo'           // (Index^power) % modulo
+  | 'reverse-segment'        // Spiegeln/Umdrehen eines Teilbereichs
+  | 'split-and-conquer'      // Bisektion / Teile-und-Herrsche Blöcke
+  | 'grid-matrix-traverse'   // 3x3 Geometrischer Pfad (Diagonal / Vertikal / Horizontal)
+  | 'word-boundary'          // Erster + Letzter Buchstabe
+  | 'pictorial-object'       // Bild/Icon in Benutzersprache
+  | 'pseudo-captcha'         // Anti-Bot Token Randzeichen
+  | 'insert-at-anchor'       // Radix-26 Buchstabe an Anker
+  | 'prefix'
+  | 'suffix'
+  | 'caesar-shift'
+  | 'custom';
+
+export interface PipelineStep {
+  op: MathOperatorType;
+  /** Anchor index (0-indexed) */
+  anchorIndex?: number;
+  /** Secondary anchor index for multi-anchor splits */
+  anchorIndex2?: number;
+  /** Start and length for segment operations */
+  segmentStart?: number;
+  segmentLength?: number;
+  /** Power exponent (default: 2) */
+  exponent?: number;
+  /** Modulo divider (default: 10 or 26) */
+  modulo?: number;
+  /** Grid traversal path for geometric 3x3 challenges */
+  gridPath?: GridTraversalPath;
+  /** User configured cognitive language */
+  locale?: SupportedLocale;
+  /** Case preservation mode */
+  caseMode?: 'upper' | 'lower' | 'first-upper-last-lower' | 'as-is';
+  /** Custom transformation function */
+  customTransform?: (currentSecret: string, state: Radix26State) => string;
+}
+
+export interface CognitiveRecipe {
+  name: string;
+  description?: string;
+  steps: PipelineStep[];
+}
+
+export type TransformationType = MathOperatorType | 'pipeline';
+
+export interface CognitiveRule {
+  type: TransformationType;
+  anchorIndex?: number;
+  anchorIndex2?: number;
+  locale?: SupportedLocale;
+  caseMode?: 'upper' | 'lower' | 'first-upper-last-lower' | 'as-is';
+  gridPath?: GridTraversalPath;
+  exponent?: number;
+  modulo?: number;
+  /** Multi-step combinatorics pipeline */
+  recipe?: CognitiveRecipe;
+  customTransform?: (baseSecret: string, state: Radix26State) => string;
 }
 
 export type DisguiseMode = 
-  | 'build-version'    // e.g. "Build v1.14" or "Release 2.1"
-  | 'session-ticket'   // e.g. "Session #1-14" or "Ticket #14"
-  | 'patch-id'         // e.g. "SEC-PATCH-1-14"
-  | 'status-badge'     // e.g. "Node-1.14-OK"
-  | 'codename-word'    // e.g. "Host: Falcon" or "Release: Vanguard"
-  | 'pictorial-object' // e.g. Visual Icon / Photo of "Hut", "Auto", "Katze"
-  | 'pseudo-captcha'   // e.g. Noisy alphanumeric CAPTCHA badge "X79kmP"
+  | 'build-version'
+  | 'session-ticket'
+  | 'patch-id'
+  | 'status-badge'
+  | 'codename-word'
+  | 'pictorial-object'
+  | 'pseudo-captcha'
+  | 'grid-matrix-3x3'
   | 'raw'
   | 'custom';
 
 export interface DisguiseConfig {
   mode: DisguiseMode;
-  locale?: SupportedLocale; // User's cognitive native language (default: 'de')
-  customTemplate?: string;
-}
-
-export type TransformationType = 
-  | 'insert-at-anchor' // Insert letter at specific muscle-memory position
-  | 'prefix'           // Prepend letter to master password
-  | 'suffix'           // Append letter to master password
-  | 'word-boundary'    // First char as prefix, last char as suffix
-  | 'pictorial-object' // First char uppercase, last char lowercase of recognized image object in user locale
-  | 'pseudo-captcha'   // First char + last char of pseudo-CAPTCHA badge
-  | 'caesar-shift'     // Shift character at anchor position by index
-  | 'custom';
-
-export interface CognitiveRule {
-  type: TransformationType;
-  /** Anchor index (0-indexed) for insertion or shifting */
-  anchorIndex?: number;
-  /** User configured cognitive language for image/object recognition */
   locale?: SupportedLocale;
-  /** Case preservation for word/object boundary ('upper' | 'lower' | 'first-upper-last-lower' | 'as-is') */
-  caseMode?: 'upper' | 'lower' | 'first-upper-last-lower' | 'as-is';
-  /** Custom transformation hook */
-  customTransform?: (baseSecret: string, state: Radix26State) => string;
+  customTemplate?: string;
 }
 
 export interface ChallengePayload {
@@ -76,6 +123,7 @@ export interface ChallengePayload {
   wordHint?: string;
   objectHint?: VisualObjectHint;
   captchaToken?: string;
+  gridMatrix?: string[][];
   disguisedHint: string;
   nonce: string;
   expiresAt: number;

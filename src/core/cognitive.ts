@@ -6,6 +6,7 @@
 import { Radix26State, CognitiveRule } from '../types.js';
 import { encodeRadix26 } from './radix26.js';
 import { getVisualObjectWord } from './pictorial.js';
+import { executePipelineStep, executeRecipePipeline } from './pipeline.js';
 
 /**
  * Executes cognitive transformation T(S, State, Rule) on the user's master salt S.
@@ -19,12 +20,39 @@ export function applyCognitiveTransformation(
     throw new Error('Base secret cannot be empty');
   }
 
+  // 1. Pipeline / Custom Recipe Mode
+  if (rule.type === 'pipeline' && rule.recipe) {
+    return executeRecipePipeline(baseSecret, state, rule.recipe);
+  }
+
+  // 2. Standalone Math & Combinatorics Operators
+  if (
+    rule.type === 'digit-sum' ||
+    rule.type === 'digital-root' ||
+    rule.type === 'digit-sum-reverse' ||
+    rule.type === 'alternating-digit-sum' ||
+    rule.type === 'square-root-floor' ||
+    rule.type === 'power-modulo' ||
+    rule.type === 'reverse-segment' ||
+    rule.type === 'split-and-conquer' ||
+    rule.type === 'grid-matrix-traverse'
+  ) {
+    return executePipelineStep(baseSecret, state, {
+      op: rule.type,
+      anchorIndex: rule.anchorIndex,
+      anchorIndex2: rule.anchorIndex2,
+      exponent: rule.exponent,
+      modulo: rule.modulo,
+      gridPath: rule.gridPath,
+      locale: rule.locale,
+      caseMode: rule.caseMode,
+    });
+  }
+
   const { letter, index, wordHint, objectHint, captchaToken } = state;
 
   switch (rule.type) {
     case 'pictorial-object': {
-      // Visual Object Recognition Mode:
-      // e.g. Object "hat", locale "de" -> Word "Hut" -> First: 'H', Last: 't' -> "H" + baseSecret + "t"
       const obj = objectHint || encodeRadix26(state.counter).objectHint!;
       const locale = rule.locale || 'de';
       const localizedWord = getVisualObjectWord(obj, locale);
@@ -39,7 +67,6 @@ export function applyCognitiveTransformation(
         firstChar = firstChar.toLowerCase();
         lastChar = lastChar.toLowerCase();
       } else {
-        // Default: first uppercase, last lowercase (e.g. 'H' ... 't')
         firstChar = firstChar.toUpperCase();
         lastChar = lastChar.toLowerCase();
       }
@@ -48,21 +75,8 @@ export function applyCognitiveTransformation(
     }
 
     case 'pseudo-captcha': {
-      // Anti-bot CAPTCHA Badge Boundary Mode:
-      // Takes first and last char of pseudo-CAPTCHA badge (e.g. "X79kmP" -> 'X' + baseSecret + 'P')
       const token = captchaToken || 'X492yZ';
-      let firstChar = token[0];
-      let lastChar = token[token.length - 1];
-
-      if (rule.caseMode === 'upper') {
-        firstChar = firstChar.toUpperCase();
-        lastChar = lastChar.toUpperCase();
-      } else if (rule.caseMode === 'lower') {
-        firstChar = firstChar.toLowerCase();
-        lastChar = lastChar.toLowerCase();
-      }
-
-      return `${firstChar}${baseSecret}${lastChar}`;
+      return `${token[0]}${baseSecret}${token[token.length - 1]}`;
     }
 
     case 'word-boundary': {

@@ -7,6 +7,7 @@ import { Radix26State, DisguiseConfig, DisguiseMode, VisualObjectHint } from '..
 import { getWordForState } from './word-dictionary.js';
 import { getVisualObjectForState, getVisualObjectWord } from './pictorial.js';
 import { generatePseudoCaptchaBadge } from './captcha.js';
+import { generate3x3GridMatrix, formatGridMatrixAscii } from './matrix-grid.js';
 
 /**
  * Returns the uppercase character corresponding to index 1..26 (1='A', 26='Z')
@@ -46,8 +47,8 @@ export function encodeRadix26(counter: number): Radix26State {
   const hint = cycle === 0 ? `${index}` : `${cycle}-${index}`;
   const wordHint = getWordForState(index, cycle);
   const objectHint = getVisualObjectForState(index, cycle);
+  const gridMatrix = generate3x3GridMatrix(counter, cycle);
 
-  // Generate pseudo-captcha token
   const lastLetter = getLetterForIndex(((index + cycle * 3) % 26) + 1).toLowerCase();
   const captcha = generatePseudoCaptchaBadge(letter, lastLetter);
 
@@ -60,11 +61,12 @@ export function encodeRadix26(counter: number): Radix26State {
     wordHint,
     objectHint,
     captchaToken: captcha.token,
+    gridMatrix,
   };
 }
 
 /**
- * Decodes a standard hint string (e.g., "14" or "1-14" or "2-26") back into a Radix26State
+ * Decodes a standard hint string back into a Radix26State
  */
 export function decodeRadix26(hint: string): Radix26State {
   if (!hint || typeof hint !== 'string') {
@@ -103,6 +105,7 @@ export function decodeRadix26(hint: string): Radix26State {
   const letter = getLetterForIndex(index);
   const wordHint = getWordForState(index, cycle);
   const objectHint = getVisualObjectForState(index, cycle);
+  const gridMatrix = generate3x3GridMatrix(counter, cycle);
 
   const lastLetter = getLetterForIndex(((index + cycle * 3) % 26) + 1).toLowerCase();
   const captcha = generatePseudoCaptchaBadge(letter, lastLetter);
@@ -116,6 +119,7 @@ export function decodeRadix26(hint: string): Radix26State {
     wordHint,
     objectHint,
     captchaToken: captcha.token,
+    gridMatrix,
   };
 }
 
@@ -127,7 +131,8 @@ export function formatDisguisedHint(
   config: DisguiseConfig,
   wordHint?: string,
   objectHint?: VisualObjectHint,
-  captchaToken?: string
+  captchaToken?: string,
+  gridMatrix?: string[][]
 ): string {
   const { mode, locale = 'de', customTemplate } = config;
 
@@ -153,6 +158,10 @@ export function formatDisguisedHint(
       const token = captchaToken || decodeRadix26(hint).captchaToken || 'X492yZ';
       const spaced = token.split('').join(' ');
       return `Security Check: [ ${spaced} ]`;
+    }
+    case 'grid-matrix-3x3': {
+      const matrix = gridMatrix || decodeRadix26(hint).gridMatrix || generate3x3GridMatrix(0);
+      return formatGridMatrixAscii(matrix);
     }
     case 'custom':
       if (customTemplate) {
