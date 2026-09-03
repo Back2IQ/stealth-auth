@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="de" class="dark scroll-smooth">
+<html lang="de" class="dark scroll-smooth overflow-x-hidden">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>Back2IQ DynPass — All-in-One Executive Presentation & Onboarding Studio</title>
   
   <!-- Tailwind CSS CDN & Fonts -->
@@ -42,11 +42,12 @@
   </script>
 
   <style>
-    body {
+    html, body {
       background-color: #05070a;
       color: #f1f5f9;
       overflow-x: hidden;
       font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
     .glow-radial {
       background: radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.15) 0%, rgba(5, 7, 10, 0) 70%);
@@ -54,6 +55,7 @@
     .glass-panel {
       background: rgba(12, 16, 23, 0.85);
       backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
     .glass-panel:hover {
@@ -64,30 +66,38 @@
       border: 1px solid rgba(6, 182, 212, 0.25);
       color: #22d3ee;
     }
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500/30 selection:text-cyan-200">
+<body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500/30 selection:text-cyan-200 antialiased">
 
   <!-- Background Ambient Glow -->
   <div class="fixed inset-0 pointer-events-none glow-radial z-0"></div>
 
   <!-- Navigation Header -->
-  <header class="relative z-50 border-b border-white/5 glass-panel sticky top-0 px-4 lg:px-8 py-3.5">
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <a href="#hero" class="flex items-center space-x-3 group">
-          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition">
-            <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
-          </div>
-          <div>
-            <span class="font-bold text-lg tracking-tight text-white">Back2IQ <span class="text-cyan-400 font-medium">DynPass</span></span>
-            <span class="hidden sm:inline-block ml-2 px-2 py-0.5 text-[10px] uppercase font-mono tracking-wider code-chip rounded">Ahead by Design</span>
-          </div>
-        </a>
-      </div>
+  <header class="relative z-50 border-b border-white/5 glass-panel sticky top-0 px-3 sm:px-6 lg:px-8 py-3">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
+      
+      <!-- Brand Logo -->
+      <a href="#hero" class="flex items-center space-x-2.5 min-w-0 flex-shrink-0 group">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition flex-shrink-0">
+          <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+        </div>
+        <div class="min-w-0">
+          <span class="font-bold text-base sm:text-lg tracking-tight text-white block truncate">Back2IQ <span class="text-cyan-400 font-medium">DynPass</span></span>
+        </div>
+      </a>
 
-      <!-- Quick Nav Links -->
-      <nav class="hidden md:flex items-center space-x-6 text-xs text-slate-300 font-medium">
+      <!-- Desktop Nav Links -->
+      <nav class="hidden lg:flex items-center space-x-6 text-xs text-slate-300 font-medium">
         <a href="#background" class="hover:text-cyan-400 transition" id="nav-bg">Hintergrund</a>
         <a href="#specs" class="hover:text-cyan-400 transition" id="nav-specs">Specs & Krypto</a>
         <a href="#onboarding" class="hover:text-cyan-400 transition" id="nav-onboarding">Onboarding-Studio</a>
@@ -95,73 +105,83 @@
         <a href="#benchmark" class="hover:text-cyan-400 transition" id="nav-bm">Benchmark</a>
       </nav>
 
-      <div class="flex items-center space-x-3">
+      <!-- Language Selector & Actions -->
+      <div class="flex items-center space-x-2 flex-shrink-0">
         <!-- Language Selector -->
-        <div class="flex items-center bg-dark-card border border-dark-border rounded-lg p-1 text-xs">
-          <button onclick="setLanguage('de')" id="lang-de" class="px-2 py-1 rounded bg-cyan-500/20 text-cyan-300 font-medium">DE</button>
-          <button onclick="setLanguage('en')" id="lang-en" class="px-2 py-1 rounded text-slate-400 hover:text-white">EN</button>
-          <button onclick="setLanguage('tr')" id="lang-tr" class="px-2 py-1 rounded text-slate-400 hover:text-white">TR</button>
-          <button onclick="setLanguage('fr')" id="lang-fr" class="px-2 py-1 rounded text-slate-400 hover:text-white">FR</button>
-          <button onclick="setLanguage('es')" id="lang-es" class="px-2 py-1 rounded text-slate-400 hover:text-white">ES</button>
+        <div class="flex items-center bg-dark-card border border-dark-border rounded-lg p-0.5 sm:p-1 text-[11px] sm:text-xs">
+          <button onclick="setLanguage('de')" id="lang-de" class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded bg-cyan-500/20 text-cyan-300 font-medium">DE</button>
+          <button onclick="setLanguage('en')" id="lang-en" class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-slate-400 hover:text-white">EN</button>
+          <button onclick="setLanguage('tr')" id="lang-tr" class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-slate-400 hover:text-white">TR</button>
+          <button onclick="setLanguage('fr')" id="lang-fr" class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-slate-400 hover:text-white">FR</button>
+          <button onclick="setLanguage('es')" id="lang-es" class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-slate-400 hover:text-white">ES</button>
         </div>
 
-        <a href="https://github.com/Back2IQ/stealth-auth" target="_blank" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-slate-200 transition">
+        <a href="https://github.com/Back2IQ/stealth-auth" target="_blank" class="flex items-center space-x-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-slate-200 transition">
           <i data-lucide="github" class="w-4 h-4"></i>
           <span class="hidden sm:inline">GitHub</span>
         </a>
       </div>
     </div>
+
+    <!-- Mobile Scrollable Sub-Navigation Pills (Zero Overflow) -->
+    <div class="lg:hidden flex items-center space-x-2 overflow-x-auto no-scrollbar pt-2.5 pb-0.5 text-[11px] font-medium text-slate-300">
+      <a href="#background" class="px-2.5 py-1 rounded-full bg-dark-card border border-dark-border whitespace-nowrap hover:text-cyan-400">Hintergrund</a>
+      <a href="#specs" class="px-2.5 py-1 rounded-full bg-dark-card border border-dark-border whitespace-nowrap hover:text-cyan-400">Specs</a>
+      <a href="#onboarding" class="px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 whitespace-nowrap">✨ Onboarding</a>
+      <a href="#simulator" class="px-2.5 py-1 rounded-full bg-dark-card border border-dark-border whitespace-nowrap hover:text-cyan-400">Terminal</a>
+      <a href="#benchmark" class="px-2.5 py-1 rounded-full bg-dark-card border border-dark-border whitespace-nowrap hover:text-cyan-400">Benchmark</a>
+    </div>
   </header>
 
   <!-- Main Content Wrapper -->
-  <main class="relative z-10 flex-grow max-w-7xl mx-auto px-4 lg:px-8 py-12 lg:py-16 space-y-24 text-left">
+  <main class="relative z-10 flex-grow max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 space-y-16 sm:space-y-24 text-left w-full overflow-hidden">
     
     <!-- ============================================================ -->
     <!-- SECTION 1: HERO & MISSION                                     -->
     <!-- ============================================================ -->
-    <section id="hero" class="text-center flex flex-col items-center pt-6 lg:pt-10 scroll-mt-24">
-      <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-xs font-mono mb-8 animate-pulse">
-        <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
-        <span id="hero-tag">Ed25519 Cognitive Zero-Device MFA & Break-Glass Engine</span>
+    <section id="hero" class="text-center flex flex-col items-center pt-2 sm:pt-6 lg:pt-10 scroll-mt-28">
+      <div class="inline-flex items-center space-x-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-[11px] sm:text-xs font-mono mb-6 sm:mb-8 animate-pulse max-w-full">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 flex-shrink-0"></span>
+        <span id="hero-tag" class="truncate">Ed25519 Cognitive Zero-Device MFA & Break-Glass Engine</span>
       </div>
 
-      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-5xl leading-[1.1] mb-6">
+      <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-5xl leading-[1.15] mb-4 sm:mb-6 break-words">
         <span id="hero-title-1">Hardware-Sicherheit.</span><br/>
         <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-blue-500" id="hero-title-2">Ganz ohne Hardware.</span>
       </h1>
 
-      <p class="text-base sm:text-xl text-slate-400 max-w-3xl mb-10 leading-relaxed" id="hero-sub">
+      <p class="text-sm sm:text-lg md:text-xl text-slate-400 max-w-3xl mb-8 sm:mb-10 leading-relaxed px-1" id="hero-sub">
         Das weltweit erste kognitive Authentifizierungssystem für Reinräume, SCIF-Militärzonen, Executive Travel und unzerstörbare Break-Glass Notfälle. 0% Smartphone. 0% Token. 100% im Kopf.
       </p>
 
-      <div class="flex flex-wrap items-center justify-center gap-4 mb-14">
-        <a href="#onboarding" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-sm shadow-xl shadow-cyan-500/25 transition transform hover:-translate-y-0.5 flex items-center space-x-2">
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full max-w-md sm:max-w-none mb-12 sm:mb-14">
+        <a href="#onboarding" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-sm shadow-xl shadow-cyan-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center space-x-2 min-h-[44px]">
           <i data-lucide="sparkles" class="w-4 h-4"></i>
           <span id="btn-hero-onboarding">Onboarding simulieren (60s)</span>
         </a>
-        <a href="#simulator" class="px-6 py-3.5 rounded-xl bg-dark-card hover:bg-dark-hover border border-dark-border text-slate-300 font-semibold text-sm transition flex items-center space-x-2">
+        <a href="#simulator" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-dark-card hover:bg-dark-hover border border-dark-border text-slate-300 font-semibold text-sm transition flex items-center justify-center space-x-2 min-h-[44px]">
           <i data-lucide="terminal" class="w-4 h-4 text-cyan-400"></i>
           <span id="btn-hero-sim">Login-Terminal testen</span>
         </a>
       </div>
 
       <!-- Quick Metrics Grid -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-5xl text-left">
-        <div class="glass-panel p-5 rounded-2xl">
-          <div class="text-2xl lg:text-3xl font-bold font-mono text-cyan-400">&lt; 0.2 s</div>
-          <div class="text-xs text-slate-400 mt-1" id="stat-latency">Kognitive Latenz (0 Zählzeit)</div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 w-full max-w-5xl text-left">
+        <div class="glass-panel p-4 sm:p-5 rounded-2xl min-w-0">
+          <div class="text-xl sm:text-2xl lg:text-3xl font-bold font-mono text-cyan-400 truncate">&lt; 0.2 s</div>
+          <div class="text-[11px] sm:text-xs text-slate-400 mt-1 leading-tight" id="stat-latency">Kognitive Latenz (0 Zählzeit)</div>
         </div>
-        <div class="glass-panel p-5 rounded-2xl">
-          <div class="text-2xl lg:text-3xl font-bold font-mono text-cyan-400">0 Byte</div>
-          <div class="text-xs text-slate-400 mt-1" id="stat-vault">Klartext-Passwörter auf Server</div>
+        <div class="glass-panel p-4 sm:p-5 rounded-2xl min-w-0">
+          <div class="text-xl sm:text-2xl lg:text-3xl font-bold font-mono text-cyan-400 truncate">0 Byte</div>
+          <div class="text-[11px] sm:text-xs text-slate-400 mt-1 leading-tight" id="stat-vault">Klartext-Passwörter auf Server</div>
         </div>
-        <div class="glass-panel p-5 rounded-2xl">
-          <div class="text-2xl lg:text-3xl font-bold font-mono text-cyan-400">Ed25519</div>
-          <div class="text-xs text-slate-400 mt-1" id="stat-crypto">Asymmetrische Signaturen</div>
+        <div class="glass-panel p-4 sm:p-5 rounded-2xl min-w-0">
+          <div class="text-xl sm:text-2xl lg:text-3xl font-bold font-mono text-cyan-400 truncate">Ed25519</div>
+          <div class="text-[11px] sm:text-xs text-slate-400 mt-1 leading-tight" id="stat-crypto">Asymmetrische Signaturen</div>
         </div>
-        <div class="glass-panel p-5 rounded-2xl">
-          <div class="text-2xl lg:text-3xl font-bold font-mono text-cyan-400">100%</div>
-          <div class="text-xs text-slate-400 mt-1" id="stat-device">Zero-Device / Cleanroom Safe</div>
+        <div class="glass-panel p-4 sm:p-5 rounded-2xl min-w-0">
+          <div class="text-xl sm:text-2xl lg:text-3xl font-bold font-mono text-cyan-400 truncate">100%</div>
+          <div class="text-[11px] sm:text-xs text-slate-400 mt-1 leading-tight" id="stat-device">Zero-Device / Cleanroom Safe</div>
         </div>
       </div>
     </section>
@@ -169,35 +189,35 @@
     <!-- ============================================================ -->
     <!-- SECTION 2: DER HINTERGRUND & DIE PROBLEMLAGE                  -->
     <!-- ============================================================ -->
-    <section id="background" class="scroll-mt-24">
-      <div class="max-w-3xl mb-10">
+    <section id="background" class="scroll-mt-28">
+      <div class="max-w-3xl mb-8 sm:mb-10">
         <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider" id="bg-badge">Problemstellung & Hintergrund</span>
-        <h2 class="text-3xl font-bold text-white mt-1" id="bg-title">Die fatale Notfall-Lücke moderner Enterprise-MFA</h2>
-        <p class="text-sm text-slate-400 mt-2" id="bg-sub">Jedes heutige IAM-System (Okta, Keycloak, Ping, Entra ID) erzwingt Hardware. Doch was passiert, wenn das Gerät weg, verboten oder beschlagnahmt ist?</p>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1 break-words" id="bg-title">Die fatale Notfall-Lücke moderner Enterprise-MFA</h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed" id="bg-sub">Jedes heutige IAM-System (Okta, Keycloak, Ping, Entra ID) erzwingt Hardware. Doch was passiert, wenn das Gerät weg, verboten oder beschlagnahmt ist?</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-rose-500">
-          <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center mb-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+        <div class="glass-panel p-5 sm:p-6 rounded-2xl border-l-4 border-l-rose-500">
+          <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center mb-3 sm:mb-4">
             <i data-lucide="file-x" class="w-5 h-5"></i>
           </div>
-          <h3 class="text-base font-bold text-white" id="p1-title">1. Der veraltete Notfall-Code</h3>
+          <h3 class="text-sm sm:text-base font-bold text-white" id="p1-title">1. Der veraltete Notfall-Code</h3>
           <p class="text-xs text-slate-400 mt-2 leading-relaxed" id="p1-desc">Ausgedruckte Papier-Backup-Codes sind auffindbar, fotografierbar, un-rotierbar und an Grenzkontrollen sofort beschlagnahmbar.</p>
         </div>
 
-        <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-amber-500">
-          <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-4">
+        <div class="glass-panel p-5 sm:p-6 rounded-2xl border-l-4 border-l-amber-500">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-3 sm:mb-4">
             <i data-lucide="shield-off" class="w-5 h-5"></i>
           </div>
-          <h3 class="text-base font-bold text-white" id="p2-title">2. Physische Sonderzonen</h3>
+          <h3 class="text-sm sm:text-base font-bold text-white" id="p2-title">2. Physische Sonderzonen</h3>
           <p class="text-xs text-slate-400 mt-2 leading-relaxed" id="p2-desc">In Halbleiter-Reinräumen (ISO 1–5) und militärischen SCIFs sind Smartphones und USB-Sticks wegen Kontamination und Spionage streng verboten.</p>
         </div>
 
-        <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-cyan-500">
-          <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-4">
+        <div class="glass-panel p-5 sm:p-6 rounded-2xl border-l-4 border-l-cyan-500">
+          <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-3 sm:mb-4">
             <i data-lucide="plane-takeoff" class="w-5 h-5"></i>
           </div>
-          <h3 class="text-base font-bold text-white" id="p3-title">3. Executive & Diplomat Travel</h3>
+          <h3 class="text-sm sm:text-base font-bold text-white" id="p3-title">3. Executive & Diplomat Travel</h3>
           <p class="text-xs text-slate-400 mt-2 leading-relaxed" id="p3-desc">Bei Reisen in feindliche Staaten beschlagnahmen Behörden Hardware. DynPass hinterlässt <b>Null physische Spuren (Zero Evidence)</b>.</p>
         </div>
       </div>
@@ -206,17 +226,17 @@
     <!-- ============================================================ -->
     <!-- SECTION 3: TECHNISCHE SPECS & ARCHITEKTUR                    -->
     <!-- ============================================================ -->
-    <section id="specs" class="scroll-mt-24">
-      <div class="max-w-3xl mb-10">
+    <section id="specs" class="scroll-mt-28">
+      <div class="max-w-3xl mb-8 sm:mb-10">
         <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider" id="specs-badge">Kryptografische Spezifikation</span>
-        <h2 class="text-3xl font-bold text-white mt-1" id="specs-title">Die 4 mathematischen Säulen von DynPass</h2>
-        <p class="text-sm text-slate-400 mt-2" id="specs-sub">Audit-feste Zero-Knowledge Architektur ohne Klartext-Tresor und ohne Zähler-Desynchronisation.</p>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1 break-words" id="specs-title">Die 4 mathematischen Säulen von DynPass</h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed" id="specs-sub">Audit-feste Zero-Knowledge Architektur ohne Klartext-Tresor und ohne Zähler-Desynchronisation.</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="glass-panel p-6 rounded-2xl">
-          <div class="flex items-center space-x-3 text-cyan-400 text-sm font-semibold mb-3">
-            <i data-lucide="key-round" class="w-5 h-5"></i>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        <div class="glass-panel p-5 sm:p-6 rounded-2xl">
+          <div class="flex items-center space-x-3 text-cyan-400 text-sm font-semibold mb-2.5">
+            <i data-lucide="key-round" class="w-5 h-5 flex-shrink-0"></i>
             <span id="spec1-h">1. Asymmetrische Ed25519 Schlüsselableitung</span>
           </div>
           <p class="text-xs text-slate-300 leading-relaxed" id="spec1-t">
@@ -224,9 +244,9 @@
           </p>
         </div>
 
-        <div class="glass-panel p-6 rounded-2xl">
-          <div class="flex items-center space-x-3 text-cyan-400 text-sm font-semibold mb-3">
-            <i data-lucide="shuffle" class="w-5 h-5"></i>
+        <div class="glass-panel p-5 sm:p-6 rounded-2xl">
+          <div class="flex items-center space-x-3 text-cyan-400 text-sm font-semibold mb-2.5">
+            <i data-lucide="shuffle" class="w-5 h-5 flex-shrink-0"></i>
             <span id="spec2-h">2. Zufalls-Challenge (26 Werte)</span>
           </div>
           <p class="text-xs text-slate-300 leading-relaxed" id="spec2-t">
@@ -234,9 +254,9 @@
           </p>
         </div>
 
-        <div class="glass-panel p-6 rounded-2xl">
-          <div class="flex items-center space-x-3 text-cyan-400 text-sm font-semibold mb-3">
-            <i data-lucide="layers" class="w-5 h-5"></i>
+        <div class="glass-panel p-5 sm:p-6 rounded-2xl">
+          <div class="flex items-center space-x-3 text-cyan-400 text-sm font-semibold mb-2.5">
+            <i data-lucide="layers" class="w-5 h-5 flex-shrink-0"></i>
             <span id="spec3-h">3. Sub-Sekunden Wort- & Bild-Grenzen</span>
           </div>
           <p class="text-xs text-slate-300 leading-relaxed" id="spec3-t">
@@ -244,9 +264,9 @@
           </p>
         </div>
 
-        <div class="glass-panel p-6 rounded-2xl">
-          <div class="flex items-center space-x-3 text-cyan-400 text-sm font-semibold mb-3">
-            <i data-lucide="shield-check" class="w-5 h-5"></i>
+        <div class="glass-panel p-5 sm:p-6 rounded-2xl">
+          <div class="flex items-center space-x-3 text-cyan-400 text-sm font-semibold mb-2.5">
+            <i data-lucide="shield-check" class="w-5 h-5 flex-shrink-0"></i>
             <span id="spec4-h">4. Anti-Phishing Gegenlosung (Countersign)</span>
           </div>
           <p class="text-xs text-slate-300 leading-relaxed" id="spec4-t">
@@ -257,63 +277,63 @@
     </section>
 
     <!-- ============================================================ -->
-    <!-- SECTION 4: INTERAKTIVES ONBOARDING STUDIO (DAS HERZSTÜCK)    -->
+    <!-- SECTION 4: INTERAKTIVES ONBOARDING STUDIO                    -->
     <!-- ============================================================ -->
-    <section id="onboarding" class="scroll-mt-24">
-      <div class="max-w-3xl mb-8">
+    <section id="onboarding" class="scroll-mt-28">
+      <div class="max-w-3xl mb-6 sm:mb-8">
         <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider" id="ob-badge">Interaktiver Workflow</span>
-        <h2 class="text-3xl font-bold text-white mt-1" id="ob-title">Das 4-Stufen Onboarding Studio</h2>
-        <p class="text-sm text-slate-400 mt-2" id="ob-sub">Erlebe selbst, wie ein neuer Mitarbeiter sein kognitives Profil in unter 60 Sekunden personalisiert und trainiert.</p>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1 break-words" id="ob-title">Das 4-Stufen Onboarding Studio</h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed" id="ob-sub">Erlebe selbst, wie ein neuer Mitarbeiter sein kognitives Profil in unter 60 Sekunden personalisiert und trainiert.</p>
       </div>
 
       <!-- Stepper Progress Bar -->
-      <div class="mb-8">
+      <div class="mb-6 sm:mb-8 px-2 sm:px-0">
         <div class="flex items-center justify-between relative max-w-xl mx-auto">
           <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-dark-border z-0"></div>
           <div id="ob-progress-bar" class="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 transition-all duration-300 z-0" style="width: 0%"></div>
 
           <div id="ob-ind-1" class="relative z-10 flex flex-col items-center">
-            <div class="w-8 h-8 rounded-full bg-cyan-500 text-white font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a] shadow-lg shadow-cyan-500/30">1</div>
-            <span class="text-[11px] font-medium text-cyan-400 mt-1.5" id="ob-step-lbl-1">Passwort</span>
+            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-cyan-500 text-white font-bold text-[11px] sm:text-xs flex items-center justify-center ring-4 ring-[#05070a] shadow-lg shadow-cyan-500/30">1</div>
+            <span class="text-[10px] sm:text-[11px] font-medium text-cyan-400 mt-1.5" id="ob-step-lbl-1">Passwort</span>
           </div>
           <div id="ob-ind-2" class="relative z-10 flex flex-col items-center">
-            <div class="w-8 h-8 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a]">2</div>
-            <span class="text-[11px] font-medium text-slate-400 mt-1.5" id="ob-step-lbl-2">Denkregel</span>
+            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-[11px] sm:text-xs flex items-center justify-center ring-4 ring-[#05070a]">2</div>
+            <span class="text-[10px] sm:text-[11px] font-medium text-slate-400 mt-1.5" id="ob-step-lbl-2">Denkregel</span>
           </div>
           <div id="ob-ind-3" class="relative z-10 flex flex-col items-center">
-            <div class="w-8 h-8 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a]">3</div>
-            <span class="text-[11px] font-medium text-slate-400 mt-1.5" id="ob-step-lbl-3">Anti-Phishing</span>
+            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-[11px] sm:text-xs flex items-center justify-center ring-4 ring-[#05070a]">3</div>
+            <span class="text-[10px] sm:text-[11px] font-medium text-slate-400 mt-1.5" id="ob-step-lbl-3">Anti-Phish</span>
           </div>
           <div id="ob-ind-4" class="relative z-10 flex flex-col items-center">
-            <div class="w-8 h-8 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a]">4</div>
-            <span class="text-[11px] font-medium text-slate-400 mt-1.5" id="ob-step-lbl-4">Trainer</span>
+            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-[11px] sm:text-xs flex items-center justify-center ring-4 ring-[#05070a]">4</div>
+            <span class="text-[10px] sm:text-[11px] font-medium text-slate-400 mt-1.5" id="ob-step-lbl-4">Trainer</span>
           </div>
         </div>
       </div>
 
       <!-- WIZARD STEP CONTAINER -->
-      <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-white/10 shadow-2xl relative">
+      <div class="glass-panel p-4 sm:p-6 lg:p-8 rounded-2xl border border-white/10 shadow-2xl relative">
         
         <!-- STEP 1 -->
-        <div id="ob-step-1" class="space-y-6">
+        <div id="ob-step-1" class="space-y-5 sm:space-y-6">
           <div>
             <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider">Stufe 1 von 4</span>
-            <h3 class="text-xl font-bold text-white mt-1" id="s1-h">Wähle dein Master-Passwort</h3>
+            <h3 class="text-lg sm:text-xl font-bold text-white mt-1" id="s1-h">Wähle dein Master-Passwort</h3>
             <p class="text-xs text-slate-400 mt-1" id="s1-d">Dieses Passwort bleibt dauerhaft in deinem Muskelgedächtnis. Der Server erfährt es nie.</p>
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-2" id="s1-input-lbl">Dein Basis-Passwort:</label>
-            <input type="text" id="ob-pwd-input" value="Mama1977" oninput="updateObPassword()" class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-4 py-3.5 text-base text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition">
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5" id="s1-input-lbl">Dein Basis-Passwort:</label>
+            <input type="text" id="ob-pwd-input" value="Mama1977" oninput="updateObPassword()" class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-3.5 py-3 text-sm sm:text-base text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition min-h-[44px]">
           </div>
 
-          <div class="p-4 rounded-xl bg-dark-bg border border-dark-border">
+          <div class="p-3.5 sm:p-4 rounded-xl bg-dark-bg border border-dark-border">
             <span class="text-xs font-semibold text-slate-400 block mb-2" id="s1-struct-lbl">Automatisch erkannte Nahtstellen im Passwort:</span>
-            <div id="ob-char-grid" class="flex flex-wrap gap-1.5 font-mono text-sm"></div>
+            <div id="ob-char-grid" class="flex flex-wrap gap-1 sm:gap-1.5 font-mono text-xs sm:text-sm"></div>
           </div>
 
           <div class="pt-2 flex justify-end">
-            <button onclick="setObStep(2)" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs shadow-lg shadow-cyan-500/25 transition flex items-center space-x-2">
+            <button onclick="setObStep(2)" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs shadow-lg shadow-cyan-500/25 transition flex items-center justify-center space-x-2 min-h-[44px]">
               <span id="btn-ob-1">Weiter zur Denkregel</span>
               <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </button>
@@ -321,42 +341,42 @@
         </div>
 
         <!-- STEP 2 -->
-        <div id="ob-step-2" class="hidden space-y-6">
+        <div id="ob-step-2" class="hidden space-y-5 sm:space-y-6">
           <div>
             <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider">Stufe 2 von 4</span>
-            <h3 class="text-xl font-bold text-white mt-1" id="s2-h">Wähle deine kognitive Denkregel</h3>
+            <h3 class="text-lg sm:text-xl font-bold text-white mt-1" id="s2-h">Wähle deine kognitive Denkregel</h3>
             <p class="text-xs text-slate-400 mt-1" id="s2-d">Bestimme, wie du den getarnten Hinweis in dein Passwort einsetzt.</p>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
             <button onclick="setObSource('codename')" id="ob-src-codename" class="p-3.5 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-left transition flex items-start space-x-3">
-              <span class="text-2xl">🦅</span>
-              <div>
+              <span class="text-2xl flex-shrink-0">🦅</span>
+              <div class="min-w-0">
                 <div class="font-bold text-xs text-cyan-300">Codename-Wort (0s Latenz)</div>
-                <div class="text-[11px] text-slate-400 mt-0.5">Zeigt z. B. <i>"Falcon"</i> &rarr; Erster & letzter Buchstabe.</div>
+                <div class="text-[11px] text-slate-400 mt-0.5 leading-tight">Zeigt z. B. <i>"Falcon"</i> &rarr; Erster & letzter Buchstabe.</div>
               </div>
             </button>
 
             <button onclick="setObSource('icon')" id="ob-src-icon" class="p-3.5 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3">
-              <span class="text-2xl">🎩</span>
-              <div>
+              <span class="text-2xl flex-shrink-0">🎩</span>
+              <div class="min-w-0">
                 <div class="font-bold text-xs text-slate-200">Sicherheits-Icon (Sprachbarriere)</div>
-                <div class="text-[11px] text-slate-400 mt-0.5">Zeigt 🎩 &rarr; <i>"Hut"</i> (DE), <i>"Hat"</i> (EN), <i>"Sapka"</i> (TR).</div>
+                <div class="text-[11px] text-slate-400 mt-0.5 leading-tight">Zeigt 🎩 &rarr; <i>"Hut"</i> (DE), <i>"Hat"</i> (EN), <i>"Sapka"</i> (TR).</div>
               </div>
             </button>
           </div>
 
-          <div class="p-4 rounded-xl bg-dark-bg border border-dark-border space-y-3">
+          <div class="p-3.5 sm:p-4 rounded-xl bg-dark-bg border border-dark-border space-y-3">
             <span class="text-xs font-semibold text-slate-300 block" id="s2-slots-lbl">Nahtstellen-Konfiguration (Im Original-Passwort):</span>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
-              <div class="p-3 rounded-lg bg-dark-card border border-dark-border flex items-center justify-between">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 text-xs font-mono">
+              <div class="p-2.5 sm:p-3 rounded-lg bg-dark-card border border-dark-border flex items-center justify-between">
                 <div>
                   <div class="text-slate-400 text-[11px]">Slot 1 (Erster Buchstabe)</div>
                   <div class="text-cyan-300 font-bold mt-0.5">Position 0 (Ganz vorne)</div>
                 </div>
                 <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 text-[10px] font-bold">F ...</span>
               </div>
-              <div class="p-3 rounded-lg bg-dark-card border border-dark-border flex items-center justify-between">
+              <div class="p-2.5 sm:p-3 rounded-lg bg-dark-card border border-dark-border flex items-center justify-between">
                 <div>
                   <div class="text-slate-400 text-[11px]">Slot 2 (Letzter Buchstabe)</div>
                   <div class="text-cyan-300 font-bold mt-0.5">Position 4 (Nach dem Wort)</div>
@@ -367,19 +387,19 @@
 
             <div class="mt-3 pt-3 border-t border-white/5 text-xs">
               <span class="text-slate-400" id="s2-prev-lbl">Live-Vorschau bei Challenge <b>"Falcon"</b>:</span>
-              <div class="mt-1.5 p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/30 font-mono text-emerald-400 font-bold flex items-center space-x-2">
-                <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+              <div class="mt-1.5 p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/30 font-mono text-emerald-400 font-bold flex items-center space-x-2 break-all">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
                 <span id="ob-preview-output">F M a m a n 1 9 7 7</span>
               </div>
             </div>
           </div>
 
-          <div class="pt-2 flex items-center justify-between">
-            <button onclick="setObStep(1)" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs transition flex items-center space-x-1.5">
+          <div class="pt-2 flex items-center justify-between gap-3">
+            <button onclick="setObStep(1)" class="px-3.5 sm:px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs transition flex items-center space-x-1.5 min-h-[44px]">
               <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
               <span id="btn-ob-back-2">Zurück</span>
             </button>
-            <button onclick="setObStep(3)" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs shadow-lg shadow-cyan-500/25 transition flex items-center space-x-2">
+            <button onclick="setObStep(3)" class="px-5 sm:px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs shadow-lg shadow-cyan-500/25 transition flex items-center space-x-2 min-h-[44px]">
               <span id="btn-ob-2">Weiter zu Anti-Phishing</span>
               <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </button>
@@ -387,32 +407,32 @@
         </div>
 
         <!-- STEP 3 -->
-        <div id="ob-step-3" class="hidden space-y-6">
+        <div id="ob-step-3" class="hidden space-y-5 sm:space-y-6">
           <div>
             <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider">Stufe 3 von 4</span>
-            <h3 class="text-xl font-bold text-white mt-1" id="s3-h">Wähle deine Anti-Phishing Gegenlosung</h3>
+            <h3 class="text-lg sm:text-xl font-bold text-white mt-1" id="s3-h">Wähle deine Anti-Phishing Gegenlosung</h3>
             <p class="text-xs text-slate-400 mt-1" id="s3-d">Der echte Server zeigt dir dieses Wort bei jedem Login an. Steht es nicht da, ist die Seite gefälscht.</p>
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-2" id="s3-input-lbl">Dein persönliches Erkennungswort (Gegenlosung):</label>
-            <input type="text" id="ob-countersign-input" value="Blaue Tür" class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-4 py-3.5 text-base text-emerald-400 font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition">
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5" id="s3-input-lbl">Dein persönliches Erkennungswort (Gegenlosung):</label>
+            <input type="text" id="ob-countersign-input" value="Blaue Tür" class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-3.5 py-3 text-sm sm:text-base text-emerald-400 font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition min-h-[44px]">
           </div>
 
-          <div class="p-4 rounded-xl bg-cyan-950/30 border border-cyan-500/20 text-xs text-cyan-200 flex items-start space-x-3">
+          <div class="p-3.5 sm:p-4 rounded-xl bg-cyan-950/30 border border-cyan-500/20 text-xs text-cyan-200 flex items-start space-x-3">
             <i data-lucide="shield-alert" class="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5"></i>
             <div>
               <span class="font-bold text-cyan-300" id="s3-box-t">Warum das vor Phishing schützt:</span>
-              <p class="text-slate-300 mt-0.5 text-[11px]" id="s3-box-d">Ein Angreifer mit gefälschtem Login-Portal kennt dein Erkennungswort nicht. Du enttarnst Phishing auf den ersten Blick.</p>
+              <p class="text-slate-300 mt-0.5 text-[11px] leading-relaxed" id="s3-box-d">Ein Angreifer mit gefälschtem Login-Portal kennt dein Erkennungswort nicht. Du enttarnst Phishing auf den ersten Blick.</p>
             </div>
           </div>
 
-          <div class="pt-2 flex items-center justify-between">
-            <button onclick="setObStep(2)" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs transition flex items-center space-x-1.5">
+          <div class="pt-2 flex items-center justify-between gap-3">
+            <button onclick="setObStep(2)" class="px-3.5 sm:px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs transition flex items-center space-x-1.5 min-h-[44px]">
               <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
               <span id="btn-ob-back-3">Zurück</span>
             </button>
-            <button onclick="setObStep(4)" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs shadow-lg shadow-cyan-500/25 transition flex items-center space-x-2">
+            <button onclick="setObStep(4)" class="px-5 sm:px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs shadow-lg shadow-cyan-500/25 transition flex items-center space-x-2 min-h-[44px]">
               <span id="btn-ob-3">Zum Trainer (3 Probe-Logins)</span>
               <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </button>
@@ -420,34 +440,34 @@
         </div>
 
         <!-- STEP 4 -->
-        <div id="ob-step-4" class="hidden space-y-6">
+        <div id="ob-step-4" class="hidden space-y-5 sm:space-y-6">
           <div>
             <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider">Stufe 4 von 4</span>
-            <h3 class="text-xl font-bold text-white mt-1" id="s4-h">Der Cognitive Trainer (3 Probeläufe)</h3>
+            <h3 class="text-lg sm:text-xl font-bold text-white mt-1" id="s4-h">Der Cognitive Trainer (3 Probeläufe)</h3>
             <p class="text-xs text-slate-400 mt-1" id="s4-d">Absolviere 3 Probe-Logins. Erst wenn alle 3 fehlerfrei sitzen, wird dein Profil scharf geschaltet.</p>
           </div>
 
-          <div class="grid grid-cols-3 gap-3 text-center text-xs font-mono">
-            <div id="ob-badge-1" class="p-3 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 font-bold">Runde 1 / 3</div>
-            <div id="ob-badge-2" class="p-3 rounded-xl border border-dark-border bg-dark-bg text-slate-500">Runde 2 / 3</div>
-            <div id="ob-badge-3" class="p-3 rounded-xl border border-dark-border bg-dark-bg text-slate-500">Runde 3 / 3</div>
+          <div class="grid grid-cols-3 gap-2 sm:gap-3 text-center text-[11px] sm:text-xs font-mono">
+            <div id="ob-badge-1" class="p-2 sm:p-3 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 font-bold truncate">Runde 1 / 3</div>
+            <div id="ob-badge-2" class="p-2 sm:p-3 rounded-xl border border-dark-border bg-dark-bg text-slate-500 truncate">Runde 2 / 3</div>
+            <div id="ob-badge-3" class="p-2 sm:p-3 rounded-xl border border-dark-border bg-dark-bg text-slate-500 truncate">Runde 3 / 3</div>
           </div>
 
-          <div class="bg-[#080c14] border border-dark-border rounded-xl p-5 space-y-4">
+          <div class="bg-[#080c14] border border-dark-border rounded-xl p-3.5 sm:p-5 space-y-3 sm:space-y-4">
             <div class="flex items-center justify-between text-xs">
-              <span class="text-slate-400 font-mono">Gegenlosung: <b class="text-emerald-400" id="ob-tr-counter">Blaue Tür ✅</b></span>
-              <span class="text-xs text-cyan-400 font-mono">⏱️ Stoppuhr aktiv</span>
+              <span class="text-slate-400 font-mono truncate">Gegenlosung: <b class="text-emerald-400" id="ob-tr-counter">Blaue Tür ✅</b></span>
+              <span class="text-[11px] text-cyan-400 font-mono flex-shrink-0">⏱️ Stoppuhr aktiv</span>
             </div>
 
             <div class="p-3 rounded-lg bg-dark-card border border-dark-border text-center">
-              <span class="text-xs text-slate-400 block mb-1">Deine Test-Challenge:</span>
-              <span class="text-xl font-bold font-mono text-cyan-300" id="ob-tr-word">Codename: Falcon</span>
+              <span class="text-xs text-slate-400 block mb-0.5">Deine Test-Challenge:</span>
+              <span class="text-lg sm:text-xl font-bold font-mono text-cyan-300" id="ob-tr-word">Codename: Falcon</span>
             </div>
 
             <div class="space-y-2">
-              <input type="text" id="ob-tr-input" placeholder="Passwort mit eingesetzten Buchstaben eingeben..." class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-4 py-3 text-sm text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition">
+              <input type="text" id="ob-tr-input" placeholder="Passwort mit eingesetzten Buchstaben..." class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-3.5 py-3 text-xs sm:text-sm text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition min-h-[44px]">
               
-              <button onclick="submitObTrainerRound()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-500/20 transition flex items-center justify-center space-x-2">
+              <button onclick="submitObTrainerRound()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-500/20 transition flex items-center justify-center space-x-2 min-h-[44px]">
                 <i data-lucide="check" class="w-4 h-4"></i>
                 <span id="btn-ob-tr-submit">Runde prüfen</span>
               </button>
@@ -456,19 +476,19 @@
             <div id="ob-tr-feedback" class="hidden p-3 rounded-xl border text-xs font-mono"></div>
           </div>
 
-          <div id="ob-activation-box" class="hidden p-5 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 text-center space-y-3 animate-fadeIn">
-            <div class="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto text-xl">🎉</div>
-            <h4 class="text-lg font-bold text-white">Perfekt! 3 von 3 Logins bestanden!</h4>
-            <p class="text-xs text-slate-300 max-w-md mx-auto">Deine durchschnittliche Denkzeit lag bei blitzschnellen <b class="text-emerald-400" id="ob-avg-time">1.2 Sekunden</b>. Dein Profil ist nun scharf geschaltet.</p>
+          <div id="ob-activation-box" class="hidden p-4 sm:p-5 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 text-center space-y-3 animate-fadeIn">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto text-xl">🎉</div>
+            <h4 class="text-base sm:text-lg font-bold text-white">Perfekt! 3 von 3 Logins bestanden!</h4>
+            <p class="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">Deine durchschnittliche Denkzeit lag bei blitzschnellen <b class="text-emerald-400" id="ob-avg-time">1.2 Sekunden</b>. Dein Profil ist nun scharf geschaltet.</p>
             
-            <a href="#simulator" onclick="applyOnboardingToSimulator()" class="inline-flex items-center space-x-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs shadow-xl shadow-cyan-500/30 transition transform hover:-translate-y-0.5">
+            <a href="#simulator" onclick="applyOnboardingToSimulator()" class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 sm:px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs shadow-xl shadow-cyan-500/30 transition transform hover:-translate-y-0.5 min-h-[44px]">
               <span>Profil im Login-Terminal testen</span>
               <i data-lucide="arrow-down" class="w-4 h-4"></i>
             </a>
           </div>
 
           <div id="ob-tr-nav" class="pt-2 flex items-center justify-between">
-            <button onclick="setObStep(3)" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs transition flex items-center space-x-1.5">
+            <button onclick="setObStep(3)" class="px-3.5 sm:px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs transition flex items-center space-x-1.5 min-h-[44px]">
               <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
               <span id="btn-ob-back-4">Zurück</span>
             </button>
@@ -481,63 +501,63 @@
     <!-- ============================================================ -->
     <!-- SECTION 5: DER LIVE LOGIN SIMULATOR                          -->
     <!-- ============================================================ -->
-    <section id="simulator" class="scroll-mt-24">
-      <div class="flex items-center justify-between mb-6">
-        <div>
+    <section id="simulator" class="scroll-mt-28">
+      <div class="flex items-center justify-between mb-6 gap-2">
+        <div class="min-w-0">
           <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider" id="sim-badge">Live Enterprise Terminal</span>
-          <h2 class="text-3xl font-bold text-white mt-1" id="sim-title">Erlebe den 0-Sekunden Kognitiven Login</h2>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1 truncate" id="sim-title">Erlebe den 0-Sekunden Login</h2>
         </div>
-        <button onclick="resetSimulator()" class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs flex items-center space-x-1.5 transition">
+        <button onclick="resetSimulator()" class="p-2 sm:px-3 sm:py-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs flex items-center space-x-1.5 transition flex-shrink-0 min-h-[36px]">
           <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
           <span class="hidden sm:inline" id="btn-reset">Reset</span>
         </button>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
         
         <!-- Left: Brain State & Config -->
-        <div class="lg:col-span-5 glass-panel p-6 rounded-2xl flex flex-col justify-between">
+        <div class="lg:col-span-5 glass-panel p-4 sm:p-6 rounded-2xl flex flex-col justify-between">
           <div>
             <div class="flex items-center space-x-2 text-cyan-400 text-sm font-semibold mb-4">
-              <i data-lucide="brain" class="w-4 h-4"></i>
+              <i data-lucide="brain" class="w-4 h-4 flex-shrink-0"></i>
               <span id="config-title">1. Muskelgedächtnis & Regel</span>
             </div>
 
-            <div class="space-y-4 text-xs">
+            <div class="space-y-3.5 text-xs">
               <div>
-                <label class="text-slate-400 block mb-1.5" id="lbl-master">Master-Passwort (im Kopf):</label>
+                <label class="text-slate-400 block mb-1" id="lbl-master">Master-Passwort (im Kopf):</label>
                 <div class="flex items-center bg-dark-bg border border-dark-border rounded-lg px-3 py-2 text-slate-200 font-mono">
-                  <span id="cfg-master">Mama1977</span>
-                  <span class="ml-auto text-[10px] text-slate-500">8 Zeichen</span>
+                  <span id="cfg-master" class="truncate">Mama1977</span>
+                  <span class="ml-auto text-[10px] text-slate-500 flex-shrink-0">8 Zeichen</span>
                 </div>
               </div>
 
               <div>
-                <label class="text-slate-400 block mb-1.5" id="lbl-slots">Gewählte Nahtstellen (Slots):</label>
+                <label class="text-slate-400 block mb-1" id="lbl-slots">Gewählte Nahtstellen (Slots):</label>
                 <div class="space-y-1.5">
                   <div class="p-2 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 font-mono text-[11px] flex justify-between">
                     <span>Slot 1: Erster Buchstabe</span>
-                    <span class="font-bold">Position 0 (Vorne)</span>
+                    <span class="font-bold">Pos 0 (Vorne)</span>
                   </div>
                   <div class="p-2 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 font-mono text-[11px] flex justify-between">
                     <span>Slot 2: Letzter Buchstabe</span>
-                    <span class="font-bold">Position 4 (Mitte)</span>
+                    <span class="font-bold">Pos 4 (Mitte)</span>
                   </div>
                 </div>
               </div>
 
               <div>
-                <label class="text-slate-400 block mb-1.5" id="lbl-counter">Anti-Phishing Gegenlosung:</label>
+                <label class="text-slate-400 block mb-1" id="lbl-counter">Anti-Phishing Gegenlosung:</label>
                 <div class="flex items-center bg-dark-bg border border-dark-border rounded-lg px-3 py-2 text-emerald-400 font-mono">
-                  <i data-lucide="shield-check" class="w-3.5 h-3.5 mr-2"></i>
-                  <span id="cfg-counter">Blaue Tür</span>
+                  <i data-lucide="shield-check" class="w-3.5 h-3.5 mr-2 flex-shrink-0"></i>
+                  <span id="cfg-counter" class="truncate">Blaue Tür</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="mt-6 pt-4 border-t border-white/5">
-            <button onclick="drawNewChallenge()" class="w-full py-2.5 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 font-medium text-xs flex items-center justify-center space-x-2 transition">
+          <div class="mt-5 pt-4 border-t border-white/5">
+            <button onclick="drawNewChallenge()" class="w-full py-2.5 sm:py-3 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 font-medium text-xs flex items-center justify-center space-x-2 transition min-h-[44px]">
               <i data-lucide="dice-5" class="w-4 h-4"></i>
               <span id="btn-draw">Zufalls-Challenge generieren</span>
             </button>
@@ -545,37 +565,37 @@
         </div>
 
         <!-- Right: Login Screen Terminal -->
-        <div class="lg:col-span-7 bg-[#080c14] border border-dark-border rounded-2xl p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden">
+        <div class="lg:col-span-7 bg-[#080c14] border border-dark-border rounded-2xl p-4 sm:p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden">
           
-          <div class="flex items-center justify-between border-b border-white/5 pb-3 mb-5 text-xs font-mono">
-            <div class="flex items-center space-x-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-              <span class="text-slate-400">SCIF Terminal #04</span>
+          <div class="flex items-center justify-between border-b border-white/5 pb-3 mb-4 text-xs font-mono">
+            <div class="flex items-center space-x-2 min-w-0">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
+              <span class="text-slate-400 truncate">SCIF Terminal #04</span>
             </div>
-            <div class="text-emerald-400 flex items-center space-x-1">
+            <div class="text-emerald-400 flex items-center space-x-1 flex-shrink-0 text-[11px]">
               <i data-lucide="lock" class="w-3.5 h-3.5"></i>
-              <span>TLS 1.3 / Ed25519 Ready</span>
+              <span>TLS 1.3 / Ed25519</span>
             </div>
           </div>
 
           <!-- Challenge Prompt Box -->
-          <div class="bg-dark-card border border-dark-border rounded-xl p-4 mb-5">
+          <div class="bg-dark-card border border-dark-border rounded-xl p-3.5 sm:p-4 mb-4">
             <div class="flex items-center justify-between text-xs mb-2">
               <span class="text-slate-400" id="prompt-counter-lbl">Gegenlosung:</span>
               <span class="font-bold text-emerald-400 font-mono" id="disp-counter">Blaue Tür ✅</span>
             </div>
             <div class="flex items-center justify-between text-xs">
               <span class="text-slate-400" id="prompt-hint-lbl">Getarnter Hinweis:</span>
-              <span class="font-bold text-cyan-300 font-mono text-sm px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20" id="disp-challenge">Codename: Falcon</span>
+              <span class="font-bold text-cyan-300 font-mono text-xs sm:text-sm px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20" id="disp-challenge">Codename: Falcon</span>
             </div>
           </div>
 
           <!-- Cognitive Explanation Bubble -->
-          <div id="thought-bubble" class="p-3 rounded-lg bg-blue-950/40 border border-blue-500/30 text-xs text-blue-200 mb-5 flex items-start space-x-2.5">
+          <div id="thought-bubble" class="p-3 rounded-lg bg-blue-950/40 border border-blue-500/30 text-xs text-blue-200 mb-4 flex items-start space-x-2.5">
             <i data-lucide="sparkles" class="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5"></i>
-            <div>
-              <span class="font-semibold text-cyan-300" id="thought-title">Was dein Gehirn in 0.1s denkt:</span>
-              <p class="text-slate-300 mt-0.5 text-[11px]" id="thought-desc">
+            <div class="min-w-0">
+              <span class="font-semibold text-cyan-300 block" id="thought-title">Was dein Gehirn in 0.1s denkt:</span>
+              <p class="text-slate-300 mt-0.5 text-[11px] leading-relaxed break-words" id="thought-desc">
                 Wort ist <b>"Falcon"</b> &rarr; Erster: <span class="text-cyan-300 font-bold">F</span>, Letzter: <span class="text-cyan-300 font-bold">n</span>.<br/>
                 Eingesetzt in <i>"Mama1977"</i> an Pos 0 & 4 &rarr; <span class="text-emerald-400 font-mono font-bold">F M a m a n 1 9 7 7</span>
               </p>
@@ -585,18 +605,18 @@
           <!-- Interactive Password Input -->
           <div class="space-y-3">
             <div class="relative">
-              <input type="text" id="pass-input" value="FMaman1977" placeholder="Passphrase eingeben..." class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-4 py-3 text-sm text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition">
-              <button onclick="autoFill()" class="absolute right-2.5 top-2.5 px-2.5 py-1 rounded bg-white/5 hover:bg-white/10 text-slate-400 text-xs font-mono transition" id="btn-autofill">Auto-Fill</button>
+              <input type="text" id="pass-input" value="FMaman1977" placeholder="Passphrase eingeben..." class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl pl-3.5 pr-20 sm:pr-24 py-3 text-xs sm:text-sm text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition min-h-[44px]">
+              <button onclick="autoFill()" class="absolute right-2 top-2 px-2 sm:px-2.5 py-1.5 rounded bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-[10px] sm:text-xs font-mono transition" id="btn-autofill">Auto-Fill</button>
             </div>
 
-            <button onclick="verifyLogin()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold text-sm shadow-lg shadow-emerald-500/20 transition flex items-center justify-center space-x-2">
+            <button onclick="verifyLogin()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-emerald-500/20 transition flex items-center justify-center space-x-2 min-h-[44px]">
               <i data-lucide="key" class="w-4 h-4"></i>
               <span id="btn-submit">Signieren & Authentifizieren</span>
             </button>
           </div>
 
           <!-- Verification Result Banner -->
-          <div id="auth-result" class="hidden mt-4 p-3 rounded-xl border text-xs flex items-center justify-between font-mono animate-fadeIn"></div>
+          <div id="auth-result" class="hidden mt-3 p-3 rounded-xl border text-xs flex items-center justify-between font-mono animate-fadeIn"></div>
 
         </div>
 
@@ -604,68 +624,69 @@
     </section>
 
     <!-- ============================================================ -->
-    <!-- SECTION 6: BENCHMARK MATRIX                                  -->
+    <!-- SECTION 6: BENCHMARK MATRIX (MOBILE-OPTIMIZED HORIZONTAL)     -->
     <!-- ============================================================ -->
-    <section id="benchmark" class="scroll-mt-24 mb-12">
-      <div class="text-center max-w-3xl mx-auto mb-12">
+    <section id="benchmark" class="scroll-mt-28 mb-8 sm:mb-12">
+      <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
         <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider" id="bm-badge">Head-to-Head Evaluation</span>
-        <h2 class="text-3xl font-bold text-white mt-1" id="bm-title">Warum DynPass die Notfall-Lücke schließt</h2>
-        <p class="text-sm text-slate-400 mt-2" id="bm-sub">Vergleich mit dem aktuellen Stand der Technik in High-Security- und Notfall-Szenarien.</p>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1 break-words" id="bm-title">Warum DynPass die Notfall-Lücke schließt</h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed px-1" id="bm-sub">Vergleich mit dem aktuellen Stand der Technik in High-Security- und Notfall-Szenarien.</p>
+        <span class="inline-block md:hidden text-[10px] font-mono text-cyan-400/80 mt-2">← Horizontal wischen für gesamten Vergleich →</span>
       </div>
 
-      <div class="glass-panel rounded-2xl overflow-x-auto border border-white/10">
-        <table class="w-full text-left text-xs border-collapse">
+      <div class="glass-panel rounded-2xl overflow-x-auto border border-white/10 -mx-1 sm:mx-0">
+        <table class="w-full text-left text-xs border-collapse min-w-[620px]">
           <thead>
             <tr class="border-b border-white/10 bg-white/5 font-semibold text-slate-300">
-              <th class="p-4" id="th-feature">Sicherheits- & Betriebsmerkmal</th>
-              <th class="p-4 text-center">Papier-Backup-Codes</th>
-              <th class="p-4 text-center">PIV / CAC Smartcard</th>
-              <th class="p-4 text-center">FIDO2 YubiKey</th>
-              <th class="p-4 text-center text-cyan-400 bg-cyan-500/10 border-l border-r border-cyan-500/20">Back2IQ DynPass</th>
+              <th class="p-3.5 sm:p-4 min-w-[180px]" id="th-feature">Sicherheits- & Betriebsmerkmal</th>
+              <th class="p-3.5 sm:p-4 text-center">Papier-Codes</th>
+              <th class="p-3.5 sm:p-4 text-center">PIV / CAC Smartcard</th>
+              <th class="p-3.5 sm:p-4 text-center">FIDO2 YubiKey</th>
+              <th class="p-3.5 sm:p-4 text-center text-cyan-400 bg-cyan-500/10 border-l border-r border-cyan-500/20 font-bold">Back2IQ DynPass</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-white/5 text-slate-300 font-mono">
+          <tbody class="divide-y divide-white/5 text-slate-300 font-mono text-[11px] sm:text-xs">
             <tr class="hover:bg-white/[0.02]">
-              <td class="p-4 font-sans font-medium" id="td-f1">Physisches Objekt nötig?</td>
-              <td class="p-4 text-center text-rose-400">📄 Ja (Papier)</td>
-              <td class="p-4 text-center text-rose-400">💳 Ja (Karte)</td>
-              <td class="p-4 text-center text-rose-400">🔑 Ja (USB-Stick)</td>
-              <td class="p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">❌ 0% (Im Kopf)</td>
+              <td class="p-3.5 sm:p-4 font-sans font-medium" id="td-f1">Physisches Objekt nötig?</td>
+              <td class="p-3.5 sm:p-4 text-center text-rose-400">📄 Ja (Papier)</td>
+              <td class="p-3.5 sm:p-4 text-center text-rose-400">💳 Ja (Karte)</td>
+              <td class="p-3.5 sm:p-4 text-center text-rose-400">🔑 Ja (USB-Stick)</td>
+              <td class="p-3.5 sm:p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">❌ 0% (Im Kopf)</td>
             </tr>
             <tr class="hover:bg-white/[0.02]">
-              <td class="p-4 font-sans font-medium" id="td-f2">Beschlagnahmungssicher (Grenze)?</td>
-              <td class="p-4 text-center text-rose-400">❌ Kopierbar</td>
-              <td class="p-4 text-center text-rose-400">❌ Einbehaltbar</td>
-              <td class="p-4 text-center text-rose-400">❌ Einbehaltbar</td>
-              <td class="p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">✅ Zero Evidence</td>
+              <td class="p-3.5 sm:p-4 font-sans font-medium" id="td-f2">Beschlagnahmungssicher (Grenze)?</td>
+              <td class="p-3.5 sm:p-4 text-center text-rose-400">❌ Kopierbar</td>
+              <td class="p-3.5 sm:p-4 text-center text-rose-400">❌ Einbehaltbar</td>
+              <td class="p-3.5 sm:p-4 text-center text-rose-400">❌ Einbehaltbar</td>
+              <td class="p-3.5 sm:p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">✅ Zero Evidence</td>
             </tr>
             <tr class="hover:bg-white/[0.02]">
-              <td class="p-4 font-sans font-medium" id="td-f3">Reinraum (ISO 1-5) & SCIF konform?</td>
-              <td class="p-4 text-center text-amber-400">⚠️ Partikel</td>
-              <td class="p-4 text-center text-emerald-400">✅ Zertifiziert</td>
-              <td class="p-4 text-center text-rose-400">❌ Kontamination</td>
-              <td class="p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">✅ 100% Sicher</td>
+              <td class="p-3.5 sm:p-4 font-sans font-medium" id="td-f3">Reinraum (ISO 1-5) & SCIF konform?</td>
+              <td class="p-3.5 sm:p-4 text-center text-amber-400">⚠️ Partikel</td>
+              <td class="p-3.5 sm:p-4 text-center text-emerald-400">✅ Zertifiziert</td>
+              <td class="p-3.5 sm:p-4 text-center text-rose-400">❌ Kontamination</td>
+              <td class="p-3.5 sm:p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">✅ 100% Sicher</td>
             </tr>
             <tr class="hover:bg-white/[0.02]">
-              <td class="p-4 font-sans font-medium" id="td-f4">Server speichert Klartext-Passwort?</td>
-              <td class="p-4 text-center text-rose-400">❌ Oft Hashes</td>
-              <td class="p-4 text-center text-emerald-400">✅ Public Key</td>
-              <td class="p-4 text-center text-emerald-400">✅ Public Key</td>
-              <td class="p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">✅ Nur Public Keys</td>
+              <td class="p-3.5 sm:p-4 font-sans font-medium" id="td-f4">Server speichert Klartext-Passwort?</td>
+              <td class="p-3.5 sm:p-4 text-center text-rose-400">❌ Oft Hashes</td>
+              <td class="p-3.5 sm:p-4 text-center text-emerald-400">✅ Public Key</td>
+              <td class="p-3.5 sm:p-4 text-center text-emerald-400">✅ Public Key</td>
+              <td class="p-3.5 sm:p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">✅ Nur Public Keys</td>
             </tr>
             <tr class="hover:bg-white/[0.02]">
-              <td class="p-4 font-sans font-medium" id="td-f5">Hardwarekosten pro Mitarbeiter</td>
-              <td class="p-4 text-center">0 €</td>
-              <td class="p-4 text-center text-amber-400">$20–$50</td>
-              <td class="p-4 text-center text-rose-400">$50–$90</td>
-              <td class="p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">0 € Hardware</td>
+              <td class="p-3.5 sm:p-4 font-sans font-medium" id="td-f5">Hardwarekosten pro Mitarbeiter</td>
+              <td class="p-3.5 sm:p-4 text-center">0 €</td>
+              <td class="p-3.5 sm:p-4 text-center text-amber-400">$20–$50</td>
+              <td class="p-3.5 sm:p-4 text-center text-rose-400">$50–$90</td>
+              <td class="p-3.5 sm:p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">0 € Hardware</td>
             </tr>
             <tr class="hover:bg-white/[0.02]">
-              <td class="p-4 font-sans font-medium" id="td-f6">Primäre Enterprise-Rolle</td>
-              <td class="p-4 text-center text-slate-400">Veraltetes Fallback</td>
-              <td class="p-4 text-center text-slate-300">Konzern-Badge</td>
-              <td class="p-4 text-center text-slate-300">Phishing-Resistenz</td>
-              <td class="p-4 text-center text-cyan-300 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">Break-Glass & Travel</td>
+              <td class="p-3.5 sm:p-4 font-sans font-medium" id="td-f6">Primäre Enterprise-Rolle</td>
+              <td class="p-3.5 sm:p-4 text-center text-slate-400">Veraltetes Fallback</td>
+              <td class="p-3.5 sm:p-4 text-center text-slate-300">Konzern-Badge</td>
+              <td class="p-3.5 sm:p-4 text-center text-slate-300">Phishing-Resistenz</td>
+              <td class="p-3.5 sm:p-4 text-center text-cyan-300 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">Break-Glass & Travel</td>
             </tr>
           </tbody>
         </table>
@@ -675,13 +696,13 @@
   </main>
 
   <!-- Footer -->
-  <footer class="relative z-10 border-t border-white/5 py-8 text-center text-xs text-slate-500 glass-panel">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+  <footer class="relative z-10 border-t border-white/5 py-6 sm:py-8 text-center text-xs text-slate-500 glass-panel">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
       <div class="flex items-center space-x-2">
-        <span class="font-bold text-slate-300">Back2IQ</span>
+        <span class="font-bold text-slate-300">Back2IQ DynPass</span>
         <span>— Ahead by Design</span>
       </div>
-      <div class="text-slate-400">
+      <div class="text-slate-400 text-center">
         Founder: <span class="text-slate-200 font-medium">Deniz Kiran</span> (Antalya, Turkey)
       </div>
       <div class="flex items-center space-x-4 text-slate-400">
@@ -741,7 +762,7 @@
         obSub: 'Erlebe selbst, wie ein neuer Mitarbeiter sein kognitives Profil in unter 60 Sekunden personalisiert und trainiert.',
         obStepLbl1: 'Passwort',
         obStepLbl2: 'Denkregel',
-        obStepLbl3: 'Anti-Phishing',
+        obStepLbl3: 'Anti-Phish',
         obStepLbl4: 'Trainer',
         s1H: 'Wähle dein Master-Passwort',
         s1D: 'Dieses Passwort bleibt dauerhaft in deinem Muskelgedächtnis. Der Server erfährt es nie.',
@@ -766,7 +787,7 @@
         btnObTrSubmit: 'Runde prüfen',
         btnObBack4: 'Zurück',
         simBadge: 'Live Enterprise Terminal',
-        simTitle: 'Erlebe den 0-Sekunden Kognitiven Login',
+        simTitle: 'Erlebe den 0-Sekunden Login',
         btnReset: 'Reset',
         configTitle: '1. Muskelgedächtnis & Regel',
         lblMaster: 'Master-Passwort (im Kopf):',
@@ -830,7 +851,7 @@
         obSub: 'Experience how an employee configures and trains their cognitive profile in under 60 seconds.',
         obStepLbl1: 'Password',
         obStepLbl2: 'Mental Rule',
-        obStepLbl3: 'Anti-Phishing',
+        obStepLbl3: 'Anti-Phish',
         obStepLbl4: 'Trainer',
         s1H: 'Choose Your Master Password',
         s1D: 'This password remains in your muscle memory. The server never learns it.',
@@ -855,7 +876,7 @@
         btnObTrSubmit: 'Verify Round',
         btnObBack4: 'Back',
         simBadge: 'Live Enterprise Terminal',
-        simTitle: 'Experience the 0-Second Cognitive Login',
+        simTitle: 'Experience the 0-Second Login',
         btnReset: 'Reset',
         configTitle: '1. Muscle Memory & Rule',
         lblMaster: 'Master Password (in memory):',
@@ -919,7 +940,7 @@
         obSub: 'Bir calisanin 60 saniyede bilissel profilini nasil yapilandirip egittigini gorun.',
         obStepLbl1: 'Sifre',
         obStepLbl2: 'Zihinsel Kural',
-        obStepLbl3: 'Oltalama Karsiti',
+        obStepLbl3: 'Oltalama',
         obStepLbl4: 'Egitici',
         s1H: 'Ana Sifrenizi Belirleyin',
         s1D: 'Bu sifre hafizanizda kalir. Sunucu bunu asla ogrenmez.',
@@ -943,7 +964,7 @@
         s4D: '3 deneme girisi yapin. Profil 3 dogru giristen sonra etkinlesir.',
         btnObTrSubmit: 'Turu Kontrol Et',
         btnObBack4: 'Geri',
-        simBadge: 'Canli Giris Terminali',
+        simBadge: 'Live Enterprise Terminal',
         simTitle: '0-Saniyelik Bilissel Girisi Deneyimleyin',
         btnReset: 'Sifirla',
         configTitle: '1. Kas Hafizasi ve Kural',
@@ -1008,7 +1029,7 @@
         obSub: 'Découvrez comment configurer et entraîner son profil cognitif en 60 secondes.',
         obStepLbl1: 'Mot de passe',
         obStepLbl2: 'Règle mentale',
-        obStepLbl3: 'Anti-Phishing',
+        obStepLbl3: 'Anti-Phish',
         obStepLbl4: 'Entraîneur',
         s1H: 'Choisissez votre mot de passe maître',
         s1D: 'Ce mot de passe reste dans votre mémoire. Le serveur ne le connaît jamais.',
@@ -1033,7 +1054,7 @@
         btnObTrSubmit: 'Vérifier l’essai',
         btnObBack4: 'Retour',
         simBadge: 'Terminal Live Enterprise',
-        simTitle: 'Vivez la Connexion Cognitive en 0 Seconde',
+        simTitle: 'Vivez la Connexion en 0 Seconde',
         btnReset: 'Réinitialiser',
         configTitle: '1. Mémoire Musculaire & Règle',
         lblMaster: 'Mot de passe maître (en tête):',
@@ -1097,7 +1118,7 @@
         obSub: 'Vea cómo un empleado configura y entrena su perfil cognitivo en 60 segundos.',
         obStepLbl1: 'Contraseña',
         obStepLbl2: 'Regla mental',
-        obStepLbl3: 'Anti-Phishing',
+        obStepLbl3: 'Anti-Phish',
         obStepLbl4: 'Entrenador',
         s1H: 'Elija su contraseña maestra',
         s1D: 'Esta contraseña permanece en su memoria. El servidor nunca la conoce.',
@@ -1122,7 +1143,7 @@
         btnObTrSubmit: 'Verificar ensayo',
         btnObBack4: 'Volver',
         simBadge: 'Terminal Live Enterprise',
-        simTitle: 'Experimente el Acceso Cognitivo en 0 Segundos',
+        simTitle: 'Experimente el Acceso en 0 Segundos',
         btnReset: 'Reiniciar',
         configTitle: '1. Memoria Muscular y Regla',
         lblMaster: 'Contraseña maestra (en memoria):',
@@ -1157,8 +1178,8 @@
         const btn = document.getElementById(`lang-${l}`);
         if (btn) {
           btn.className = (l === lang)
-            ? "px-2 py-1 rounded bg-cyan-500/20 text-cyan-300 font-medium"
-            : "px-2 py-1 rounded text-slate-400 hover:text-white";
+            ? "px-1.5 sm:px-2 py-0.5 sm:py-1 rounded bg-cyan-500/20 text-cyan-300 font-medium"
+            : "px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-slate-400 hover:text-white";
         }
       });
 
@@ -1200,9 +1221,9 @@
       for (let s = 1; s <= 4; s++) {
         const ind = document.getElementById(`ob-ind-${s}`).querySelector('div');
         if (s <= step) {
-          ind.className = "w-8 h-8 rounded-full bg-cyan-500 text-white font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a] shadow-lg shadow-cyan-500/30";
+          ind.className = "w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-cyan-500 text-white font-bold text-[11px] sm:text-xs flex items-center justify-center ring-4 ring-[#05070a] shadow-lg shadow-cyan-500/30";
         } else {
-          ind.className = "w-8 h-8 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a]";
+          ind.className = "w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-[11px] sm:text-xs flex items-center justify-center ring-4 ring-[#05070a]";
         }
       }
 
@@ -1224,8 +1245,8 @@
         
         grid.innerHTML += `
           <div class="flex flex-col items-center">
-            <span class="text-[10px] text-slate-500 mb-0.5">${i}</span>
-            <div class="w-8 h-9 rounded-lg border ${colorClass} flex items-center justify-center font-bold font-mono shadow-sm">
+            <span class="text-[9px] sm:text-[10px] text-slate-500 mb-0.5">${i}</span>
+            <div class="w-7 h-8 sm:w-8 sm:h-9 rounded-lg border ${colorClass} flex items-center justify-center font-bold font-mono shadow-sm">
               ${char}
             </div>
           </div>
@@ -1269,12 +1290,12 @@
       for (let r = 0; r < 3; r++) {
         const badge = document.getElementById(`ob-badge-${r + 1}`);
         if (r === obTrainerRound) {
-          badge.className = "p-3 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 font-bold";
+          badge.className = "p-2 sm:p-3 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 font-bold truncate";
         } else if (r < obTrainerRound) {
-          badge.className = "p-3 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 font-bold";
+          badge.className = "p-2 sm:p-3 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 font-bold truncate";
           badge.innerText = `Runde ${r + 1} ✅`;
         } else {
-          badge.className = "p-3 rounded-xl border border-dark-border bg-dark-bg text-slate-500";
+          badge.className = "p-2 sm:p-3 rounded-xl border border-dark-border bg-dark-bg text-slate-500 truncate";
         }
       }
 
@@ -1361,22 +1382,22 @@
       resultBox.classList.remove('hidden');
 
       if (input === ch.expected) {
-        resultBox.className = "mt-4 p-3.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 text-xs flex items-center justify-between font-mono animate-fadeIn";
+        resultBox.className = "mt-3 p-3.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 text-xs flex items-center justify-between font-mono animate-fadeIn";
         resultBox.innerHTML = `
-          <div class="flex items-center space-x-2">
-            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
-            <span>Ed25519 Signatur Gültig (0.11s)</span>
+          <div class="flex items-center space-x-2 truncate">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
+            <span class="truncate">Ed25519 Signatur Gültig (0.11s)</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-200 font-bold">ACCESS GRANTED ✅</span>
+          <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-200 font-bold flex-shrink-0 text-[10px] sm:text-xs">GRANTED ✅</span>
         `;
       } else {
-        resultBox.className = "mt-4 p-3.5 rounded-xl border border-rose-500/40 bg-rose-500/10 text-rose-300 text-xs flex items-center justify-between font-mono animate-fadeIn";
+        resultBox.className = "mt-3 p-3.5 rounded-xl border border-rose-500/40 bg-rose-500/10 text-rose-300 text-xs flex items-center justify-between font-mono animate-fadeIn";
         resultBox.innerHTML = `
-          <div class="flex items-center space-x-2">
-            <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-400"></i>
-            <span>Signatur Ungültig für "${ch.word}" (Erwartet: ${ch.expected})</span>
+          <div class="flex items-center space-x-2 truncate">
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-400 flex-shrink-0"></i>
+            <span class="truncate">Signatur Ungültig für "${ch.word}"</span>
           </div>
-          <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-200 font-bold">FAILED ❌</span>
+          <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-200 font-bold flex-shrink-0 text-[10px] sm:text-xs">FAILED ❌</span>
         `;
       }
       lucide.createIcons();
