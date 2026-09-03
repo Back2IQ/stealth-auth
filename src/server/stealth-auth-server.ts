@@ -1,5 +1,5 @@
 /**
- * Back2IQ StealthAuth - Enterprise Server Engine & Verifier
+ * Back2IQ DynPass - Enterprise Server Engine & Verifier
  * (c) Back2IQ - Ahead by Design (Deniz Kiran)
  *
  * The server draws a random challenge from a fixed space of 26 values and checks
@@ -10,6 +10,7 @@
  */
 
 import {
+  DynPassServerConfig,
   StealthAuthServerConfig,
   IStorageAdapter,
   ChallengePayload,
@@ -47,11 +48,11 @@ function messageFor(error: AuthErrorCode, retryAfterSeconds?: number): string {
   }
 }
 
-export class StealthAuthServer {
+export class DynPassServer {
   private storage: IStorageAdapter;
-  private config: Required<StealthAuthServerConfig>;
+  private config: Required<DynPassServerConfig>;
 
-  constructor(storage?: IStorageAdapter, config: StealthAuthServerConfig = {}) {
+  constructor(storage?: IStorageAdapter, config: DynPassServerConfig = {}) {
     this.storage = storage ?? new InMemoryStorageAdapter();
     this.config = {
       sessionTtlSeconds: config.sessionTtlSeconds ?? 180,
@@ -231,3 +232,6 @@ export class StealthAuthServer {
     return `${b64Header}.${b64Payload}.${b64Sig}`;
   }
 }
+
+export { DynPassServer as StealthAuthServer };
+

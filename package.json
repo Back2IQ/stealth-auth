@@ -1,7 +1,7 @@
 {
-  "name": "@back2iq/stealth-auth",
+  "name": "@back2iq/dynpass",
   "version": "1.0.0",
-  "description": "Back2IQ StealthAuth - Cognitive Zero-Device MFA Engine & B2B SDK",
+  "description": "Back2IQ DynPass - Cognitive Zero-Device MFA Engine & B2B SDK",
   "author": "Deniz Kiran <deniz@back2iq.com> (Back2IQ - Ahead by Design)",
   "homepage": "https://back2iq.com",
   "license": "Proprietary",
@@ -30,7 +30,7 @@
     "cognitive-auth",
     "challenge-response",
     "back2iq",
-    "stealth-auth"
+    "dynpass"
   ],
   "devDependencies": {
     "@types/node": "^20.11.24",

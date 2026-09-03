@@ -1,5 +1,5 @@
 /**
- * Back2IQ StealthAuth - Types & Combinatorics Matrix Interface Definitions
+ * Back2IQ DynPass - Types & Combinatorics Matrix Interface Definitions
  * (c) Back2IQ - Ahead by Design (Deniz Kiran)
  */
 
@@ -182,10 +182,12 @@ export interface IStorageAdapter {
   deleteSession(sessionId: string): Promise<void>;
 }
 
-export interface StealthAuthServerConfig {
+export interface DynPassServerConfig {
   sessionTtlSeconds?: number;
   maxFailedAttempts?: number;
   lockoutDurationSeconds?: number;
   defaultDisguise?: DisguiseConfig;
   jwtSecret?: string;
 }
+
+export type StealthAuthServerConfig = DynPassServerConfig;

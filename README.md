@@ -1,11 +1,11 @@
-# Back2IQ StealthAuth – Cognitive Zero-Device MFA
+# Back2IQ DynPass – Cognitive Zero-Device MFA
 
 [![Back2IQ](https://img.shields.io/badge/Back2IQ-Ahead%20by%20Design-00d2ff.svg)](https://back2iq.com)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3%20Strict-blue.svg)](https://www.typescriptlang.org/)
 [![Vitest](https://img.shields.io/badge/Tests-100%25%20Passing-brightgreen.svg)](https://vitest.dev/)
 [![Patent Pending](https://img.shields.io/badge/Patent%20Pending-DPMA%20%7C%20EPA%20%7C%20USPTO-orange.svg)](docs/PATENT_SPECIFICATION_DPMA_EPA_USPTO.md)
 
-**Back2IQ StealthAuth** is a token- and smartphone-free cognitive authentication engine designed for ultra-secure environments (Air-Gapped Industrial Plants, Cleanrooms, SCIF / Military Facilities, and Executive High-Threat Travel).
+**Back2IQ DynPass** is a token- and smartphone-free cognitive authentication engine designed for ultra-secure environments (Air-Gapped Industrial Plants, Cleanrooms, SCIF / Military Facilities, and Executive High-Threat Travel).
 
 ---
 
@@ -23,13 +23,13 @@
 
 ### Server Installation & Usage
 ```bash
-npm install @back2iq/stealth-auth
+npm install @back2iq/dynpass
 ```
 
 ```typescript
-import { StealthAuthServer, InMemoryStorageAdapter } from '@back2iq/stealth-auth';
+import { DynPassServer, InMemoryStorageAdapter } from '@back2iq/stealth-auth';
 
-const server = new StealthAuthServer(new InMemoryStorageAdapter(), {
+const server = new DynPassServer(new InMemoryStorageAdapter(), {
   lookaheadWindowForward: 3,
   sessionTtlSeconds: 180,
 });
@@ -54,19 +54,19 @@ if (result.success) {
 
 ### Client-Side Cognitive Transformation
 ```typescript
-import { StealthAuthClient } from '@back2iq/stealth-auth';
+import { DynPassClient } from '@back2iq/stealth-auth';
 
 // 1. Extract Hint from UI (e.g., "Build v1.14" -> Index 14 -> Letter 'N')
-const state = StealthAuthClient.parseHint('Build v1.14', 'build-version');
+const state = DynPassClient.parseHint('Build v1.14', 'build-version');
 
 // 2. Transform Master Password in Memory
-const transformed = StealthAuthClient.transformPassword('!!!!!1g0750n17!!!!!', state!, {
+const transformed = DynPassClient.transformPassword('!!!!!1g0750n17!!!!!', state!, {
   type: 'insert-at-anchor',
   anchorIndex: 5,
 }); // Output: "!!!!!N1g0750n17!!!!!"
 
 // 3. Create Session-bound Response
-const authPayload = StealthAuthClient.createAuthResponse(transformed, challenge);
+const authPayload = DynPassClient.createAuthResponse(transformed, challenge);
 ```
 
 ---

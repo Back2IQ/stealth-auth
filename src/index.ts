@@ -1,5 +1,5 @@
 /**
- * Back2IQ StealthAuth - Cognitive Zero-Device MFA Engine & B2B SDK
+ * Back2IQ DynPass - Cognitive Zero-Device MFA Engine & B2B SDK
  * (c) Back2IQ - Ahead by Design (Deniz Kiran)
  * https://back2iq.com
  */

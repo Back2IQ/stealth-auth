@@ -1,5 +1,5 @@
 /**
- * Back2IQ StealthAuth - Lightweight Client SDK & Cognitive UI Helper
+ * Back2IQ DynPass - Lightweight Client SDK & Cognitive UI Helper
  * (c) Back2IQ - Ahead by Design (Deniz Kiran)
  */
 
@@ -16,7 +16,7 @@ import { applyCognitiveTransformation } from '../core/cognitive.js';
 import { buildPublicKeyTable } from '../core/key-table.js';
 import { signChallenge } from '../crypto/keys.js';
 
-export class StealthAuthClient {
+export class DynPassClient {
   /**
    * Answers a challenge in one step: transform the master password as the rule
    * says, then sign this session with the key that follows from it.
@@ -29,8 +29,8 @@ export class StealthAuthClient {
     rule: CognitiveRule,
     passwordSalt?: string
   ): AuthResponsePayload {
-    const transformed = StealthAuthClient.transformPassword(masterPassword, challenge.hint, rule);
-    return StealthAuthClient.createAuthResponse(transformed, challenge, passwordSalt);
+    const transformed = DynPassClient.transformPassword(masterPassword, challenge.hint, rule);
+    return DynPassClient.createAuthResponse(transformed, challenge, passwordSalt);
   }
 
   /**
@@ -99,3 +99,6 @@ export class StealthAuthClient {
     return formatDisguisedHint(hint, config);
   }
 }
+
+export { DynPassClient as StealthAuthClient };
+
