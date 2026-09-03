@@ -9,10 +9,7 @@
 
 import {
   CognitiveRule,
-  CognitiveRecipe,
   DisguiseConfig,
-  DisguiseMode,
-  SupportedLocale,
   Radix26State,
 } from '../types.js';
 import { encodeRadix26, formatDisguisedHint } from '../core/radix26.js';
