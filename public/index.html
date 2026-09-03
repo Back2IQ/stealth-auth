@@ -87,6 +87,12 @@
       </div>
 
       <div class="flex items-center space-x-3">
+        <!-- Onboarding Wizard Link -->
+        <a href="onboarding.html" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-xs font-semibold text-cyan-300 transition">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Onboarding Studio</span>
+        </a>
+
         <!-- Language Selector -->
         <div class="flex items-center bg-dark-card border border-dark-border rounded-lg p-1 text-xs">
           <button onclick="setLanguage('de')" id="lang-de" class="px-2 py-1 rounded bg-cyan-500/20 text-cyan-300 font-medium">DE</button>
@@ -126,13 +132,13 @@
 
     <!-- CTAs -->
     <div class="flex flex-wrap items-center justify-center gap-4 mb-16">
-      <a href="#simulator" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-sm shadow-xl shadow-cyan-500/25 transition transform hover:-translate-y-0.5 flex items-center space-x-2">
-        <span id="btn-demo">Live-Simulator testen</span>
-        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      <a href="onboarding.html" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-sm shadow-xl shadow-cyan-500/25 transition transform hover:-translate-y-0.5 flex items-center space-x-2">
+        <i data-lucide="sparkles" class="w-4 h-4"></i>
+        <span>Onboarding starten (60s)</span>
       </a>
-      <a href="#benchmark" class="px-6 py-3.5 rounded-xl bg-dark-card hover:bg-dark-hover border border-dark-border text-slate-300 font-semibold text-sm transition flex items-center space-x-2">
-        <i data-lucide="bar-chart-3" class="w-4 h-4 text-cyan-400"></i>
-        <span id="btn-benchmark">Benchmark vs FIDO2</span>
+      <a href="#simulator" class="px-6 py-3.5 rounded-xl bg-dark-card hover:bg-dark-hover border border-dark-border text-slate-300 font-semibold text-sm transition flex items-center space-x-2">
+        <i data-lucide="play" class="w-4 h-4 text-cyan-400"></i>
+        <span id="btn-demo">Live-Simulator testen</span>
       </a>
     </div>
 
@@ -254,8 +260,8 @@
             <div>
               <span class="font-semibold text-cyan-300" id="thought-title">Was dein Gehirn in 0.1s denkt:</span>
               <p class="text-slate-300 mt-0.5 text-[11px]" id="thought-desc">
-                Wort ist <b>"Falcon"</b> &rarr; Erster: <span class="text-cyan-300 font-bold">F</span>, Letzter: <span class="text-cyan-300 font-bold">n</span>.<br/>
-                Eingesetzt in <i>"Mama1977"</i> an Pos 0 & 4 &rarr; <span class="text-emerald-400 font-mono font-bold">F M a m a n 1 9 7 7</span>
+                Wort ist <b>"Falcon"</b> &rarr; Erster: <span class="text-cyan-300 font-bold">${ch.first}</span>, Letzter: <span class="text-cyan-300 font-bold">${ch.last}</span>.<br/>
+                Eingesetzt in <i>"Mama1977"</i> an Pos 0 & 4 &rarr; <span class="text-emerald-400 font-mono font-bold">${ch.expected}</span>
               </p>
             </div>
           </div>
@@ -581,7 +587,6 @@
       document.getElementById('hero-title-2').innerText = dict.heroTitle2;
       document.getElementById('hero-sub').innerText = dict.heroSub;
       document.getElementById('btn-demo').innerText = dict.btnDemo;
-      document.getElementById('btn-benchmark').innerText = dict.btnBenchmark;
       document.getElementById('stat-latency').innerText = dict.statLatency;
       document.getElementById('stat-vault').innerText = dict.statVault;
       document.getElementById('stat-crypto').innerText = dict.statCrypto;

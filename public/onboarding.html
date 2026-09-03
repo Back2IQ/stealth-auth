@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="de" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Back2IQ StealthAuth — Interaktiver Onboarding-Assistent</title>
+  
+  <!-- Tailwind CSS CDN & Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              400: '#22d3ee',
+              500: '#06b6d4',
+              600: '#0891b2',
+            },
+            dark: {
+              bg: '#05070a',
+              card: '#0c1017',
+              border: '#1a2333',
+              hover: '#131b2a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #05070a;
+      color: #f1f5f9;
+      overflow-x: hidden;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .glow-radial {
+      background: radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.12) 0%, rgba(5, 7, 10, 0) 75%);
+    }
+    .glass-panel {
+      background: rgba(12, 16, 23, 0.8);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .code-chip {
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      color: #22d3ee;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500/30 selection:text-cyan-200">
+
+  <!-- Background Ambient Glow -->
+  <div class="fixed inset-0 pointer-events-none glow-radial z-0"></div>
+
+  <!-- Header -->
+  <header class="relative z-50 border-b border-white/5 glass-panel sticky top-0 px-4 lg:px-8 py-3.5">
+    <div class="max-w-5xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <a href="index.html" class="flex items-center space-x-3 group">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition">
+            <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+          </div>
+          <div>
+            <span class="font-bold text-lg tracking-tight text-white">Back2IQ <span class="text-cyan-400 font-medium">StealthAuth</span></span>
+            <span class="hidden sm:inline-block ml-2 px-2 py-0.5 text-[10px] uppercase font-mono tracking-wider code-chip rounded">Onboarding Studio</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <!-- Language Selector -->
+        <div class="flex items-center bg-dark-card border border-dark-border rounded-lg p-1 text-xs">
+          <button onclick="setLanguage('de')" id="lang-de" class="px-2 py-1 rounded bg-cyan-500/20 text-cyan-300 font-medium">DE</button>
+          <button onclick="setLanguage('en')" id="lang-en" class="px-2 py-1 rounded text-slate-400 hover:text-white">EN</button>
+          <button onclick="setLanguage('tr')" id="lang-tr" class="px-2 py-1 rounded text-slate-400 hover:text-white">TR</button>
+          <button onclick="setLanguage('fr')" id="lang-fr" class="px-2 py-1 rounded text-slate-400 hover:text-white">FR</button>
+          <button onclick="setLanguage('es')" id="lang-es" class="px-2 py-1 rounded text-slate-400 hover:text-white">ES</button>
+        </div>
+
+        <a href="index.html" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs text-slate-300 transition flex items-center space-x-1">
+          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+          <span id="nav-back">Zurück</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="relative z-10 flex-grow max-w-4xl mx-auto px-4 py-8 lg:py-12 w-full">
+
+    <!-- Progress Stepper -->
+    <div class="mb-10">
+      <div class="flex items-center justify-between relative max-w-2xl mx-auto">
+        <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-dark-border z-0"></div>
+        <div id="step-progress-bar" class="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 transition-all duration-300 z-0" style="width: 0%"></div>
+
+        <!-- Step 1 Indicator -->
+        <div id="step-ind-1" class="relative z-10 flex flex-col items-center">
+          <div class="w-9 h-9 rounded-full bg-cyan-500 text-white font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a] shadow-lg shadow-cyan-500/30">1</div>
+          <span class="text-[11px] font-medium text-cyan-400 mt-1.5" id="lbl-step-1">Passwort</span>
+        </div>
+
+        <!-- Step 2 Indicator -->
+        <div id="step-ind-2" class="relative z-10 flex flex-col items-center">
+          <div class="w-9 h-9 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a]">2</div>
+          <span class="text-[11px] font-medium text-slate-400 mt-1.5" id="lbl-step-2">Denkregel</span>
+        </div>
+
+        <!-- Step 3 Indicator -->
+        <div id="step-ind-3" class="relative z-10 flex flex-col items-center">
+          <div class="w-9 h-9 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a]">3</div>
+          <span class="text-[11px] font-medium text-slate-400 mt-1.5" id="lbl-step-3">Anti-Phishing</span>
+        </div>
+
+        <!-- Step 4 Indicator -->
+        <div id="step-ind-4" class="relative z-10 flex flex-col items-center">
+          <div class="w-9 h-9 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a]">4</div>
+          <span class="text-[11px] font-medium text-slate-400 mt-1.5" id="lbl-step-4">Trainer</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- WIZARD STEP CONTAINER -->
+    <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-white/10 shadow-2xl relative">
+
+      <!-- ==================================================== -->
+      <!-- STEP 1: MASTER PASSWORD                             -->
+      <!-- ==================================================== -->
+      <div id="step-1" class="space-y-6">
+        <div>
+          <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider">Schritt 1 von 4</span>
+          <h2 class="text-2xl font-bold text-white mt-1" id="s1-title">Wähle dein Master-Passwort</h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1" id="s1-sub">Dieses Passwort bleibt dauerhaft in deinem Muskelgedächtnis. Der Server erfährt es nie.</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-2" id="s1-lbl-input">Dein persönliches Basis-Passwort:</label>
+          <div class="relative">
+            <input type="text" id="master-pwd-input" value="Mama1977" oninput="analyzePassword()" class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-4 py-3.5 text-base text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition">
+          </div>
+          <p class="text-[11px] text-slate-500 mt-1.5" id="s1-hint">Tipp: Am besten eignet sich ein vertrautes Wort kombiniert mit einer Zahl (z. B. <code>Mama1977</code> oder <code>Kaffee2026</code>).</p>
+        </div>
+
+        <!-- Visual Password Character Decomposition -->
+        <div class="p-4 rounded-xl bg-dark-bg border border-dark-border">
+          <span class="text-xs font-semibold text-slate-400 block mb-2" id="s1-struct-lbl">Automatisch erkannte Nahtstellen im Passwort:</span>
+          <div id="char-grid" class="flex flex-wrap gap-1.5 font-mono text-sm">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Next Button -->
+        <div class="pt-4 flex justify-end">
+          <button onclick="goToStep(2)" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs shadow-lg shadow-cyan-500/25 transition flex items-center space-x-2">
+            <span id="btn-next-1">Weiter zur Denkregel</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ==================================================== -->
+      <!-- STEP 2: COGNITIVE RULE & SLOTS                      -->
+      <!-- ==================================================== -->
+      <div id="step-2" class="hidden space-y-6">
+        <div>
+          <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider">Schritt 2 von 4</span>
+          <h2 class="text-2xl font-bold text-white mt-1" id="s2-title">Wähle deine kognitive Denkregel</h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1" id="s2-sub">Bestimme, wo du die Buchstaben des getarnten Hinweises in dein Passwort einsetzt.</p>
+        </div>
+
+        <!-- Source Selector -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-2" id="s2-src-lbl">Bevorzugte Hinweis-Quelle:</label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button onclick="selectSource('codename')" id="src-codename" class="p-3.5 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-left transition flex items-start space-x-3">
+              <span class="text-2xl">🦅</span>
+              <div>
+                <div class="font-bold text-xs text-cyan-300">Codename-Wort (0s Latenz)</div>
+                <div class="text-[11px] text-slate-400 mt-0.5">Zeigt z. B. <i>"Falcon"</i> &rarr; Erster & letzter Buchstabe.</div>
+              </div>
+            </button>
+
+            <button onclick="selectSource('icon')" id="src-icon" class="p-3.5 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3">
+              <span class="text-2xl">🎩</span>
+              <div>
+                <div class="font-bold text-xs text-slate-200">Sicherheits-Icon (Sprachbarriere)</div>
+                <div class="text-[11px] text-slate-400 mt-0.5">Zeigt 🎩 &rarr; <i>"Hut"</i> (DE), <i>"Hat"</i> (EN), <i>"Sapka"</i> (TR).</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Anchor Slots Configurator -->
+        <div class="p-4 rounded-xl bg-dark-bg border border-dark-border space-y-3">
+          <span class="text-xs font-semibold text-slate-300 block" id="s2-slots-lbl">Nahtstellen-Konfiguration (Im Original-Passwort):</span>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
+            <div class="p-3 rounded-lg bg-dark-card border border-dark-border flex items-center justify-between">
+              <div>
+                <div class="text-slate-400 text-[11px]">Slot 1 (Erster Buchstabe)</div>
+                <div class="text-cyan-300 font-bold mt-0.5">Position 0 (Ganz vorne)</div>
+              </div>
+              <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 text-[10px] font-bold">F ...</span>
+            </div>
+
+            <div class="p-3 rounded-lg bg-dark-card border border-dark-border flex items-center justify-between">
+              <div>
+                <div class="text-slate-400 text-[11px]">Slot 2 (Letzter Buchstabe)</div>
+                <div class="text-cyan-300 font-bold mt-0.5">Position 4 (Nach dem Wort)</div>
+              </div>
+              <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 text-[10px] font-bold">... n</span>
+            </div>
+          </div>
+
+          <!-- Live Sample Transformation -->
+          <div class="mt-3 pt-3 border-t border-white/5 text-xs">
+            <span class="text-slate-400" id="s2-prev-lbl">Live-Vorschau bei Challenge <b>"Falcon"</b>:</span>
+            <div class="mt-1.5 p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/30 font-mono text-emerald-400 font-bold flex items-center space-x-2">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+              <span id="preview-output">F M a m a n 1 9 7 7</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="pt-4 flex items-center justify-between">
+          <button onclick="goToStep(1)" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs transition flex items-center space-x-1.5">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+            <span id="btn-back-2">Zurück</span>
+          </button>
+          <button onclick="goToStep(3)" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs shadow-lg shadow-cyan-500/25 transition flex items-center space-x-2">
+            <span id="btn-next-2">Weiter zu Anti-Phishing</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ==================================================== -->
+      <!-- STEP 3: ANTI-PHISHING COUNTERSIGN                   -->
+      <!-- ==================================================== -->
+      <div id="step-3" class="hidden space-y-6">
+        <div>
+          <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider">Schritt 3 von 4</span>
+          <h2 class="text-2xl font-bold text-white mt-1" id="s3-title">Wähle deine Anti-Phishing Gegenlosung</h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1" id="s3-sub">Der echte Server zeigt dir dieses Wort bei jedem Login an. Steht es nicht da, ist die Login-Seite eine Fälschung.</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-2" id="s3-input-lbl">Dein persönliches Erkennungswort (Gegenlosung):</label>
+          <input type="text" id="countersign-input" value="Blaue Tür" class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-4 py-3.5 text-base text-emerald-400 font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition">
+          <p class="text-[11px] text-slate-500 mt-1.5" id="s3-tip">Beispiele: <code>Blaue Tür</code>, <code>Kaffee-42</code>, <code>Roter Mond</code>.</p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-cyan-950/30 border border-cyan-500/20 text-xs text-cyan-200 flex items-start space-x-3">
+          <i data-lucide="shield-alert" class="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <span class="font-bold text-cyan-300" id="s3-box-title">Warum das vor Phishing schützt:</span>
+            <p class="text-slate-300 mt-0.5 text-[11px]" id="s3-box-desc">Ein Krimineller, der eine gefälschte Login-Seite baut, kennt deine persönliche Gegenlosung nicht. Du siehst sofort auf den ersten Blick, ob die Seite legitim ist – noch bevor du ein Passwort eingibst.</p>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="pt-4 flex items-center justify-between">
+          <button onclick="goToStep(2)" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs transition flex items-center space-x-1.5">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+            <span id="btn-back-3">Zurück</span>
+          </button>
+          <button onclick="goToStep(4)" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs shadow-lg shadow-cyan-500/25 transition flex items-center space-x-2">
+            <span id="btn-next-3">Zum Trainer (3 Probe-Logins)</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- ==================================================== -->
+      <!-- STEP 4: COGNITIVE TRAINER & ACTIVATION              -->
+      <!-- ==================================================== -->
+      <div id="step-4" class="hidden space-y-6">
+        <div>
+          <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider">Schritt 4 von 4</span>
+          <h2 class="text-2xl font-bold text-white mt-1" id="s4-title">Der Cognitive Trainer (3 Probeläufe)</h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1" id="s4-sub">Übe deine Regel in 3 Test-Logins. Erst wenn alle 3 fehlerfrei sitzen, wird dein Account scharf geschaltet.</p>
+        </div>
+
+        <!-- Round Indicators -->
+        <div class="grid grid-cols-3 gap-3 text-center text-xs font-mono">
+          <div id="trainer-badge-1" class="p-3 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 font-bold">Runde 1 / 3</div>
+          <div id="trainer-badge-2" class="p-3 rounded-xl border border-dark-border bg-dark-bg text-slate-500">Runde 2 / 3</div>
+          <div id="trainer-badge-3" class="p-3 rounded-xl border border-dark-border bg-dark-bg text-slate-500">Runde 3 / 3</div>
+        </div>
+
+        <!-- Active Challenge Terminal in Trainer -->
+        <div class="bg-[#080c14] border border-dark-border rounded-xl p-5 space-y-4">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-slate-400 font-mono">Gegenlosung: <b class="text-emerald-400" id="tr-disp-counter">Blaue Tür ✅</b></span>
+            <span class="text-xs text-cyan-400 font-mono" id="tr-timer">⏱️ 0.0s</span>
+          </div>
+
+          <div class="p-3 rounded-lg bg-dark-card border border-dark-border text-center">
+            <span class="text-xs text-slate-400 block mb-1">Deine Test-Challenge:</span>
+            <span class="text-xl font-bold font-mono text-cyan-300" id="tr-challenge-word">Codename: Falcon</span>
+          </div>
+
+          <div class="space-y-2">
+            <input type="text" id="tr-input" placeholder="Tippe dein transformiertes Passwort..." class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-4 py-3 text-sm text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition">
+            
+            <button onclick="submitTrainerRound()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-500/20 transition flex items-center justify-center space-x-2">
+              <i data-lucide="check" class="w-4 h-4"></i>
+              <span id="tr-btn-submit">Runde prüfen</span>
+            </button>
+          </div>
+
+          <!-- Trainer Feedback Banner -->
+          <div id="tr-feedback" class="hidden p-3 rounded-xl border text-xs font-mono"></div>
+        </div>
+
+        <!-- Activation Final Box -->
+        <div id="activation-box" class="hidden p-5 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 text-center space-y-3 animate-fadeIn">
+          <div class="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto text-xl">🎉</div>
+          <h3 class="text-lg font-bold text-white">Perfekt! 3 von 3 Logins bestanden!</h3>
+          <p class="text-xs text-slate-300 max-w-md mx-auto">Deine durchschnittliche Denkzeit lag bei blitzschnellen <b class="text-emerald-400" id="avg-time">1.1 Sekunden</b>. Dein Profil ist nun einsatzbereit.</p>
+          
+          <button onclick="completeActivation()" class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs shadow-xl shadow-cyan-500/30 transition transform hover:-translate-y-0.5">
+            Konto jetzt scharfschalten & zum Login
+          </button>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div id="tr-nav-buttons" class="pt-4 flex items-center justify-between">
+          <button onclick="goToStep(3)" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs transition flex items-center space-x-1.5">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+            <span id="btn-back-4">Zurück</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="relative z-10 border-t border-white/5 py-6 text-center text-xs text-slate-500 glass-panel mt-12">
+    <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div>Back2IQ StealthAuth — Ahead by Design</div>
+      <div>Founder: Deniz Kiran | <a href="https://back2iq.com" target="_blank" class="text-slate-400 hover:text-cyan-400 transition">back2iq.com</a></div>
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT ONBOARDING WIZARD LOGIC         -->
+  <!-- ========================================== -->
+  <script>
+    lucide.createIcons();
+
+    // Multilingual Dictionary for Onboarding
+    const I18N_ONBOARDING = {
+      de: {
+        navBack: 'Zurück',
+        lblStep1: 'Passwort',
+        lblStep2: 'Denkregel',
+        lblStep3: 'Anti-Phishing',
+        lblStep4: 'Trainer',
+        s1Title: 'Wähle dein Master-Passwort',
+        s1Sub: 'Dieses Passwort bleibt dauerhaft in deinem Muskelgedächtnis. Der Server erfährt es nie.',
+        s1LblInput: 'Dein persönliches Basis-Passwort:',
+        s1Hint: 'Tipp: Am besten eignet sich ein vertrautes Wort kombiniert mit einer Zahl (z. B. Mama1977 oder Kaffee2026).',
+        s1StructLbl: 'Automatisch erkannte Nahtstellen im Passwort:',
+        btnNext1: 'Weiter zur Denkregel',
+        s2Title: 'Wähle deine kognitive Denkregel',
+        s2Sub: 'Bestimme, wo du die Buchstaben des getarnten Hinweises in dein Passwort einsetzt.',
+        s2SrcLbl: 'Bevorzugte Hinweis-Quelle:',
+        s2SlotsLbl: 'Nahtstellen-Konfiguration (Im Original-Passwort):',
+        s2PrevLbl: 'Live-Vorschau bei Challenge "Falcon":',
+        btnBack2: 'Zurück',
+        btnNext2: 'Weiter zu Anti-Phishing',
+        s3Title: 'Wähle deine Anti-Phishing Gegenlosung',
+        s3Sub: 'Der echte Server zeigt dir dieses Wort bei jedem Login an. Steht es nicht da, ist die Login-Seite eine Fälschung.',
+        s3InputLbl: 'Dein persönliches Erkennungswort (Gegenlosung):',
+        s3Tip: 'Beispiele: Blaue Tür, Kaffee-42, Roter Mond.',
+        s3BoxTitle: 'Warum das vor Phishing schützt:',
+        s3BoxDesc: 'Ein Krimineller, der eine gefälschte Login-Seite baut, kennt deine persönliche Gegenlosung nicht. Du siehst sofort auf den ersten Blick, ob die Seite legitim ist – noch bevor du ein Passwort eingibst.',
+        btnBack3: 'Zurück',
+        btnNext3: 'Zum Trainer (3 Probe-Logins)',
+        s4Title: 'Der Cognitive Trainer (3 Probeläufe)',
+        s4Sub: 'Übe deine Regel in 3 Test-Logins. Erst wenn alle 3 fehlerfrei sitzen, wird dein Account scharf geschaltet.',
+        btnBack4: 'Zurück',
+        trBtnSubmit: 'Runde prüfen'
+      },
+      en: {
+        navBack: 'Back',
+        lblStep1: 'Password',
+        lblStep2: 'Mental Rule',
+        lblStep3: 'Anti-Phishing',
+        lblStep4: 'Trainer',
+        s1Title: 'Choose Your Master Password',
+        s1Sub: 'This password stays permanently in your muscle memory. The server never learns it.',
+        s1LblInput: 'Your personal base password:',
+        s1Hint: 'Tip: A familiar word combined with a number works best (e.g. Mama1977 or Coffee2026).',
+        s1StructLbl: 'Automatically detected anchor positions in password:',
+        btnNext1: 'Continue to Mental Rule',
+        s2Title: 'Choose Your Mental Rule',
+        s2Sub: 'Define where you insert the hint letters into your password.',
+        s2SrcLbl: 'Preferred Challenge Source:',
+        s2SlotsLbl: 'Anchor Slot Configuration (In Original Password):',
+        s2PrevLbl: 'Live Preview for Challenge "Falcon":',
+        btnBack2: 'Back',
+        btnNext2: 'Continue to Anti-Phishing',
+        s3Title: 'Choose Your Anti-Phishing Countersign',
+        s3Sub: 'The genuine server displays this word during every login. If it is missing, the page is fake.',
+        s3InputLbl: 'Your personal recognition word (Countersign):',
+        s3Tip: 'Examples: Blue Door, Coffee-42, Red Moon.',
+        s3BoxTitle: 'Why this defeats phishing:',
+        s3BoxDesc: 'An attacker building a cloned phishing portal does not know your personal countersign. You immediately recognize a counterfeit page before typing any credentials.',
+        btnBack3: 'Back',
+        btnNext3: 'Start Trainer (3 Test Logins)',
+        s4Title: 'The Cognitive Trainer (3 Dry Runs)',
+        s4Sub: 'Practice your rule with 3 test challenges. Your account activates only after 3 flawless entries.',
+        btnBack4: 'Back',
+        trBtnSubmit: 'Verify Round'
+      },
+      tr: {
+        navBack: 'Geri',
+        lblStep1: 'Sifre',
+        lblStep2: 'Zihinsel Kural',
+        lblStep3: 'Oltalama Karsiti',
+        lblStep4: 'Egitici',
+        s1Title: 'Ana Sifrenizi Belirleyin',
+        s1Sub: 'Bu sifre kas hafizanizda kalir. Sunucu bunu asla ogrenmez.',
+        s1LblInput: 'Kisisel temel sifreniz:',
+        s1Hint: 'Ipucu: Bir kelime ile bir sayinin birlesimi en iyisidir (ornek: Anne1977).',
+        s1StructLbl: 'Sifrede otomatik algilanan baglanti noktalari:',
+        btnNext1: 'Zihinsel Kurala Gec',
+        s2Title: 'Zihinsel Kuralinizi Secin',
+        s2Sub: 'Ipucu harflerini sifrenizin neresine yerlestireceginizi belirleyin.',
+        s2SrcLbl: 'Tercih Edilen Ipucu Kaynagi:',
+        s2SlotsLbl: 'Baglanti Noktasi Yapilandirmasi:',
+        s2PrevLbl: '"Falcon" icin Canli Onizleme:',
+        btnBack2: 'Geri',
+        btnNext2: 'Oltalama Korumasina Gec',
+        s3Title: 'Karsilik Parolanizi Belirleyin',
+        s3Sub: 'Orijinal sunucu her giriste bu kelimeyi gosterir. Gorunmuyorsa sayfa sahtedir.',
+        s3InputLbl: 'Kisisel tanima kelimeniz (Gegenlosung):',
+        s3Tip: 'Ornekler: Mavi Kapi, Kahve-42, Kirmizi Ay.',
+        s3BoxTitle: 'Neden oltalamayi engeller:',
+        s3BoxDesc: 'Sahte sayfa olusturan saldirgan kisisel parolanizi bilemez. Sifreyi girmeden once guvende oldugunuzu anlarsiniz.',
+        btnBack3: 'Geri',
+        btnNext3: 'Egiticiye Basla (3 Deneme)',
+        s4Title: 'Bilissel Egitici (3 Prova)',
+        s4Sub: 'Kuralinizi 3 test ile pekistirin. Hesabiniz 3 dogru giristen sonra acilir.',
+        btnBack4: 'Geri',
+        trBtnSubmit: 'Turu Kontrol Et'
+      },
+      fr: {
+        navBack: 'Retour',
+        lblStep1: 'Mot de passe',
+        lblStep2: 'Règle mentale',
+        lblStep3: 'Anti-Phishing',
+        lblStep4: 'Entraîneur',
+        s1Title: 'Choisissez votre mot de passe maître',
+        s1Sub: 'Ce mot de passe reste dans votre mémoire. Le serveur ne le connaît jamais.',
+        s1LblInput: 'Votre mot de passe de base :',
+        s1Hint: 'Conseil : Un mot familier combiné à une date est idéal (ex: Maman1977).',
+        s1StructLbl: 'Points d’ancrage détectés automatiquement :',
+        btnNext1: 'Continuer vers la règle',
+        s2Title: 'Définissez votre règle mentale',
+        s2Sub: 'Où insérer les lettres de l’indice dans votre mot de passe.',
+        s2SrcLbl: 'Source de défi préférée :',
+        s2SlotsLbl: 'Configuration des ancrages :',
+        s2PrevLbl: 'Aperçu en direct pour "Falcon" :',
+        btnBack2: 'Retour',
+        btnNext2: 'Continuer vers Anti-Phishing',
+        s3Title: 'Choisissez votre contresigne anti-phishing',
+        s3Sub: 'Le vrai serveur affiche ce mot à chaque connexion. S’il manque, la page est fausse.',
+        s3InputLbl: 'Votre mot de reconnaissance personnel :',
+        s3Tip: 'Exemples : Porte Bleue, Café-42, Lune Rouge.',
+        s3BoxTitle: 'Pourquoi cela bloque le phishing :',
+        s3BoxDesc: 'Un attaquant clonant le portail ignore votre contresigne. Vous identifiez le piège immédiatement.',
+        btnBack3: 'Retour',
+        btnNext3: 'Démarrer l’entraîneur',
+        s4Title: 'L’Entraîneur Cognitif (3 Essais)',
+        s4Sub: 'Entraînez-vous sur 3 défis. Votre compte ne s’active qu’après 3 succès.',
+        btnBack4: 'Retour',
+        trBtnSubmit: 'Vérifier l’essai'
+      },
+      es: {
+        navBack: 'Volver',
+        lblStep1: 'Contraseña',
+        lblStep2: 'Regla mental',
+        lblStep3: 'Anti-Phishing',
+        lblStep4: 'Entrenador',
+        s1Title: 'Elija su contraseña maestra',
+        s1Sub: 'Esta contraseña permanece en su memoria. El servidor nunca la conoce.',
+        s1LblInput: 'Su contraseña base personal:',
+        s1Hint: 'Consejo: Una palabra familiar con un número es ideal (ej: Mama1977).',
+        s1StructLbl: 'Puntos de anclaje detectados automáticamente:',
+        btnNext1: 'Continuar a regla mental',
+        s2Title: 'Defina su regla mental',
+        s2Sub: 'Dónde insertar las letras de la pista en su contraseña.',
+        s2SrcLbl: 'Fuente de desafío preferida:',
+        s2SlotsLbl: 'Configuración de anclajes:',
+        s2PrevLbl: 'Vista previa en vivo para "Falcon":',
+        btnBack2: 'Volver',
+        btnNext2: 'Continuar a Anti-Phishing',
+        s3Title: 'Elija su contraseña de control anti-phishing',
+        s3Sub: 'El servidor real muestra esta palabra en cada acceso. Si falta, la página es falsa.',
+        s3InputLbl: 'Su palabra de reconocimiento personal:',
+        s3Tip: 'Ejemplos: Puerta Azul, Cafe-42, Luna Roja.',
+        s3BoxTitle: 'Por qué neutraliza el phishing:',
+        s3BoxDesc: 'Un clon falso no conoce su contraseña de control. Usted detecta el engaño antes de escribir.',
+        btnBack3: 'Volver',
+        btnNext3: 'Iniciar entrenador',
+        s4Title: 'El Entrenador Cognitivo (3 Ensayos)',
+        s4Sub: 'Practique con 3 desafíos de prueba. Su cuenta se activa tras 3 aciertos.',
+        btnBack4: 'Volver',
+        trBtnSubmit: 'Verificar ensayo'
+      }
+    };
+
+    function setLanguage(lang) {
+      const dict = I18N_ONBOARDING[lang] || I18N_ONBOARDING.de;
+
+      ['de', 'en', 'tr', 'fr', 'es'].forEach(l => {
+        const btn = document.getElementById(`lang-${l}`);
+        if (btn) {
+          btn.className = (l === lang)
+            ? "px-2 py-1 rounded bg-cyan-500/20 text-cyan-300 font-medium"
+            : "px-2 py-1 rounded text-slate-400 hover:text-white";
+        }
+      });
+
+      document.getElementById('nav-back').innerText = dict.navBack;
+      document.getElementById('lbl-step-1').innerText = dict.lblStep1;
+      document.getElementById('lbl-step-2').innerText = dict.lblStep2;
+      document.getElementById('lbl-step-3').innerText = dict.lblStep3;
+      document.getElementById('lbl-step-4').innerText = dict.lblStep4;
+      document.getElementById('s1-title').innerText = dict.s1Title;
+      document.getElementById('s1-sub').innerText = dict.s1Sub;
+      document.getElementById('s1-lbl-input').innerText = dict.s1LblInput;
+      document.getElementById('s1-hint').innerHTML = dict.s1Hint;
+      document.getElementById('s1-struct-lbl').innerText = dict.s1StructLbl;
+      document.getElementById('btn-next-1').innerText = dict.btnNext1;
+      document.getElementById('s2-title').innerText = dict.s2Title;
+      document.getElementById('s2-sub').innerText = dict.s2Sub;
+      document.getElementById('s2-src-lbl').innerText = dict.s2SrcLbl;
+      document.getElementById('s2-slots-lbl').innerText = dict.s2SlotsLbl;
+      document.getElementById('s2-prev-lbl').innerText = dict.s2PrevLbl;
+      document.getElementById('btn-back-2').innerText = dict.btnBack2;
+      document.getElementById('btn-next-2').innerText = dict.btnNext2;
+      document.getElementById('s3-title').innerText = dict.s3Title;
+      document.getElementById('s3-sub').innerText = dict.s3Sub;
+      document.getElementById('s3-input-lbl').innerText = dict.s3InputLbl;
+      document.getElementById('s3-tip').innerHTML = dict.s3Tip;
+      document.getElementById('s3-box-title').innerText = dict.s3BoxTitle;
+      document.getElementById('s3-box-desc').innerText = dict.s3BoxDesc;
+      document.getElementById('btn-back-3').innerText = dict.btnBack3;
+      document.getElementById('btn-next-3').innerText = dict.btnNext3;
+      document.getElementById('s4-title').innerText = dict.s4Title;
+      document.getElementById('s4-sub').innerText = dict.s4Sub;
+      document.getElementById('btn-back-4').innerText = dict.btnBack4;
+      document.getElementById('tr-btn-submit').innerText = dict.trBtnSubmit;
+    }
+
+    // ==========================================
+    // WIZARD STATE & NAVIGATION
+    // ==========================================
+    let currentStep = 1;
+    let masterPassword = "Mama1977";
+    let selectedSource = "codename";
+    let countersign = "Blaue Tür";
+
+    function goToStep(step) {
+      document.getElementById(`step-${currentStep}`).classList.add('hidden');
+      currentStep = step;
+      document.getElementById(`step-${currentStep}`).classList.remove('hidden');
+
+      // Update progress bar & indicators
+      const progressPercent = ((step - 1) / 3) * 100;
+      document.getElementById('step-progress-bar').style.width = `${progressPercent}%`;
+
+      for (let s = 1; s <= 4; s++) {
+        const ind = document.getElementById(`step-ind-${s}`).querySelector('div');
+        if (s <= step) {
+          ind.className = "w-9 h-9 rounded-full bg-cyan-500 text-white font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a] shadow-lg shadow-cyan-500/30";
+        } else {
+          ind.className = "w-9 h-9 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a]";
+        }
+      }
+
+      if (step === 4) {
+        startTrainer();
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function analyzePassword() {
+      masterPassword = document.getElementById('master-pwd-input').value.trim() || "Mama1977";
+      const grid = document.getElementById('char-grid');
+      grid.innerHTML = "";
+
+      for (let i = 0; i < masterPassword.length; i++) {
+        const char = masterPassword[i];
+        const isLetter = /[a-zA-Z]/.test(char);
+        const isDigit = /[0-9]/.test(char);
+        
+        let colorClass = isLetter ? "bg-cyan-500/10 text-cyan-300 border-cyan-500/30" : (isDigit ? "bg-amber-500/10 text-amber-300 border-amber-500/30" : "bg-purple-500/10 text-purple-300 border-purple-500/30");
+        
+        grid.innerHTML += `
+          <div class="flex flex-col items-center">
+            <span class="text-[10px] text-slate-500 mb-0.5">${i}</span>
+            <div class="w-8 h-9 rounded-lg border ${colorClass} flex items-center justify-center font-bold font-mono shadow-sm">
+              ${char}
+            </div>
+          </div>
+        `;
+      }
+
+      // Update preview output in Step 2
+      const firstChar = masterPassword.slice(0, 4);
+      const rest = masterPassword.slice(4);
+      document.getElementById('preview-output').innerText = `F ${firstChar} n ${rest}`;
+    }
+
+    function selectSource(src) {
+      selectedSource = src;
+      const btnCodename = document.getElementById('src-codename');
+      const btnIcon = document.getElementById('src-icon');
+
+      if (src === 'codename') {
+        btnCodename.className = "p-3.5 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-left transition flex items-start space-x-3";
+        btnIcon.className = "p-3.5 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3";
+      } else {
+        btnIcon.className = "p-3.5 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-left transition flex items-start space-x-3";
+        btnCodename.className = "p-3.5 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3";
+      }
+    }
+
+    // ==========================================
+    // COGNITIVE TRAINER LOGIC
+    // ==========================================
+    const TRAINER_ROUNDS = [
+      { word: "Falcon", expected: "FMaman1977" },
+      { word: "Atlas",  expected: "AMamas1977" },
+      { word: "Nexus",  expected: "NMamas1977" }
+    ];
+
+    let trainerRound = 0;
+    let roundStartTime = 0;
+    let elapsedTimes = [];
+
+    function startTrainer() {
+      trainerRound = 0;
+      elapsedTimes = [];
+      countersign = document.getElementById('countersign-input').value.trim() || "Blaue Tür";
+      document.getElementById('tr-disp-counter').innerText = `${countersign} ✅`;
+      document.getElementById('activation-box').classList.add('hidden');
+      document.getElementById('tr-nav-buttons').classList.remove('hidden');
+      loadTrainerRound();
+    }
+
+    function loadTrainerRound() {
+      const current = TRAINER_ROUNDS[trainerRound];
+      document.getElementById('tr-challenge-word').innerText = `Codename: ${current.word}`;
+      document.getElementById('tr-input').value = "";
+      document.getElementById('tr-feedback').className = "hidden";
+      
+      for (let r = 0; r < 3; r++) {
+        const badge = document.getElementById(`trainer-badge-${r + 1}`);
+        if (r === trainerRound) {
+          badge.className = "p-3 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 font-bold";
+        } else if (r < trainerRound) {
+          badge.className = "p-3 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 font-bold";
+          badge.innerText = `Runde ${r + 1} ✅`;
+        } else {
+          badge.className = "p-3 rounded-xl border border-dark-border bg-dark-bg text-slate-500";
+        }
+      }
+
+      roundStartTime = Date.now();
+    }
+
+    function submitTrainerRound() {
+      const input = document.getElementById('tr-input').value.trim();
+      const current = TRAINER_ROUNDS[trainerRound];
+      const elapsed = ((Date.now() - roundStartTime) / 1000).toFixed(1);
+      const feedback = document.getElementById('tr-feedback');
+
+      feedback.classList.remove('hidden');
+
+      if (input === current.expected) {
+        elapsedTimes.push(parseFloat(elapsed));
+        feedback.className = "p-3 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 text-xs font-mono flex items-center justify-between";
+        feedback.innerHTML = `<span>Richtig gelöst in ${elapsed}s! ✅</span><span class="text-emerald-400 font-bold">PASS</span>`;
+
+        trainerRound++;
+        if (trainerRound < 3) {
+          setTimeout(() => {
+            loadTrainerRound();
+          }, 900);
+        } else {
+          // Completed all 3 rounds!
+          setTimeout(() => {
+            const avg = (elapsedTimes.reduce((a, b) => a + b, 0) / elapsedTimes.length).toFixed(1);
+            document.getElementById('avg-time').innerText = `${avg} Sekunden`;
+            document.getElementById('activation-box').classList.remove('hidden');
+            document.getElementById('tr-nav-buttons').classList.add('hidden');
+          }, 800);
+        }
+      } else {
+        feedback.className = "p-3 rounded-xl border border-rose-500/40 bg-rose-500/10 text-rose-300 text-xs font-mono flex items-center justify-between";
+        feedback.innerHTML = `<span>Falsche Eingabe für "${current.word}". Erwartet: <b>${current.expected}</b></span><span class="text-rose-400 font-bold">FEHLER</span>`;
+      }
+    }
+
+    function completeActivation() {
+      alert("🎉 Dein kognitiver Account wurde mit Ed25519 Public Keys scharf geschaltet!\nDu wirst nun zur Login-Präsentation weitergeleitet.");
+      window.location.href = "index.html";
+    }
+
+    // Initialize on load
+    analyzePassword();
+  </script>
+</body>
+</html>
