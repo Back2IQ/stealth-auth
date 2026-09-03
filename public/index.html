@@ -1471,8 +1471,6 @@
       const audioBtnWrap = document.getElementById('ob-tr-audio-btn-wrap');
       if (obSelectedModality === 'audio') {
         audioBtnWrap.classList.remove('hidden');
-        // auto-speak
-        setTimeout(() => speakWord(cur.word), 300);
       } else {
         audioBtnWrap.classList.add('hidden');
       }
@@ -1543,7 +1541,7 @@
     // ==========================================
     // SIMULATOR LOGIC & MODALITY CONTROLLER
     // ==========================================
-    let simModality = "audio";
+    let simModality = "text";
     let simChallengeIndex = 0;
 
     const SIM_CHALLENGES = {
@@ -1587,7 +1585,7 @@
     }
 
     function renderCurrentSimChallenge() {
-      const list = SIM_CHALLENGES[simModality] || SIM_CHALLENGES.audio;
+      const list = SIM_CHALLENGES[simModality] || SIM_CHALLENGES.text;
       const ch = list[simChallengeIndex % list.length];
       const audioBtn = document.getElementById('sim-play-audio-btn');
 
@@ -1595,8 +1593,6 @@
 
       if (simModality === 'audio') {
         audioBtn.classList.remove('hidden');
-        // speak word
-        speakWord(ch.word);
       } else {
         audioBtn.classList.add('hidden');
       }
@@ -1612,7 +1608,7 @@
     }
 
     function drawNewSimChallenge() {
-      const list = SIM_CHALLENGES[simModality] || SIM_CHALLENGES.audio;
+      const list = SIM_CHALLENGES[simModality] || SIM_CHALLENGES.text;
       simChallengeIndex = (simChallengeIndex + 1) % list.length;
       renderCurrentSimChallenge();
     }
@@ -1624,14 +1620,14 @@
     }
 
     function autoFill() {
-      const list = SIM_CHALLENGES[simModality] || SIM_CHALLENGES.audio;
+      const list = SIM_CHALLENGES[simModality] || SIM_CHALLENGES.text;
       const ch = list[simChallengeIndex % list.length];
       document.getElementById('pass-input').value = transformWithSlots(obBasePwd, ch.char1, ch.char2, obSlots);
     }
 
     function verifyLogin() {
       const input = document.getElementById('pass-input').value.trim();
-      const list = SIM_CHALLENGES[simModality] || SIM_CHALLENGES.audio;
+      const list = SIM_CHALLENGES[simModality] || SIM_CHALLENGES.text;
       const ch = list[simChallengeIndex % list.length];
       const expected = transformWithSlots(obBasePwd, ch.char1, ch.char2, obSlots);
       const resultBox = document.getElementById('auth-result');
@@ -1662,7 +1658,7 @@
 
     function resetSimulator() {
       simChallengeIndex = 0;
-      switchSimModality("audio");
+      switchSimModality("text");
     }
 
     // Auto-init on page load
