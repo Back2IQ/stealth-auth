@@ -11,11 +11,17 @@
 
 ## Key Features
 
-1. **Zero-Device & Zero-Hardware Overhead:** No smartphones, TOTP apps, SMS codes, or YubiKeys required.
-2. **Deterministic Radix-26 State Machine:** Compact bijective state encoding ($N = 26 \times C + (I - 1)$) disguised as innocuous UI elements (e.g. `v1.14` or `Ticket #14`).
-3. **Muscle-Memory Cognitive Anchoring:** Deterministic cognitive transformation $P_N = \mathcal{T}(S, L(I))$ executed purely in human memory.
-4. **Anti-Desynchronization Engine:** Automatic resynchronization via sliding lookahead/lookback window $W(N) = [N-1, N+3]$.
-5. **Replay & Timing Attack Immunity:** Constant-time verification, cryptographic session nonces, and single-use challenge expiration.
+1. **4 Selectable Security Modalities:**
+   - 🔤 **Random Code / Codename (Medium, ~30s):** e.g. `Falcon` $\rightarrow$ `F...n`
+   - 🖼️ **Visual Images (High, ~45s):** e.g. 🐱 `Katze` $\rightarrow$ `K...e`
+   - 🔊 **Spoken Audio Word (High, ~45s):** e.g. Voice speaks *"Tiger"* $\rightarrow$ `T...r` (100% shoulder-surfing immune)
+   - 🛡️ **Personal Life Questions (Highest Tier, ~3-5m):** 18+ question pool (e.g. *"First pet?"* $\rightarrow$ `Bello` $\rightarrow$ `B...o`, uncrackable even with full screen observation)
+2. **Arbitrary Base Password & Precision Index Slots:**
+   - Works on words (`Mama1977`) or arbitrary character strings (`12345qwert`).
+   - Insertion at exact index positions (e.g. `slots: [2, 5]` on `12345qwert` with `Hut` $\rightarrow$ `1H234tqwert`).
+3. **Zero-Device & Zero-Hardware Overhead:** No smartphones, TOTP apps, SMS codes, or YubiKeys required.
+4. **Anti-Phishing Countersign:** Server displays user's personal recognition word (*"Blaue Tür"*). Cloned phishing sites are exposed before typing.
+5. **0 Byte Plaintext on Server:** Uses Ed25519 asymmetric keypairs derived via local `scrypt`. Server stores public keys only.
 
 ---
 

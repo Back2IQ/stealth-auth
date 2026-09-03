@@ -5,6 +5,15 @@
 
 export type SupportedLocale = 'de' | 'en' | 'tr' | 'fr' | 'es';
 
+export type ChallengeModality = 'text' | 'image' | 'audio' | 'personal-questions';
+
+export interface PersonalQuestionItem {
+  id: string;
+  category: 'relationships' | 'childhood' | 'milestones' | 'favorites';
+  question: Record<SupportedLocale, string>;
+  exampleAnswer?: Record<SupportedLocale, string>;
+}
+
 export interface Radix26State {
   counter: number;
   cycle: number;
@@ -13,6 +22,8 @@ export interface Radix26State {
   hint: string;
   wordHint?: string;
   objectHint?: VisualObjectHint;
+  questionHint?: PersonalQuestionItem;
+  spokenAudioWord?: string;
   captchaToken?: string;
   gridMatrix?: string[][];
 }

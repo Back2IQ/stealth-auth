@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>Back2IQ DynPass — All-in-One Executive Presentation & Onboarding Studio</title>
+  <title>Back2IQ DynPass — 4-Modalitäten Zero-Device MFA & Onboarding Studio</title>
   
   <!-- Tailwind CSS CDN & Fonts -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -66,14 +66,12 @@
       border: 1px solid rgba(6, 182, 212, 0.25);
       color: #22d3ee;
     }
-    /* Hide scrollbar for Chrome, Safari and Opera */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
-    /* Hide scrollbar for IE, Edge and Firefox */
     .no-scrollbar {
-      -ms-overflow-style: none;  /* IE and Edge */
-      scrollbar-width: none;  /* Firefox */
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
   </style>
 </head>
@@ -99,7 +97,7 @@
       <!-- Desktop Nav Links -->
       <nav class="hidden lg:flex items-center space-x-6 text-xs text-slate-300 font-medium">
         <a href="#background" class="hover:text-cyan-400 transition" id="nav-bg">Hintergrund</a>
-        <a href="#specs" class="hover:text-cyan-400 transition" id="nav-specs">Specs & Krypto</a>
+        <a href="#specs" class="hover:text-cyan-400 transition" id="nav-specs">4 Modalitäten</a>
         <a href="#onboarding" class="hover:text-cyan-400 transition" id="nav-onboarding">Onboarding-Studio</a>
         <a href="#simulator" class="hover:text-cyan-400 transition" id="nav-sim">Login-Terminal</a>
         <a href="#benchmark" class="hover:text-cyan-400 transition" id="nav-bm">Benchmark</a>
@@ -107,7 +105,6 @@
 
       <!-- Language Selector & Actions -->
       <div class="flex items-center space-x-2 flex-shrink-0">
-        <!-- Language Selector -->
         <div class="flex items-center bg-dark-card border border-dark-border rounded-lg p-0.5 sm:p-1 text-[11px] sm:text-xs">
           <button onclick="setLanguage('de')" id="lang-de" class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded bg-cyan-500/20 text-cyan-300 font-medium">DE</button>
           <button onclick="setLanguage('en')" id="lang-en" class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-slate-400 hover:text-white">EN</button>
@@ -123,10 +120,10 @@
       </div>
     </div>
 
-    <!-- Mobile Scrollable Sub-Navigation Pills (Zero Overflow) -->
+    <!-- Mobile Scrollable Sub-Navigation Pills -->
     <div class="lg:hidden flex items-center space-x-2 overflow-x-auto no-scrollbar pt-2.5 pb-0.5 text-[11px] font-medium text-slate-300">
       <a href="#background" class="px-2.5 py-1 rounded-full bg-dark-card border border-dark-border whitespace-nowrap hover:text-cyan-400">Hintergrund</a>
-      <a href="#specs" class="px-2.5 py-1 rounded-full bg-dark-card border border-dark-border whitespace-nowrap hover:text-cyan-400">Specs</a>
+      <a href="#specs" class="px-2.5 py-1 rounded-full bg-dark-card border border-dark-border whitespace-nowrap hover:text-cyan-400">Modalitäten</a>
       <a href="#onboarding" class="px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 whitespace-nowrap">✨ Onboarding</a>
       <a href="#simulator" class="px-2.5 py-1 rounded-full bg-dark-card border border-dark-border whitespace-nowrap hover:text-cyan-400">Terminal</a>
       <a href="#benchmark" class="px-2.5 py-1 rounded-full bg-dark-card border border-dark-border whitespace-nowrap hover:text-cyan-400">Benchmark</a>
@@ -142,46 +139,46 @@
     <section id="hero" class="text-center flex flex-col items-center pt-2 sm:pt-6 lg:pt-10 scroll-mt-28">
       <div class="inline-flex items-center space-x-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-[11px] sm:text-xs font-mono mb-6 sm:mb-8 animate-pulse max-w-full">
         <span class="w-2 h-2 rounded-full bg-cyan-400 flex-shrink-0"></span>
-        <span id="hero-tag" class="truncate">Ed25519 Cognitive Zero-Device MFA & Break-Glass Engine</span>
+        <span id="hero-tag" class="truncate">Ed25519 Cognitive Zero-Device MFA · 4 Wählbare Sicherheits-Modalitäten</span>
       </div>
 
       <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-5xl leading-[1.15] mb-4 sm:mb-6 break-words">
-        <span id="hero-title-1">Hardware-Sicherheit.</span><br/>
-        <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-blue-500" id="hero-title-2">Ganz ohne Hardware.</span>
+        <span id="hero-title-1">Deine Sicherheit.</span><br/>
+        <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-blue-500" id="hero-title-2">Deine persönliche Stufe.</span>
       </h1>
 
       <p class="text-sm sm:text-lg md:text-xl text-slate-400 max-w-3xl mb-8 sm:mb-10 leading-relaxed px-1" id="hero-sub">
-        Das weltweit erste kognitive Authentifizierungssystem für Reinräume, SCIF-Militärzonen, Executive Travel und unzerstörbare Break-Glass Notfälle. 0% Smartphone. 0% Token. 100% im Kopf.
+        Wähle zwischen zufälligen Zeichen, visuellen Bildern, gesprochenen Audio-Wörtern oder persönlichen Lebensfragen. Das Geheimnis landet an deinen festen Einfügestellen. 0% Smartphone. 0% Token. 100% im Kopf.
       </p>
 
       <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full max-w-md sm:max-w-none mb-12 sm:mb-14">
         <a href="#onboarding" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-sm shadow-xl shadow-cyan-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center space-x-2 min-h-[44px]">
           <i data-lucide="sparkles" class="w-4 h-4"></i>
-          <span id="btn-hero-onboarding">Onboarding simulieren (60s)</span>
+          <span id="btn-hero-onboarding">Onboarding starten (Wähle dein Level)</span>
         </a>
         <a href="#simulator" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-dark-card hover:bg-dark-hover border border-dark-border text-slate-300 font-semibold text-sm transition flex items-center justify-center space-x-2 min-h-[44px]">
           <i data-lucide="terminal" class="w-4 h-4 text-cyan-400"></i>
-          <span id="btn-hero-sim">Login-Terminal testen</span>
+          <span id="btn-hero-sim">Live-Terminal ausprobieren</span>
         </a>
       </div>
 
       <!-- Quick Metrics Grid -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 w-full max-w-5xl text-left">
         <div class="glass-panel p-4 sm:p-5 rounded-2xl min-w-0">
-          <div class="text-xl sm:text-2xl lg:text-3xl font-bold font-mono text-cyan-400 truncate">&lt; 0.2 s</div>
-          <div class="text-[11px] sm:text-xs text-slate-400 mt-1 leading-tight" id="stat-latency">Kognitive Latenz (0 Zählzeit)</div>
+          <div class="text-xl sm:text-2xl lg:text-3xl font-bold font-mono text-cyan-400 truncate">4 Stufen</div>
+          <div class="text-[11px] sm:text-xs text-slate-400 mt-1 leading-tight" id="stat-latency">Text, Bild, Audio & Fragen</div>
         </div>
         <div class="glass-panel p-4 sm:p-5 rounded-2xl min-w-0">
-          <div class="text-xl sm:text-2xl lg:text-3xl font-bold font-mono text-cyan-400 truncate">0 Byte</div>
-          <div class="text-[11px] sm:text-xs text-slate-400 mt-1 leading-tight" id="stat-vault">Klartext-Passwörter auf Server</div>
+          <div class="text-xl sm:text-2xl lg:text-3xl font-bold font-mono text-cyan-400 truncate">Exakter Index</div>
+          <div class="text-[11px] sm:text-xs text-slate-400 mt-1 leading-tight" id="stat-vault">Freie Stellenwahl (z. B. Slot 2 & 5)</div>
         </div>
         <div class="glass-panel p-4 sm:p-5 rounded-2xl min-w-0">
           <div class="text-xl sm:text-2xl lg:text-3xl font-bold font-mono text-cyan-400 truncate">Ed25519</div>
-          <div class="text-[11px] sm:text-xs text-slate-400 mt-1 leading-tight" id="stat-crypto">Asymmetrische Signaturen</div>
+          <div class="text-[11px] sm:text-xs text-slate-400 mt-1 leading-tight" id="stat-crypto">0 Byte Server-Klartext</div>
         </div>
         <div class="glass-panel p-4 sm:p-5 rounded-2xl min-w-0">
-          <div class="text-xl sm:text-2xl lg:text-3xl font-bold font-mono text-cyan-400 truncate">100%</div>
-          <div class="text-[11px] sm:text-xs text-slate-400 mt-1 leading-tight" id="stat-device">Zero-Device / Cleanroom Safe</div>
+          <div class="text-xl sm:text-2xl lg:text-3xl font-bold font-mono text-cyan-400 truncate">100% Zero</div>
+          <div class="text-[11px] sm:text-xs text-slate-400 mt-1 leading-tight" id="stat-device">Zero-Device & Phishing-Safe</div>
         </div>
       </div>
     </section>
@@ -192,87 +189,117 @@
     <section id="background" class="scroll-mt-28">
       <div class="max-w-3xl mb-8 sm:mb-10">
         <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider" id="bg-badge">Problemstellung & Hintergrund</span>
-        <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1 break-words" id="bg-title">Die fatale Notfall-Lücke moderner Enterprise-MFA</h2>
-        <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed" id="bg-sub">Jedes heutige IAM-System (Okta, Keycloak, Ping, Entra ID) erzwingt Hardware. Doch was passiert, wenn das Gerät weg, verboten oder beschlagnahmt ist?</p>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1 break-words" id="bg-title">Warum starre Standard-Passwörter und SMS-Codes scheitern</h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed" id="bg-sub">Ob private Accounts oder hochsensible Daten: Standard-MFA zwingt dich zu Smartphone-Apps und SMS, die abgefangen, gestohlen oder gehackt werden können.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
         <div class="glass-panel p-5 sm:p-6 rounded-2xl border-l-4 border-l-rose-500">
           <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center mb-3 sm:mb-4">
-            <i data-lucide="file-x" class="w-5 h-5"></i>
+            <i data-lucide="smartphone-nfc" class="w-5 h-5"></i>
           </div>
-          <h3 class="text-sm sm:text-base font-bold text-white" id="p1-title">1. Der veraltete Notfall-Code</h3>
-          <p class="text-xs text-slate-400 mt-2 leading-relaxed" id="p1-desc">Ausgedruckte Papier-Backup-Codes sind auffindbar, fotografierbar, un-rotierbar und an Grenzkontrollen sofort beschlagnahmbar.</p>
+          <h3 class="text-sm sm:text-base font-bold text-white" id="p1-title">1. SIM-Swapping & Phishing</h3>
+          <p class="text-xs text-slate-400 mt-2 leading-relaxed" id="p1-desc">SMS-Codes und App-Pushs werden täglich durch SIM-Kopien und gefälschte Anmeldeseiten abgefangen.</p>
         </div>
 
         <div class="glass-panel p-5 sm:p-6 rounded-2xl border-l-4 border-l-amber-500">
           <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-3 sm:mb-4">
-            <i data-lucide="shield-off" class="w-5 h-5"></i>
+            <i data-lucide="eye" class="w-5 h-5"></i>
           </div>
-          <h3 class="text-sm sm:text-base font-bold text-white" id="p2-title">2. Physische Sonderzonen</h3>
-          <p class="text-xs text-slate-400 mt-2 leading-relaxed" id="p2-desc">In Halbleiter-Reinräumen (ISO 1–5) und militärischen SCIFs sind Smartphones und USB-Sticks wegen Kontamination und Spionage streng verboten.</p>
+          <h3 class="text-sm sm:text-base font-bold text-white" id="p2-title">2. Schulterblick & Kameras</h3>
+          <p class="text-xs text-slate-400 mt-2 leading-relaxed" id="p2-desc">Wer dein Passwort einmal sieht, hat vollen Zugriff. DynPass ändert die geforderte Eingabe bei jedem einzelnen Login.</p>
         </div>
 
         <div class="glass-panel p-5 sm:p-6 rounded-2xl border-l-4 border-l-cyan-500">
           <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-3 sm:mb-4">
-            <i data-lucide="plane-takeoff" class="w-5 h-5"></i>
+            <i data-lucide="database-zap" class="w-5 h-5"></i>
           </div>
-          <h3 class="text-sm sm:text-base font-bold text-white" id="p3-title">3. Executive & Diplomat Travel</h3>
-          <p class="text-xs text-slate-400 mt-2 leading-relaxed" id="p3-desc">Bei Reisen in feindliche Staaten beschlagnahmen Behörden Hardware. DynPass hinterlässt <b>Null physische Spuren (Zero Evidence)</b>.</p>
+          <h3 class="text-sm sm:text-base font-bold text-white" id="p3-title">3. Server-Datenbankleaks</h3>
+          <p class="text-xs text-slate-400 mt-2 leading-relaxed" id="p3-desc">Der Server speichert nur Ed25519 Public Keys. Selbst wenn Hacker die gesamte Datenbank stehlen, können sie sich nicht einloggen.</p>
         </div>
       </div>
     </section>
 
     <!-- ============================================================ -->
-    <!-- SECTION 3: TECHNISCHE SPECS & ARCHITEKTUR                    -->
+    <!-- SECTION 3: DIE 4 WÄHLBAREN SICHERHEITS-MODALITÄTEN           -->
     <!-- ============================================================ -->
     <section id="specs" class="scroll-mt-28">
       <div class="max-w-3xl mb-8 sm:mb-10">
-        <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider" id="specs-badge">Kryptografische Spezifikation</span>
-        <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1 break-words" id="specs-title">Die 4 mathematischen Säulen von DynPass</h2>
-        <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed" id="specs-sub">Audit-feste Zero-Knowledge Architektur ohne Klartext-Tresor und ohne Zähler-Desynchronisation.</p>
+        <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider" id="specs-badge">Sicherheitsstufen & Modalitäten</span>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1 break-words" id="specs-title">Die 4 wählbaren Challenge-Modalitäten</h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed" id="specs-sub">Jeder Nutzer wählt frei zwischen Geschwindigkeit und maximaler persönlicher Immunität.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-        <div class="glass-panel p-5 sm:p-6 rounded-2xl">
-          <div class="flex items-center space-x-3 text-cyan-400 text-sm font-semibold mb-2.5">
-            <i data-lucide="key-round" class="w-5 h-5 flex-shrink-0"></i>
-            <span id="spec1-h">1. Asymmetrische Ed25519 Schlüsselableitung</span>
+        
+        <!-- Modalität 1: Text -->
+        <div class="glass-panel p-5 sm:p-6 rounded-2xl border border-white/10 hover:border-cyan-500/40 transition">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center space-x-3 text-cyan-400 text-sm font-semibold">
+              <span class="text-2xl">🔤</span>
+              <span id="m1-title">1. Zufällige Zeichenfolge / Codename</span>
+            </div>
+            <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] font-mono font-bold">🟡 Mittel · 30s Setup</span>
           </div>
-          <p class="text-xs text-slate-300 leading-relaxed" id="spec1-t">
-            Beim Onboarding leitet der Client lokal 26 Ed25519-Schlüsselpaare via <code class="text-cyan-300">scrypt(P_N, Salt, N=16384)</code> ab. Der Server speichert <b>nur die Public Keys</b>. Selbst bei vollem Datenbankdiebstahl besitzt der Angreifer 0 verwertbare Daten.
+          <p class="text-xs text-slate-300 leading-relaxed mb-3" id="m1-desc">
+            Das Display zeigt ein Codename-Wort (z. B. <code class="text-cyan-300">Falcon</code> oder <code class="text-cyan-300">Atlas</code>). Das Gehirn entnimmt ersten und letzten Buchstaben (<code class="text-cyan-300">F...n</code>) und schiebt sie an die gewählten Slots.
           </p>
+          <div class="p-2.5 rounded-lg bg-dark-bg border border-dark-border text-[11px] font-mono text-slate-400">
+            Beispiel: Basis <code class="text-slate-200">12345qwert</code> + <code class="text-cyan-300">Falcon</code> @ Slots [2, 5] &rarr; <b class="text-emerald-400">1F234nqwert</b>
+          </div>
         </div>
 
-        <div class="glass-panel p-5 sm:p-6 rounded-2xl">
-          <div class="flex items-center space-x-3 text-cyan-400 text-sm font-semibold mb-2.5">
-            <i data-lucide="shuffle" class="w-5 h-5 flex-shrink-0"></i>
-            <span id="spec2-h">2. Zufalls-Challenge (26 Werte)</span>
+        <!-- Modalität 2: Bild -->
+        <div class="glass-panel p-5 sm:p-6 rounded-2xl border border-white/10 hover:border-cyan-500/40 transition">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center space-x-3 text-cyan-400 text-sm font-semibold">
+              <span class="text-2xl">🖼️</span>
+              <span id="m2-title">2. Visuelles Bild / Objekt</span>
+            </div>
+            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-mono font-bold">🟢 Hoch · 45s Setup</span>
           </div>
-          <p class="text-xs text-slate-300 leading-relaxed" id="spec2-t">
-            Der Server zieht pro Login einen zufälligen Index <code class="text-cyan-300">i ∈ [1..26]</code>. Es gibt keinen sequentiellen Zähler mehr, der aus dem Takt geraten oder überlaufen könnte.
+          <p class="text-xs text-slate-300 leading-relaxed mb-3" id="m2-desc">
+            Das Display zeigt ein Icon oder Bild (z. B. 🐱 **Katze** oder 🎩 **Hut**). Du denkst das Wort, entnimmst Anfang & Ende (<code class="text-cyan-300">K...e</code> bzw. <code class="text-cyan-300">H...t</code>) und fügst sie an deine Slots ein.
           </p>
+          <div class="p-2.5 rounded-lg bg-dark-bg border border-dark-border text-[11px] font-mono text-slate-400">
+            Beispiel: Basis <code class="text-slate-200">12345qwert</code> + 🎩 (<code class="text-cyan-300">Hut</code>) @ Slots [2, 5] &rarr; <b class="text-emerald-400">1H234tqwert</b>
+          </div>
         </div>
 
-        <div class="glass-panel p-5 sm:p-6 rounded-2xl">
-          <div class="flex items-center space-x-3 text-cyan-400 text-sm font-semibold mb-2.5">
-            <i data-lucide="layers" class="w-5 h-5 flex-shrink-0"></i>
-            <span id="spec3-h">3. Sub-Sekunden Wort- & Bild-Grenzen</span>
+        <!-- Modalität 3: Audio -->
+        <div class="glass-panel p-5 sm:p-6 rounded-2xl border border-white/10 hover:border-cyan-500/40 transition">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center space-x-3 text-cyan-400 text-sm font-semibold">
+              <span class="text-2xl">🔊</span>
+              <span id="m3-title">3. Gesprochenes Audio-Wort</span>
+            </div>
+            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-mono font-bold">🟢 Hoch · 45s Setup</span>
           </div>
-          <p class="text-xs text-slate-300 leading-relaxed" id="spec3-t">
-            Statt mühsam im Alphabet zu zählen, entnimmt das Gehirn in <code class="text-cyan-300">&lt; 0.2 s</code> den ersten und letzten Buchstaben des Codename-Wortes (<code class="text-cyan-300">Falcon → F...n</code>) oder des Sicherheits-Icons (🎩 <code class="text-cyan-300">Hut → H...t</code>).
+          <p class="text-xs text-slate-300 leading-relaxed mb-3" id="m3-desc">
+            Das System spricht ein Wort laut und deutlich aus (z. B. <i>„Tiger“</i> oder <i>„Adler“</i>). Absolut **eindeutig und verwechslungsfrei** – auf dem Bildschirm ist für Schulterblick-Spione nichts zu sehen!
           </p>
+          <div class="p-2.5 rounded-lg bg-dark-bg border border-dark-border text-[11px] font-mono text-slate-400">
+            Beispiel: Basis <code class="text-slate-200">12345qwert</code> + Stimme: <code class="text-cyan-300">"Tiger"</code> @ Slots [2, 5] &rarr; <b class="text-emerald-400">1T234rqwert</b>
+          </div>
         </div>
 
-        <div class="glass-panel p-5 sm:p-6 rounded-2xl">
-          <div class="flex items-center space-x-3 text-cyan-400 text-sm font-semibold mb-2.5">
-            <i data-lucide="shield-check" class="w-5 h-5 flex-shrink-0"></i>
-            <span id="spec4-h">4. Anti-Phishing Gegenlosung (Countersign)</span>
+        <!-- Modalität 4: Persönliche Fragen -->
+        <div class="glass-panel p-5 sm:p-6 rounded-2xl border-2 border-cyan-500/50 bg-gradient-to-br from-cyan-950/30 to-dark-card shadow-lg shadow-cyan-500/10">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center space-x-3 text-cyan-300 text-sm font-bold">
+              <span class="text-2xl">🛡️</span>
+              <span id="m4-title">4. Persönliche Lebensfragen</span>
+            </div>
+            <span class="px-2 py-0.5 rounded bg-cyan-500/30 text-cyan-200 text-[10px] font-mono font-bold">🛡️ Höchste Stufe · 3–5 Min</span>
           </div>
-          <p class="text-xs text-slate-300 leading-relaxed" id="spec4-t">
-            Der echte Server zeigt vor dem Login das persönliche Erkennungswort des Nutzers (<code class="text-emerald-400">"Blaue Tür"</code>) an. Gefälschte Phishing-Seiten kennen dieses Wort nicht und fliegen sofort auf.
+          <p class="text-xs text-slate-200 leading-relaxed mb-3" id="m4-desc">
+            Der Server stellt **1 Zufallsfrage aus 18+ hinterlegten Lebensfragen** (z. B. <i>„Erstes Haustier?“</i> &rarr; Bello). Da nur du deine Biografie kennst, ist dieser Schutz selbst bei voll eingesehenem Bildschirm **unknackbar**.
           </p>
+          <div class="p-2.5 rounded-lg bg-cyan-950/40 border border-cyan-500/30 text-[11px] font-mono text-cyan-300">
+            Beispiel: <i>„Erstes Haustier?“</i> (Antwort: <code class="text-white">Bello</code>) &rarr; <b class="text-emerald-400">1B234oqwert</b>
+          </div>
         </div>
+
       </div>
     </section>
 
@@ -282,8 +309,8 @@
     <section id="onboarding" class="scroll-mt-28">
       <div class="max-w-3xl mb-6 sm:mb-8">
         <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider" id="ob-badge">Interaktiver Workflow</span>
-        <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1 break-words" id="ob-title">Das 4-Stufen Onboarding Studio</h2>
-        <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed" id="ob-sub">Erlebe selbst, wie ein neuer Mitarbeiter sein kognitives Profil in unter 60 Sekunden personalisiert und trainiert.</p>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1 break-words" id="ob-title">Das persönliche Onboarding Studio</h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed" id="ob-sub">Konfiguriere dein Basis-Passwort, bestimme deine exakten Einfügestellen und wähle deine bevorzugte Sicherheits-Modalität.</p>
       </div>
 
       <!-- Stepper Progress Bar -->
@@ -294,11 +321,11 @@
 
           <div id="ob-ind-1" class="relative z-10 flex flex-col items-center">
             <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-cyan-500 text-white font-bold text-[11px] sm:text-xs flex items-center justify-center ring-4 ring-[#05070a] shadow-lg shadow-cyan-500/30">1</div>
-            <span class="text-[10px] sm:text-[11px] font-medium text-cyan-400 mt-1.5" id="ob-step-lbl-1">Passwort</span>
+            <span class="text-[10px] sm:text-[11px] font-medium text-cyan-400 mt-1.5" id="ob-step-lbl-1">Passwort & Slots</span>
           </div>
           <div id="ob-ind-2" class="relative z-10 flex flex-col items-center">
             <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-[11px] sm:text-xs flex items-center justify-center ring-4 ring-[#05070a]">2</div>
-            <span class="text-[10px] sm:text-[11px] font-medium text-slate-400 mt-1.5" id="ob-step-lbl-2">Denkregel</span>
+            <span class="text-[10px] sm:text-[11px] font-medium text-slate-400 mt-1.5" id="ob-step-lbl-2">Modalität</span>
           </div>
           <div id="ob-ind-3" class="relative z-10 flex flex-col items-center">
             <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-[11px] sm:text-xs flex items-center justify-center ring-4 ring-[#05070a]">3</div>
@@ -314,84 +341,121 @@
       <!-- WIZARD STEP CONTAINER -->
       <div class="glass-panel p-4 sm:p-6 lg:p-8 rounded-2xl border border-white/10 shadow-2xl relative">
         
-        <!-- STEP 1 -->
+        <!-- STEP 1: BASIS PASSWORT & PRÄZISE SLOT-WAHL -->
         <div id="ob-step-1" class="space-y-5 sm:space-y-6">
           <div>
             <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider">Stufe 1 von 4</span>
-            <h3 class="text-lg sm:text-xl font-bold text-white mt-1" id="s1-h">Wähle dein Master-Passwort</h3>
-            <p class="text-xs text-slate-400 mt-1" id="s1-d">Dieses Passwort bleibt dauerhaft in deinem Muskelgedächtnis. Der Server erfährt es nie.</p>
+            <h3 class="text-lg sm:text-xl font-bold text-white mt-1" id="s1-h">Wähle dein Basis-Passwort & deine Einfügestellen</h3>
+            <p class="text-xs text-slate-400 mt-1" id="s1-d">Dein Passwort kann ein Wort oder eine beliebige Zeichenfolge sein (z. B. 12345qwert). Der Server speichert davon 0 Byte.</p>
           </div>
 
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5" id="s1-input-lbl">Dein Basis-Passwort:</label>
-            <input type="text" id="ob-pwd-input" value="Mama1977" oninput="updateObPassword()" class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-3.5 py-3 text-sm sm:text-base text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition min-h-[44px]">
+            <input type="text" id="ob-pwd-input" value="12345qwert" oninput="updateObPassword()" class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-3.5 py-3 text-sm sm:text-base text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition min-h-[44px]">
           </div>
 
-          <div class="p-3.5 sm:p-4 rounded-xl bg-dark-bg border border-dark-border">
-            <span class="text-xs font-semibold text-slate-400 block mb-2" id="s1-struct-lbl">Automatisch erkannte Nahtstellen im Passwort:</span>
-            <div id="ob-char-grid" class="flex flex-wrap gap-1 sm:gap-1.5 font-mono text-xs sm:text-sm"></div>
+          <div class="p-3.5 sm:p-4 rounded-xl bg-dark-bg border border-dark-border space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-300 block" id="s1-struct-lbl">Klicke auf die Positionen (Slots), an denen Buchstaben eingefügt werden:</span>
+              <span class="text-[11px] font-mono text-cyan-400" id="slot-count-badge">Gewählt: Slot 2 & Slot 5</span>
+            </div>
+            
+            <!-- Interactive Character & Slot Grid -->
+            <div id="ob-char-grid" class="flex flex-wrap gap-1 sm:gap-1.5 font-mono text-xs sm:text-sm pt-1"></div>
+
+            <!-- Live Insertion Preview -->
+            <div class="mt-3 pt-3 border-t border-white/5 text-xs">
+              <span class="text-slate-400" id="s1-prev-lbl">Live-Vorschau mit Challenge <b>"Hut"</b> (Buchstaben: <span class="text-cyan-300 font-bold">H</span> und <span class="text-cyan-300 font-bold">t</span>):</span>
+              <div class="mt-1.5 p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/30 font-mono text-emerald-400 font-bold flex items-center space-x-2 break-all">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
+                <span id="ob-preview-output">1 H 2 3 4 t q w e r t</span>
+              </div>
+            </div>
           </div>
 
           <div class="pt-2 flex justify-end">
             <button onclick="setObStep(2)" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs shadow-lg shadow-cyan-500/25 transition flex items-center justify-center space-x-2 min-h-[44px]">
-              <span id="btn-ob-1">Weiter zur Denkregel</span>
+              <span id="btn-ob-1">Weiter zur Modalitäten-Auswahl</span>
               <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </button>
           </div>
         </div>
 
-        <!-- STEP 2 -->
+        <!-- STEP 2: MODALITÄTEN AUSWAHL -->
         <div id="ob-step-2" class="hidden space-y-5 sm:space-y-6">
           <div>
             <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider">Stufe 2 von 4</span>
-            <h3 class="text-lg sm:text-xl font-bold text-white mt-1" id="s2-h">Wähle deine kognitive Denkregel</h3>
-            <p class="text-xs text-slate-400 mt-1" id="s2-d">Bestimme, wie du den getarnten Hinweis in dein Passwort einsetzt.</p>
+            <h3 class="text-lg sm:text-xl font-bold text-white mt-1" id="s2-h">Wähle deine Sicherheits-Modalität</h3>
+            <p class="text-xs text-slate-400 mt-1" id="s2-d">Wie möchtest du beim Login deine Challenge erhalten?</p>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
-            <button onclick="setObSource('codename')" id="ob-src-codename" class="p-3.5 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-left transition flex items-start space-x-3">
-              <span class="text-2xl flex-shrink-0">🦅</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            
+            <!-- Option 1: Text -->
+            <button onclick="setObModality('text')" id="mod-btn-text" class="p-4 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3">
+              <span class="text-2xl flex-shrink-0">🔤</span>
               <div class="min-w-0">
-                <div class="font-bold text-xs text-cyan-300">Codename-Wort (0s Latenz)</div>
-                <div class="text-[11px] text-slate-400 mt-0.5 leading-tight">Zeigt z. B. <i>"Falcon"</i> &rarr; Erster & letzter Buchstabe.</div>
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-xs text-slate-200">Zufälliges Wort / Code</span>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono">🟡 30s</span>
+                </div>
+                <div class="text-[11px] text-slate-400 mt-1 leading-tight">Zeigt z. B. <i>"Falcon"</i> &rarr; Nimmt <code class="text-cyan-300">F...n</code></div>
               </div>
             </button>
 
-            <button onclick="setObSource('icon')" id="ob-src-icon" class="p-3.5 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3">
-              <span class="text-2xl flex-shrink-0">🎩</span>
+            <!-- Option 2: Bild -->
+            <button onclick="setObModality('image')" id="mod-btn-image" class="p-4 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3">
+              <span class="text-2xl flex-shrink-0">🖼️</span>
               <div class="min-w-0">
-                <div class="font-bold text-xs text-slate-200">Sicherheits-Icon (Sprachbarriere)</div>
-                <div class="text-[11px] text-slate-400 mt-0.5 leading-tight">Zeigt 🎩 &rarr; <i>"Hut"</i> (DE), <i>"Hat"</i> (EN), <i>"Sapka"</i> (TR).</div>
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-xs text-slate-200">Visuelles Bild</span>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">🟢 45s</span>
+                </div>
+                <div class="text-[11px] text-slate-400 mt-1 leading-tight">Zeigt 🎩 <i>"Hut"</i> &rarr; Nimmt <code class="text-cyan-300">H...t</code></div>
               </div>
             </button>
+
+            <!-- Option 3: Audio -->
+            <button onclick="setObModality('audio')" id="mod-btn-audio" class="p-4 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-left transition flex items-start space-x-3">
+              <span class="text-2xl flex-shrink-0">🔊</span>
+              <div class="min-w-0">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-xs text-cyan-300">Gesprochenes Audio-Wort</span>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">🟢 45s</span>
+                </div>
+                <div class="text-[11px] text-slate-300 mt-1 leading-tight">Stimme sagt <i>„Tiger“</i> &rarr; Nimmt <code class="text-cyan-300">T...r</code></div>
+              </div>
+            </button>
+
+            <!-- Option 4: Persönliche Fragen -->
+            <button onclick="setObModality('questions')" id="mod-btn-questions" class="p-4 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3">
+              <span class="text-2xl flex-shrink-0">🛡️</span>
+              <div class="min-w-0">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-xs text-slate-200">Persönliche Lebensfragen</span>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/30 text-cyan-200 font-mono font-bold">🛡️ Höchste Stufe</span>
+                </div>
+                <div class="text-[11px] text-slate-400 mt-1 leading-tight">18+ Fragen-Pool &rarr; Antwort nur in deiner Biografie</div>
+              </div>
+            </button>
+
           </div>
 
-          <div class="p-3.5 sm:p-4 rounded-xl bg-dark-bg border border-dark-border space-y-3">
-            <span class="text-xs font-semibold text-slate-300 block" id="s2-slots-lbl">Nahtstellen-Konfiguration (Im Original-Passwort):</span>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 text-xs font-mono">
-              <div class="p-2.5 sm:p-3 rounded-lg bg-dark-card border border-dark-border flex items-center justify-between">
-                <div>
-                  <div class="text-slate-400 text-[11px]">Slot 1 (Erster Buchstabe)</div>
-                  <div class="text-cyan-300 font-bold mt-0.5">Position 0 (Ganz vorne)</div>
-                </div>
-                <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 text-[10px] font-bold">F ...</span>
-              </div>
-              <div class="p-2.5 sm:p-3 rounded-lg bg-dark-card border border-dark-border flex items-center justify-between">
-                <div>
-                  <div class="text-slate-400 text-[11px]">Slot 2 (Letzter Buchstabe)</div>
-                  <div class="text-cyan-300 font-bold mt-0.5">Position 4 (Nach dem Wort)</div>
-                </div>
-                <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 text-[10px] font-bold">... n</span>
-              </div>
+          <!-- Modality Specific Detail Box -->
+          <div id="modality-detail-box" class="p-4 rounded-xl bg-dark-bg border border-dark-border text-xs space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-cyan-300 flex items-center space-x-2">
+                <span id="detail-icon">🔊</span>
+                <span id="detail-title">Audio-Wort: Akustischer Reiz</span>
+              </span>
+              <button onclick="testAudioSample()" class="px-2.5 py-1 rounded bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 text-[11px] font-mono flex items-center space-x-1.5 transition">
+                <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                <span>Probe anhören</span>
+              </button>
             </div>
-
-            <div class="mt-3 pt-3 border-t border-white/5 text-xs">
-              <span class="text-slate-400" id="s2-prev-lbl">Live-Vorschau bei Challenge <b>"Falcon"</b>:</span>
-              <div class="mt-1.5 p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/30 font-mono text-emerald-400 font-bold flex items-center space-x-2 break-all">
-                <i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
-                <span id="ob-preview-output">F M a m a n 1 9 7 7</span>
-              </div>
-            </div>
+            <p class="text-slate-300 leading-relaxed text-[11px]" id="detail-desc">
+              Das System spricht ein Wort unmissverständlich aus. Niemand auf deinem Bildschirm sieht ein Zeichen oder Bild. Perfekt gegen Spionagekameras und neugierige Blicke.
+            </p>
           </div>
 
           <div class="pt-2 flex items-center justify-between gap-3">
@@ -406,12 +470,12 @@
           </div>
         </div>
 
-        <!-- STEP 3 -->
+        <!-- STEP 3: ANTI-PHISHING GEGENLOSUNG -->
         <div id="ob-step-3" class="hidden space-y-5 sm:space-y-6">
           <div>
             <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider">Stufe 3 von 4</span>
             <h3 class="text-lg sm:text-xl font-bold text-white mt-1" id="s3-h">Wähle deine Anti-Phishing Gegenlosung</h3>
-            <p class="text-xs text-slate-400 mt-1" id="s3-d">Der echte Server zeigt dir dieses Wort bei jedem Login an. Steht es nicht da, ist die Seite gefälscht.</p>
+            <p class="text-xs text-slate-400 mt-1" id="s3-d">Der echte Server zeigt dir dieses Erkennungswort bei jedem Login an. Steht es nicht da, ist die Website gefälscht.</p>
           </div>
 
           <div>
@@ -423,7 +487,7 @@
             <i data-lucide="shield-alert" class="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5"></i>
             <div>
               <span class="font-bold text-cyan-300" id="s3-box-t">Warum das vor Phishing schützt:</span>
-              <p class="text-slate-300 mt-0.5 text-[11px] leading-relaxed" id="s3-box-d">Ein Angreifer mit gefälschtem Login-Portal kennt dein Erkennungswort nicht. Du enttarnst Phishing auf den ersten Blick.</p>
+              <p class="text-slate-300 mt-0.5 text-[11px] leading-relaxed" id="s3-box-d">Ein Angreifer mit gefälschtem Login-Portal kennt dein Erkennungswort nicht. Du enttarnst Phishing auf den ersten Blick, noch bevor du auch nur ein Zeichen tippst.</p>
             </div>
           </div>
 
@@ -439,12 +503,12 @@
           </div>
         </div>
 
-        <!-- STEP 4 -->
+        <!-- STEP 4: DER COGNITIVE TRAINER -->
         <div id="ob-step-4" class="hidden space-y-5 sm:space-y-6">
           <div>
             <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider">Stufe 4 von 4</span>
             <h3 class="text-lg sm:text-xl font-bold text-white mt-1" id="s4-h">Der Cognitive Trainer (3 Probeläufe)</h3>
-            <p class="text-xs text-slate-400 mt-1" id="s4-d">Absolviere 3 Probe-Logins. Erst wenn alle 3 fehlerfrei sitzen, wird dein Profil scharf geschaltet.</p>
+            <p class="text-xs text-slate-400 mt-1" id="s4-d">Absolviere 3 Probe-Logins mit deiner gewählten Modalität. Erst wenn alle 3 fehlerfrei sitzen, wird dein Profil scharf geschaltet.</p>
           </div>
 
           <div class="grid grid-cols-3 gap-2 sm:gap-3 text-center text-[11px] sm:text-xs font-mono">
@@ -459,9 +523,18 @@
               <span class="text-[11px] text-cyan-400 font-mono flex-shrink-0">⏱️ Stoppuhr aktiv</span>
             </div>
 
-            <div class="p-3 rounded-lg bg-dark-card border border-dark-border text-center">
-              <span class="text-xs text-slate-400 block mb-0.5">Deine Test-Challenge:</span>
-              <span class="text-lg sm:text-xl font-bold font-mono text-cyan-300" id="ob-tr-word">Codename: Falcon</span>
+            <!-- Challenge Box in Trainer -->
+            <div class="p-4 rounded-lg bg-dark-card border border-dark-border text-center space-y-2">
+              <span class="text-xs text-slate-400 block" id="ob-tr-type-lbl">Deine Test-Challenge:</span>
+              <div id="ob-tr-challenge-display" class="text-lg sm:text-xl font-bold font-mono text-cyan-300 flex items-center justify-center space-x-2">
+                <span id="ob-tr-main-text">Wort: Tiger</span>
+              </div>
+              <div id="ob-tr-audio-btn-wrap" class="hidden">
+                <button onclick="playTrainerAudio()" class="px-3 py-1.5 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 text-xs font-mono inline-flex items-center space-x-1.5 transition">
+                  <i data-lucide="volume-2" class="w-4 h-4"></i>
+                  <span>Wort erneut anhören 🔊</span>
+                </button>
+              </div>
             </div>
 
             <div class="space-y-2">
@@ -479,7 +552,7 @@
           <div id="ob-activation-box" class="hidden p-4 sm:p-5 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 text-center space-y-3 animate-fadeIn">
             <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto text-xl">🎉</div>
             <h4 class="text-base sm:text-lg font-bold text-white">Perfekt! 3 von 3 Logins bestanden!</h4>
-            <p class="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">Deine durchschnittliche Denkzeit lag bei blitzschnellen <b class="text-emerald-400" id="ob-avg-time">1.2 Sekunden</b>. Dein Profil ist nun scharf geschaltet.</p>
+            <p class="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">Deine durchschnittliche Denkzeit lag bei <b class="text-emerald-400" id="ob-avg-time">1.1 Sekunden</b>. Dein Profil ist nun scharf geschaltet.</p>
             
             <a href="#simulator" onclick="applyOnboardingToSimulator()" class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 sm:px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs shadow-xl shadow-cyan-500/30 transition transform hover:-translate-y-0.5 min-h-[44px]">
               <span>Profil im Login-Terminal testen</span>
@@ -502,15 +575,23 @@
     <!-- SECTION 5: DER LIVE LOGIN SIMULATOR                          -->
     <!-- ============================================================ -->
     <section id="simulator" class="scroll-mt-28">
-      <div class="flex items-center justify-between mb-6 gap-2">
+      <div class="flex items-center justify-between mb-4 sm:mb-6 gap-2">
         <div class="min-w-0">
-          <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider" id="sim-badge">Live Enterprise Terminal</span>
-          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1 truncate" id="sim-title">Erlebe den 0-Sekunden Login</h2>
+          <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider" id="sim-badge">Live Enterprise & Consumer Terminal</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1 truncate" id="sim-title">Erlebe die 4 Modalitäten live</h2>
         </div>
         <button onclick="resetSimulator()" class="p-2 sm:px-3 sm:py-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs flex items-center space-x-1.5 transition flex-shrink-0 min-h-[36px]">
           <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
           <span class="hidden sm:inline" id="btn-reset">Reset</span>
         </button>
+      </div>
+
+      <!-- Quick Modality Switcher Bar in Simulator -->
+      <div class="flex items-center space-x-2 overflow-x-auto no-scrollbar pb-3 mb-2 text-xs font-mono">
+        <button onclick="switchSimModality('text')" id="sim-tab-text" class="px-3 py-1.5 rounded-lg border border-dark-border bg-dark-card text-slate-400 hover:text-white whitespace-nowrap">🔤 Text/Code</button>
+        <button onclick="switchSimModality('image')" id="sim-tab-image" class="px-3 py-1.5 rounded-lg border border-dark-border bg-dark-card text-slate-400 hover:text-white whitespace-nowrap">🖼️ Bild (Hut)</button>
+        <button onclick="switchSimModality('audio')" id="sim-tab-audio" class="px-3 py-1.5 rounded-lg border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 font-bold whitespace-nowrap">🔊 Audio-Stimme</button>
+        <button onclick="switchSimModality('questions')" id="sim-tab-questions" class="px-3 py-1.5 rounded-lg border border-dark-border bg-dark-card text-slate-400 hover:text-white whitespace-nowrap">🛡️ Persönliche Frage</button>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
@@ -520,28 +601,28 @@
           <div>
             <div class="flex items-center space-x-2 text-cyan-400 text-sm font-semibold mb-4">
               <i data-lucide="brain" class="w-4 h-4 flex-shrink-0"></i>
-              <span id="config-title">1. Muskelgedächtnis & Regel</span>
+              <span id="config-title">1. Muskelgedächtnis & Slots</span>
             </div>
 
             <div class="space-y-3.5 text-xs">
               <div>
-                <label class="text-slate-400 block mb-1" id="lbl-master">Master-Passwort (im Kopf):</label>
+                <label class="text-slate-400 block mb-1" id="lbl-master">Basis-Passwort (im Kopf):</label>
                 <div class="flex items-center bg-dark-bg border border-dark-border rounded-lg px-3 py-2 text-slate-200 font-mono">
-                  <span id="cfg-master" class="truncate">Mama1977</span>
-                  <span class="ml-auto text-[10px] text-slate-500 flex-shrink-0">8 Zeichen</span>
+                  <span id="cfg-master" class="truncate font-bold">12345qwert</span>
+                  <span class="ml-auto text-[10px] text-slate-500 flex-shrink-0" id="cfg-master-len">10 Zeichen</span>
                 </div>
               </div>
 
               <div>
-                <label class="text-slate-400 block mb-1" id="lbl-slots">Gewählte Nahtstellen (Slots):</label>
+                <label class="text-slate-400 block mb-1" id="lbl-slots">Feste Einfügestellen (Slots):</label>
                 <div class="space-y-1.5">
                   <div class="p-2 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 font-mono text-[11px] flex justify-between">
-                    <span>Slot 1: Erster Buchstabe</span>
-                    <span class="font-bold">Pos 0 (Vorne)</span>
+                    <span id="cfg-slot1-lbl">Slot 1 (Anfangsbuchstabe)</span>
+                    <span class="font-bold" id="cfg-slot1-pos">Stelle 2 (nach '1')</span>
                   </div>
                   <div class="p-2 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 font-mono text-[11px] flex justify-between">
-                    <span>Slot 2: Letzter Buchstabe</span>
-                    <span class="font-bold">Pos 4 (Mitte)</span>
+                    <span id="cfg-slot2-lbl">Slot 2 (Endbuchstabe)</span>
+                    <span class="font-bold" id="cfg-slot2-pos">Stelle 5 (nach '4')</span>
                   </div>
                 </div>
               </div>
@@ -557,9 +638,9 @@
           </div>
 
           <div class="mt-5 pt-4 border-t border-white/5">
-            <button onclick="drawNewChallenge()" class="w-full py-2.5 sm:py-3 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 font-medium text-xs flex items-center justify-center space-x-2 transition min-h-[44px]">
+            <button onclick="drawNewSimChallenge()" class="w-full py-2.5 sm:py-3 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 font-medium text-xs flex items-center justify-center space-x-2 transition min-h-[44px]">
               <i data-lucide="dice-5" class="w-4 h-4"></i>
-              <span id="btn-draw">Zufalls-Challenge generieren</span>
+              <span id="btn-draw">Neue Zufalls-Challenge generieren</span>
             </button>
           </div>
         </div>
@@ -570,7 +651,7 @@
           <div class="flex items-center justify-between border-b border-white/5 pb-3 mb-4 text-xs font-mono">
             <div class="flex items-center space-x-2 min-w-0">
               <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
-              <span class="text-slate-400 truncate">SCIF Terminal #04</span>
+              <span class="text-slate-400 truncate">DynPass Auth Gateway #01</span>
             </div>
             <div class="text-emerald-400 flex items-center space-x-1 flex-shrink-0 text-[11px]">
               <i data-lucide="lock" class="w-3.5 h-3.5"></i>
@@ -585,8 +666,14 @@
               <span class="font-bold text-emerald-400 font-mono" id="disp-counter">Blaue Tür ✅</span>
             </div>
             <div class="flex items-center justify-between text-xs">
-              <span class="text-slate-400" id="prompt-hint-lbl">Getarnter Hinweis:</span>
-              <span class="font-bold text-cyan-300 font-mono text-xs sm:text-sm px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20" id="disp-challenge">Codename: Falcon</span>
+              <span class="text-slate-400" id="prompt-hint-lbl">Aktuelle Challenge:</span>
+              <div class="flex items-center space-x-2">
+                <span class="font-bold text-cyan-300 font-mono text-xs sm:text-sm px-2.5 py-1 rounded bg-cyan-500/10 border border-cyan-500/20" id="disp-challenge">🔊 Stimme: "Tiger"</span>
+                <button onclick="playCurrentSimAudio()" id="sim-play-audio-btn" class="px-2 py-1 rounded bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 text-xs font-mono flex items-center space-x-1 transition">
+                  <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                  <span class="hidden sm:inline">Anhören</span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -596,8 +683,8 @@
             <div class="min-w-0">
               <span class="font-semibold text-cyan-300 block" id="thought-title">Was dein Gehirn in 0.1s denkt:</span>
               <p class="text-slate-300 mt-0.5 text-[11px] leading-relaxed break-words" id="thought-desc">
-                Wort ist <b>"Falcon"</b> &rarr; Erster: <span class="text-cyan-300 font-bold">F</span>, Letzter: <span class="text-cyan-300 font-bold">n</span>.<br/>
-                Eingesetzt in <i>"Mama1977"</i> an Pos 0 & 4 &rarr; <span class="text-emerald-400 font-mono font-bold">F M a m a n 1 9 7 7</span>
+                Reiz ist <b>"Tiger"</b> &rarr; Erster: <span class="text-cyan-300 font-bold">T</span>, Letzter: <span class="text-cyan-300 font-bold">r</span>.<br/>
+                Eingesetzt in <i>"12345qwert"</i> an Slot 2 & 5 &rarr; <span class="text-emerald-400 font-mono font-bold">1 T 2 3 4 r q w e r t</span>
               </p>
             </div>
           </div>
@@ -605,7 +692,7 @@
           <!-- Interactive Password Input -->
           <div class="space-y-3">
             <div class="relative">
-              <input type="text" id="pass-input" value="FMaman1977" placeholder="Passphrase eingeben..." class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl pl-3.5 pr-20 sm:pr-24 py-3 text-xs sm:text-sm text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition min-h-[44px]">
+              <input type="text" id="pass-input" value="1T234rqwert" placeholder="Passphrase eingeben..." class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl pl-3.5 pr-20 sm:pr-24 py-3 text-xs sm:text-sm text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition min-h-[44px]">
               <button onclick="autoFill()" class="absolute right-2 top-2 px-2 sm:px-2.5 py-1.5 rounded bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-[10px] sm:text-xs font-mono transition" id="btn-autofill">Auto-Fill</button>
             </div>
 
@@ -624,13 +711,13 @@
     </section>
 
     <!-- ============================================================ -->
-    <!-- SECTION 6: BENCHMARK MATRIX (MOBILE-OPTIMIZED HORIZONTAL)     -->
+    <!-- SECTION 6: BENCHMARK MATRIX                                  -->
     <!-- ============================================================ -->
     <section id="benchmark" class="scroll-mt-28 mb-8 sm:mb-12">
       <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
         <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider" id="bm-badge">Head-to-Head Evaluation</span>
-        <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1 break-words" id="bm-title">Warum DynPass die Notfall-Lücke schließt</h2>
-        <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed px-1" id="bm-sub">Vergleich mit dem aktuellen Stand der Technik in High-Security- und Notfall-Szenarien.</p>
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1 break-words" id="bm-title">Warum DynPass traditionelle MFA schlägt</h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed px-1" id="bm-sub">Vergleich zwischen statischen Passwörtern, SMS-Tokens, Authenticator-Apps und Back2IQ DynPass.</p>
         <span class="inline-block md:hidden text-[10px] font-mono text-cyan-400/80 mt-2">← Horizontal wischen für gesamten Vergleich →</span>
       </div>
 
@@ -639,54 +726,54 @@
           <thead>
             <tr class="border-b border-white/10 bg-white/5 font-semibold text-slate-300">
               <th class="p-3.5 sm:p-4 min-w-[180px]" id="th-feature">Sicherheits- & Betriebsmerkmal</th>
-              <th class="p-3.5 sm:p-4 text-center">Papier-Codes</th>
-              <th class="p-3.5 sm:p-4 text-center">PIV / CAC Smartcard</th>
-              <th class="p-3.5 sm:p-4 text-center">FIDO2 YubiKey</th>
+              <th class="p-3.5 sm:p-4 text-center">SMS-Codes</th>
+              <th class="p-3.5 sm:p-4 text-center">Authenticator App</th>
+              <th class="p-3.5 sm:p-4 text-center">FIDO2 Hardware</th>
               <th class="p-3.5 sm:p-4 text-center text-cyan-400 bg-cyan-500/10 border-l border-r border-cyan-500/20 font-bold">Back2IQ DynPass</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-white/5 text-slate-300 font-mono text-[11px] sm:text-xs">
             <tr class="hover:bg-white/[0.02]">
-              <td class="p-3.5 sm:p-4 font-sans font-medium" id="td-f1">Physisches Objekt nötig?</td>
-              <td class="p-3.5 sm:p-4 text-center text-rose-400">📄 Ja (Papier)</td>
-              <td class="p-3.5 sm:p-4 text-center text-rose-400">💳 Ja (Karte)</td>
+              <td class="p-3.5 sm:p-4 font-sans font-medium" id="td-f1">Physisches Gerät nötig?</td>
+              <td class="p-3.5 sm:p-4 text-center text-rose-400">📱 Ja (Handy)</td>
+              <td class="p-3.5 sm:p-4 text-center text-rose-400">📱 Ja (Handy)</td>
               <td class="p-3.5 sm:p-4 text-center text-rose-400">🔑 Ja (USB-Stick)</td>
               <td class="p-3.5 sm:p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">❌ 0% (Im Kopf)</td>
             </tr>
             <tr class="hover:bg-white/[0.02]">
-              <td class="p-3.5 sm:p-4 font-sans font-medium" id="td-f2">Beschlagnahmungssicher (Grenze)?</td>
-              <td class="p-3.5 sm:p-4 text-center text-rose-400">❌ Kopierbar</td>
-              <td class="p-3.5 sm:p-4 text-center text-rose-400">❌ Einbehaltbar</td>
-              <td class="p-3.5 sm:p-4 text-center text-rose-400">❌ Einbehaltbar</td>
-              <td class="p-3.5 sm:p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">✅ Zero Evidence</td>
-            </tr>
-            <tr class="hover:bg-white/[0.02]">
-              <td class="p-3.5 sm:p-4 font-sans font-medium" id="td-f3">Reinraum (ISO 1-5) & SCIF konform?</td>
-              <td class="p-3.5 sm:p-4 text-center text-amber-400">⚠️ Partikel</td>
-              <td class="p-3.5 sm:p-4 text-center text-emerald-400">✅ Zertifiziert</td>
-              <td class="p-3.5 sm:p-4 text-center text-rose-400">❌ Kontamination</td>
+              <td class="p-3.5 sm:p-4 font-sans font-medium" id="td-f2">Schutz vor SIM-Swapping & Diebstahl?</td>
+              <td class="p-3.5 sm:p-4 text-center text-rose-400">❌ Anfällig</td>
+              <td class="p-3.5 sm:p-4 text-center text-amber-400">⚠️ Bei Gerätediebstahl</td>
+              <td class="p-3.5 sm:p-4 text-center text-emerald-400">✅ Sicher</td>
               <td class="p-3.5 sm:p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">✅ 100% Sicher</td>
             </tr>
             <tr class="hover:bg-white/[0.02]">
-              <td class="p-3.5 sm:p-4 font-sans font-medium" id="td-f4">Server speichert Klartext-Passwort?</td>
-              <td class="p-3.5 sm:p-4 text-center text-rose-400">❌ Oft Hashes</td>
-              <td class="p-3.5 sm:p-4 text-center text-emerald-400">✅ Public Key</td>
-              <td class="p-3.5 sm:p-4 text-center text-emerald-400">✅ Public Key</td>
-              <td class="p-3.5 sm:p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">✅ Nur Public Keys</td>
+              <td class="p-3.5 sm:p-4 font-sans font-medium" id="td-f3">Wählbare Sicherheits-Modalitäten?</td>
+              <td class="p-3.5 sm:p-4 text-center text-slate-500">Nur SMS</td>
+              <td class="p-3.5 sm:p-4 text-center text-slate-500">Nur 6-Digit Zahl</td>
+              <td class="p-3.5 sm:p-4 text-center text-slate-500">Nur Taste drücken</td>
+              <td class="p-3.5 sm:p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">✅ 4 Modalitäten</td>
             </tr>
             <tr class="hover:bg-white/[0.02]">
-              <td class="p-3.5 sm:p-4 font-sans font-medium" id="td-f5">Hardwarekosten pro Mitarbeiter</td>
-              <td class="p-3.5 sm:p-4 text-center">0 €</td>
-              <td class="p-3.5 sm:p-4 text-center text-amber-400">$20–$50</td>
-              <td class="p-3.5 sm:p-4 text-center text-rose-400">$50–$90</td>
+              <td class="p-3.5 sm:p-4 font-sans font-medium" id="td-f4">Server speichert Klartext-Passwort?</td>
+              <td class="p-3.5 sm:p-4 text-center text-rose-400">❌ Oft Hash-Vault</td>
+              <td class="p-3.5 sm:p-4 text-center text-amber-400">❌ TOTP Shared Secret</td>
+              <td class="p-3.5 sm:p-4 text-center text-emerald-400">✅ Public Key</td>
+              <td class="p-3.5 sm:p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">✅ Nur Ed25519 Public Keys</td>
+            </tr>
+            <tr class="hover:bg-white/[0.02]">
+              <td class="p-3.5 sm:p-4 font-sans font-medium" id="td-f5">Hardwarekosten</td>
+              <td class="p-3.5 sm:p-4 text-center">Mobilfunkvertrag</td>
+              <td class="p-3.5 sm:p-4 text-center">Smartphone</td>
+              <td class="p-3.5 sm:p-4 text-center text-rose-400">50 € – 90 €</td>
               <td class="p-3.5 sm:p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">0 € Hardware</td>
             </tr>
             <tr class="hover:bg-white/[0.02]">
-              <td class="p-3.5 sm:p-4 font-sans font-medium" id="td-f6">Primäre Enterprise-Rolle</td>
-              <td class="p-3.5 sm:p-4 text-center text-slate-400">Veraltetes Fallback</td>
-              <td class="p-3.5 sm:p-4 text-center text-slate-300">Konzern-Badge</td>
-              <td class="p-3.5 sm:p-4 text-center text-slate-300">Phishing-Resistenz</td>
-              <td class="p-3.5 sm:p-4 text-center text-cyan-300 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">Break-Glass & Travel</td>
+              <td class="p-3.5 sm:p-4 font-sans font-medium" id="td-f6">Anti-Phishing Gegenlosung?</td>
+              <td class="p-3.5 sm:p-4 text-center text-rose-400">❌ Keine</td>
+              <td class="p-3.5 sm:p-4 text-center text-rose-400">❌ Keine</td>
+              <td class="p-3.5 sm:p-4 text-center text-emerald-400">✅ Origin Bound</td>
+              <td class="p-3.5 sm:p-4 text-center text-cyan-300 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">✅ Integriert ("Blaue Tür")</td>
             </tr>
           </tbody>
         </table>
@@ -719,452 +806,442 @@
   <script>
     lucide.createIcons();
 
-    // Multilingual Master Dictionary
+    // Multilingual Dictionary
     const I18N = {
       de: {
         navBg: 'Hintergrund',
-        navSpecs: 'Specs & Krypto',
+        navSpecs: '4 Modalitäten',
         navOnboarding: 'Onboarding-Studio',
         navSim: 'Login-Terminal',
         navBm: 'Benchmark',
-        heroTag: 'Ed25519 Cognitive Zero-Device MFA & Break-Glass Engine',
-        heroTitle1: 'Hardware-Sicherheit.',
-        heroTitle2: 'Ganz ohne Hardware.',
-        heroSub: 'Das weltweit erste kognitive Authentifizierungssystem für Reinräume, SCIF-Militärzonen, Executive Travel und unzerstörbare Break-Glass Notfälle. 0% Smartphone. 0% Token. 100% im Kopf.',
-        btnHeroOnboarding: 'Onboarding simulieren (60s)',
-        btnHeroSim: 'Login-Terminal testen',
-        statLatency: 'Kognitive Latenz (0 Zählzeit)',
-        statVault: 'Klartext-Passwörter auf Server',
-        statCrypto: 'Asymmetrische Signaturen',
-        statDevice: 'Zero-Device / Cleanroom Safe',
+        heroTag: 'Ed25519 Cognitive Zero-Device MFA · 4 Wählbare Sicherheits-Modalitäten',
+        heroTitle1: 'Deine Sicherheit.',
+        heroTitle2: 'Deine persönliche Stufe.',
+        heroSub: 'Wähle zwischen zufälligen Zeichen, visuellen Bildern, gesprochenen Audio-Wörtern oder persönlichen Lebensfragen. Das Geheimnis landet an deinen festen Einfügestellen. 0% Smartphone. 0% Token. 100% im Kopf.',
+        btnHeroOnboarding: 'Onboarding starten (Wähle dein Level)',
+        btnHeroSim: 'Live-Terminal ausprobieren',
+        statLatency: 'Text, Bild, Audio & Fragen',
+        statVault: 'Freie Stellenwahl (z. B. Slot 2 & 5)',
+        statCrypto: '0 Byte Server-Klartext',
+        statDevice: 'Zero-Device & Phishing-Safe',
         bgBadge: 'Problemstellung & Hintergrund',
-        bgTitle: 'Die fatale Notfall-Lücke moderner Enterprise-MFA',
-        bgSub: 'Jedes heutige IAM-System (Okta, Keycloak, Ping, Entra ID) erzwingt Hardware. Doch was passiert, wenn das Gerät weg, verboten oder beschlagnahmt ist?',
-        p1Title: '1. Der veraltete Notfall-Code',
-        p1Desc: 'Ausgedruckte Papier-Backup-Codes sind auffindbar, fotografierbar, un-rotierbar und an Grenzkontrollen sofort beschlagnahmbar.',
-        p2Title: '2. Physische Sonderzonen',
-        p2Desc: 'In Halbleiter-Reinräumen (ISO 1–5) und militärischen SCIFs sind Smartphones und USB-Sticks wegen Kontamination und Spionage streng verboten.',
-        p3Title: '3. Executive & Diplomat Travel',
-        p3Desc: 'Bei Reisen in feindliche Staaten beschlagnahmen Behörden Hardware. DynPass hinterlässt Null physische Spuren (Zero Evidence).',
-        specsBadge: 'Kryptografische Spezifikation',
-        specsTitle: 'Die 4 mathematischen Säulen von DynPass',
-        specsSub: 'Audit-feste Zero-Knowledge Architektur ohne Klartext-Tresor und ohne Zähler-Desynchronisation.',
-        spec1H: '1. Asymmetrische Ed25519 Schlüsselableitung',
-        spec1T: 'Beim Onboarding leitet der Client lokal 26 Ed25519-Schlüsselpaare via scrypt ab. Der Server speichert nur Public Keys.',
-        spec2H: '2. Zufalls-Challenge (26 Werte)',
-        spec2T: 'Der Server zieht pro Login einen zufälligen Index i ∈ [1..26]. Kein Zähler, keine Desynchronisation.',
-        spec3H: '3. Sub-Sekunden Wort- & Bild-Grenzen',
-        spec3T: 'Das Gehirn entnimmt in < 0.2 s ersten & letzten Buchstaben von Falcon (F...n) oder Hut (H...t).',
-        spec4H: '4. Anti-Phishing Gegenlosung (Countersign)',
-        spec4T: 'Der echte Server zeigt das persönliche Erkennungswort ("Blaue Tür"). Gefälschte Phishing-Seiten fliegen sofort auf.',
+        bgTitle: 'Warum starre Standard-Passwörter und SMS-Codes scheitern',
+        bgSub: 'Ob private Accounts oder hochsensible Daten: Standard-MFA zwingt dich zu Smartphone-Apps und SMS, die abgefangen, gestohlen oder gehackt werden können.',
+        p1Title: '1. SIM-Swapping & Phishing',
+        p1Desc: 'SMS-Codes und App-Pushs werden täglich durch SIM-Kopien und gefälschte Anmeldeseiten abgefangen.',
+        p2Title: '2. Schulterblick & Kameras',
+        p2Desc: 'Wer dein Passwort einmal sieht, hat vollen Zugriff. DynPass ändert die geforderte Eingabe bei jedem einzelnen Login.',
+        p3Title: '3. Server-Datenbankleaks',
+        p3Desc: 'Der Server speichert nur Ed25519 Public Keys. Selbst wenn Hacker die gesamte Datenbank stehlen, können sie sich nicht einloggen.',
+        specsBadge: 'Sicherheitsstufen & Modalitäten',
+        specsTitle: 'Die 4 wählbaren Challenge-Modalitäten',
+        specsSub: 'Jeder Nutzer wählt frei zwischen Geschwindigkeit und maximaler persönlicher Immunität.',
+        m1Title: '1. Zufällige Zeichenfolge / Codename',
+        m1Desc: 'Das Display zeigt ein Codename-Wort (z. B. Falcon oder Atlas). Das Gehirn entnimmt ersten und letzten Buchstaben (F...n) und schiebt sie an die gewählten Slots.',
+        m2Title: '2. Visuelles Bild / Objekt',
+        m2Desc: 'Das Display zeigt ein Icon oder Bild (z. B. 🐱 Katze oder 🎩 Hut). Du denkst das Wort, entnimmst Anfang & Ende (K...e bzw. H...t) und fügst sie an deine Slots ein.',
+        m3Title: '3. Gesprochenes Audio-Wort',
+        m3Desc: 'Das System spricht ein Wort laut und deutlich aus (z. B. „Tiger“ oder „Adler“). Absolut eindeutig und verwechslungsfrei – auf dem Bildschirm ist für Schulterblick-Spione nichts zu sehen!',
+        m4Title: '4. Persönliche Lebensfragen',
+        m4Desc: 'Der Server stellt 1 Zufallsfrage aus 18+ hinterlegten Lebensfragen (z. B. „Erstes Haustier?“ → Bello). Da nur du deine Biografie kennst, ist dieser Schutz selbst bei voll eingesehenem Bildschirm unknackbar.',
         obBadge: 'Interaktiver Workflow',
-        obTitle: 'Das 4-Stufen Onboarding Studio',
-        obSub: 'Erlebe selbst, wie ein neuer Mitarbeiter sein kognitives Profil in unter 60 Sekunden personalisiert und trainiert.',
-        obStepLbl1: 'Passwort',
-        obStepLbl2: 'Denkregel',
+        obTitle: 'Das persönliche Onboarding Studio',
+        obSub: 'Konfiguriere dein Basis-Passwort, bestimme deine exakten Einfügestellen und wähle deine bevorzugte Sicherheits-Modalität.',
+        obStepLbl1: 'Passwort & Slots',
+        obStepLbl2: 'Modalität',
         obStepLbl3: 'Anti-Phish',
         obStepLbl4: 'Trainer',
-        s1H: 'Wähle dein Master-Passwort',
-        s1D: 'Dieses Passwort bleibt dauerhaft in deinem Muskelgedächtnis. Der Server erfährt es nie.',
+        s1H: 'Wähle dein Basis-Passwort & deine Einfügestellen',
+        s1D: 'Dein Passwort kann ein Wort oder eine beliebige Zeichenfolge sein (z. B. 12345qwert). Der Server speichert davon 0 Byte.',
         s1InputLbl: 'Dein Basis-Passwort:',
-        s1StructLbl: 'Automatisch erkannte Nahtstellen im Passwort:',
-        btnOb1: 'Weiter zur Denkregel',
-        s2H: 'Wähle deine kognitive Denkregel',
-        s2D: 'Bestimme, wie du den getarnten Hinweis in dein Passwort einsetzt.',
-        s2SlotsLbl: 'Nahtstellen-Konfiguration (Im Original-Passwort):',
-        s2PrevLbl: 'Live-Vorschau bei Challenge "Falcon":',
+        s1StructLbl: 'Klicke auf die Positionen (Slots), an denen Buchstaben eingefügt werden:',
+        btnOb1: 'Weiter zur Modalitäten-Auswahl',
+        s2H: 'Wähle deine Sicherheits-Modalität',
+        s2D: 'Wie möchtest du beim Login deine Challenge erhalten?',
         btnObBack2: 'Zurück',
         btnOb2: 'Weiter zu Anti-Phishing',
         s3H: 'Wähle deine Anti-Phishing Gegenlosung',
-        s3D: 'Der echte Server zeigt dir dieses Wort bei jedem Login an. Steht es nicht da, ist die Seite gefälscht.',
+        s3D: 'Der echte Server zeigt dir dieses Erkennungswort bei jedem Login an. Steht es nicht da, ist die Website gefälscht.',
         s3InputLbl: 'Dein persönliches Erkennungswort (Gegenlosung):',
         s3BoxT: 'Warum das vor Phishing schützt:',
-        s3BoxD: 'Ein Angreifer mit gefälschtem Login-Portal kennt dein Erkennungswort nicht. Du enttarnst Phishing auf den ersten Blick.',
+        s3BoxD: 'Ein Angreifer mit gefälschtem Login-Portal kennt dein Erkennungswort nicht. Du enttarnst Phishing auf den ersten Blick, noch bevor du auch nur ein Zeichen tippst.',
         btnObBack3: 'Zurück',
         btnOb3: 'Zum Trainer (3 Probe-Logins)',
         s4H: 'Der Cognitive Trainer (3 Probeläufe)',
-        s4D: 'Absolviere 3 Probe-Logins. Erst wenn alle 3 fehlerfrei sitzen, wird dein Profil scharf geschaltet.',
+        s4D: 'Absolviere 3 Probe-Logins mit deiner gewählten Modalität. Erst wenn alle 3 fehlerfrei sitzen, wird dein Profil scharf geschaltet.',
         btnObTrSubmit: 'Runde prüfen',
         btnObBack4: 'Zurück',
-        simBadge: 'Live Enterprise Terminal',
-        simTitle: 'Erlebe den 0-Sekunden Login',
+        simBadge: 'Live Enterprise & Consumer Terminal',
+        simTitle: 'Erlebe die 4 Modalitäten live',
         btnReset: 'Reset',
-        configTitle: '1. Muskelgedächtnis & Regel',
-        lblMaster: 'Master-Passwort (im Kopf):',
-        lblSlots: 'Gewählte Nahtstellen (Slots):',
+        configTitle: '1. Muskelgedächtnis & Slots',
+        lblMaster: 'Basis-Passwort (im Kopf):',
+        lblSlots: 'Feste Einfügestellen (Slots):',
         lblCounter: 'Anti-Phishing Gegenlosung:',
-        btnDraw: 'Zufalls-Challenge generieren',
+        btnDraw: 'Neue Zufalls-Challenge generieren',
         promptCounterLbl: 'Gegenlosung:',
-        promptHintLbl: 'Getarnter Hinweis:',
+        promptHintLbl: 'Aktuelle Challenge:',
         thoughtTitle: 'Was dein Gehirn in 0.1s denkt:',
         btnAutofill: 'Auto-Fill',
         btnSubmit: 'Signieren & Authentifizieren',
         bmBadge: 'Head-to-Head Evaluation',
-        bmTitle: 'Warum DynPass die Notfall-Lücke schließt',
-        bmSub: 'Vergleich mit dem aktuellen Stand der Technik in High-Security- und Notfall-Szenarien.',
+        bmTitle: 'Warum DynPass traditionelle MFA schlägt',
+        bmSub: 'Vergleich zwischen statischen Passwörtern, SMS-Tokens, Authenticator-Apps und Back2IQ DynPass.',
         thFeature: 'Sicherheits- & Betriebsmerkmal',
-        tdF1: 'Physisches Objekt nötig?',
-        tdF2: 'Beschlagnahmungssicher (Grenze)?',
-        tdF3: 'Reinraum (ISO 1-5) & SCIF konform?',
+        tdF1: 'Physisches Gerät nötig?',
+        tdF2: 'Schutz vor SIM-Swapping & Diebstahl?',
+        tdF3: 'Wählbare Sicherheits-Modalitäten?',
         tdF4: 'Server speichert Klartext-Passwort?',
-        tdF5: 'Hardwarekosten pro Mitarbeiter',
-        tdF6: 'Primäre Enterprise-Rolle'
+        tdF5: 'Hardwarekosten',
+        tdF6: 'Anti-Phishing Gegenlosung?'
       },
       en: {
         navBg: 'Background',
-        navSpecs: 'Specs & Crypto',
+        navSpecs: '4 Modalities',
         navOnboarding: 'Onboarding Studio',
         navSim: 'Login Terminal',
         navBm: 'Benchmark',
-        heroTag: 'Ed25519 Cognitive Zero-Device MFA & Break-Glass Engine',
-        heroTitle1: 'Hardware-Grade Security.',
-        heroTitle2: 'Without the Hardware.',
-        heroSub: 'The world’s first cognitive authentication system for cleanrooms, military SCIF zones, executive travel, and indestructible break-glass emergencies. 0% smartphone. 0% token. 100% in your mind.',
-        btnHeroOnboarding: 'Simulate Onboarding (60s)',
-        btnHeroSim: 'Test Login Terminal',
-        statLatency: 'Cognitive Latency (0 Counting)',
-        statVault: 'Plaintext Passwords on Server',
-        statCrypto: 'Asymmetric Signatures',
-        statDevice: 'Zero-Device / Cleanroom Safe',
+        heroTag: 'Ed25519 Cognitive Zero-Device MFA · 4 Selectable Modalities',
+        heroTitle1: 'Your Security.',
+        heroTitle2: 'Your Personal Level.',
+        heroSub: 'Choose between random text, visual images, spoken audio words, or personal life questions. Secrets land in your fixed insertion slots. 0% smartphone. 0% token. 100% in your mind.',
+        btnHeroOnboarding: 'Start Onboarding (Pick Level)',
+        btnHeroSim: 'Try Live Terminal',
+        statLatency: 'Text, Image, Audio & Questions',
+        statVault: 'Exact Index Slots (e.g. 2 & 5)',
+        statCrypto: '0 Byte Plaintext on Server',
+        statDevice: 'Zero-Device & Phishing-Safe',
         bgBadge: 'Problem Statement & Context',
-        bgTitle: 'The Fatal Emergency Vulnerability of Modern MFA',
-        bgSub: 'Every current IAM system forces hardware. But what happens when the device is lost, restricted, or seized?',
-        p1Title: '1. Outdated Backup Codes',
-        p1Desc: 'Printed paper backup codes are discoverable, photographable, unrotatable, and instantly seized at border controls.',
-        p2Title: '2. Physical Exclusion Zones',
-        p2Desc: 'In semiconductor cleanrooms (ISO 1–5) and military SCIFs, smartphones and USB drives are strictly forbidden.',
-        p3Title: '3. Executive & Diplomatic Travel',
-        p3Desc: 'Hostile border agents seize hardware. DynPass leaves Zero Physical Evidence.',
-        specsBadge: 'Cryptographic Specification',
-        specsTitle: 'The 4 Mathematical Pillars of DynPass',
-        specsSub: 'Audit-ready Zero-Knowledge architecture with zero plaintext secrets and zero counter desync.',
-        spec1H: '1. Asymmetric Ed25519 Derivation',
-        spec1T: 'During onboarding, client derives 26 Ed25519 keypairs via scrypt. Server stores public keys only.',
-        spec2H: '2. Random Challenge (26 Values)',
-        spec2T: 'Server draws a random index i ∈ [1..26] per login. No counter exhaustion, no desync.',
-        spec3H: '3. Sub-Second Word & Visual Boundaries',
-        spec3T: 'The brain extracts boundary characters in < 0.2s from Falcon (F...n) or Hat (H...t).',
-        spec4H: '4. Anti-Phishing Countersign',
-        spec4T: 'The genuine server displays your secret word ("Blue Door"). Cloned phishing pages are exposed immediately.',
+        bgTitle: 'Why Static Passwords & SMS Codes Fail',
+        bgSub: 'Standard MFA forces you into smartphone apps and SMS codes that can be intercepted, spoofed, or stolen.',
+        p1Title: '1. SIM-Swapping & Phishing',
+        p1Desc: 'SMS codes and push notifications are intercepted daily via SIM cloning and cloned login pages.',
+        p2Title: '2. Shoulder Surfing & Cameras',
+        p2Desc: 'Anyone looking at your screen gets your password. DynPass demands a different input on every single login.',
+        p3Title: '3. Database Breaches',
+        p3Desc: 'The server stores Ed25519 public keys only. If hackers steal the database, they have zero actionable credentials.',
+        specsBadge: 'Security Tiers & Modalities',
+        specsTitle: 'The 4 Selectable Challenge Modalities',
+        specsSub: 'Every user chooses freely between rapid speed and maximum personal immunity.',
+        m1Title: '1. Random Code / Codename',
+        m1Desc: 'Display shows a codename word (e.g. Falcon). Mind extracts first and last characters (F...n) and inserts into slots.',
+        m2Title: '2. Visual Image / Object',
+        m2Desc: 'Display shows an icon/image (e.g. 🐱 Cat or 🎩 Hat). You think the word, extract boundary letters, and insert.',
+        m3Title: '3. Spoken Audio Word',
+        m3Desc: 'The system speaks a word aloud (e.g. "Tiger"). 100% unambiguous and immune to shoulder surfers looking at your screen!',
+        m4Title: '4. Personal Life Questions',
+        m4Desc: 'Server draws 1 random question from 18+ life questions (e.g. "First pet?" → Bello). Uncrackable even with full screen observation.',
         obBadge: 'Interactive Workflow',
-        obTitle: 'The 4-Step Onboarding Studio',
-        obSub: 'Experience how an employee configures and trains their cognitive profile in under 60 seconds.',
-        obStepLbl1: 'Password',
-        obStepLbl2: 'Mental Rule',
+        obTitle: 'Personal Onboarding Studio',
+        obSub: 'Configure your base password, pick exact slot indices, and select your preferred security modality.',
+        obStepLbl1: 'Password & Slots',
+        obStepLbl2: 'Modality',
         obStepLbl3: 'Anti-Phish',
         obStepLbl4: 'Trainer',
-        s1H: 'Choose Your Master Password',
-        s1D: 'This password remains in your muscle memory. The server never learns it.',
+        s1H: 'Choose Your Base Password & Slots',
+        s1D: 'Your password can be any word or arbitrary string (e.g. 12345qwert). Server stores 0 bytes of it.',
         s1InputLbl: 'Your base password:',
-        s1StructLbl: 'Detected anchor positions:',
-        btnOb1: 'Continue to Mental Rule',
-        s2H: 'Choose Your Mental Rule',
-        s2D: 'Define how hint characters insert into your password.',
-        s2SlotsLbl: 'Anchor Configuration (In Original Password):',
-        s2PrevLbl: 'Live Preview for "Falcon":',
+        s1StructLbl: 'Click positions (slots) where characters will be inserted:',
+        btnOb1: 'Continue to Modality Selection',
+        s2H: 'Choose Your Security Modality',
+        s2D: 'How do you want to receive your login challenge?',
         btnObBack2: 'Back',
         btnOb2: 'Continue to Anti-Phishing',
         s3H: 'Choose Your Anti-Phishing Countersign',
-        s3D: 'The genuine server displays this word. If missing, the site is fake.',
+        s3D: 'The genuine server displays this secret word. If missing, the site is a phishing fake.',
         s3InputLbl: 'Personal recognition word (Countersign):',
         s3BoxT: 'Why this prevents phishing:',
-        s3BoxD: 'An attacker cloning the login portal does not know your countersign. You detect fraud instantly.',
+        s3BoxD: 'A cloned hacker site does not know your secret word. You spot fraud instantly before typing.',
         btnObBack3: 'Back',
         btnOb3: 'Start Trainer (3 Tests)',
         s4H: 'The Cognitive Trainer (3 Dry Runs)',
-        s4D: 'Complete 3 test logins. Profile activates only after 3 flawless entries.',
+        s4D: 'Complete 3 dry-run logins with your chosen modality to activate your profile.',
         btnObTrSubmit: 'Verify Round',
         btnObBack4: 'Back',
-        simBadge: 'Live Enterprise Terminal',
-        simTitle: 'Experience the 0-Second Login',
+        simBadge: 'Live Enterprise & Consumer Terminal',
+        simTitle: 'Experience the 4 Modalities Live',
         btnReset: 'Reset',
-        configTitle: '1. Muscle Memory & Rule',
-        lblMaster: 'Master Password (in memory):',
-        lblSlots: 'Configured Anchors (Slots):',
+        configTitle: '1. Muscle Memory & Slots',
+        lblMaster: 'Base Password (in mind):',
+        lblSlots: 'Configured Slots:',
         lblCounter: 'Anti-Phishing Countersign:',
-        btnDraw: 'Generate Random Challenge',
+        btnDraw: 'Generate New Challenge',
         promptCounterLbl: 'Countersign:',
-        promptHintLbl: 'Disguised Challenge:',
+        promptHintLbl: 'Current Challenge:',
         thoughtTitle: 'What your brain thinks in 0.1s:',
         btnAutofill: 'Auto-Fill',
         btnSubmit: 'Sign & Authenticate',
         bmBadge: 'Head-to-Head Evaluation',
-        bmTitle: 'Why DynPass Closes the Emergency Gap',
-        bmSub: 'Comparison with modern authentication methods in high-threat scenarios.',
+        bmTitle: 'Why DynPass Beats Legacy MFA',
+        bmSub: 'Comparison between static passwords, SMS tokens, authenticator apps, and DynPass.',
         thFeature: 'Security & Operational Metric',
         tdF1: 'Physical device required?',
-        tdF2: 'Seizure-proof at hostile borders?',
-        tdF3: 'Cleanroom (ISO 1-5) & SCIF compliant?',
-        tdF4: 'Server stores plaintext secret?',
-        tdF5: 'Hardware cost per employee',
-        tdF6: 'Primary Enterprise Role'
+        tdF2: 'SIM-swap & theft immunity?',
+        tdF3: 'Selectable modalities?',
+        tdF4: 'Server stores plaintext password?',
+        tdF5: 'Hardware costs',
+        tdF6: 'Anti-Phishing Countersign?'
       },
       tr: {
         navBg: 'Arka Plan',
-        navSpecs: 'Teknik & Kripto',
+        navSpecs: '4 Modalite',
         navOnboarding: 'Onboarding Studyosu',
         navSim: 'Giris Terminali',
         navBm: 'Karsilastirma',
-        heroTag: 'Ed25519 Bilissel Sifir-Cihaz MFA Motoru',
-        heroTitle1: 'Donanim Seviyesinde Guvenlik.',
-        heroTitle2: 'Sifir Donanim Ile.',
-        heroSub: 'Temiz odalar, askeri SCIF alanlari, yonetici seyahatleri ve acil durum girisleri icin dunyanin ilk bilissel kimlik dogrulama sistemi. %0 Akilli Telefon. %0 Token. %100 Hafizada.',
-        btnHeroOnboarding: 'Onboarding Simulasyonu (60s)',
-        btnHeroSim: 'Giris Terminalini Dene',
-        statLatency: 'Bilissel Gecikme (0 Sayma)',
-        statVault: 'Sunucuda Duz Metin Sifre',
-        statCrypto: 'Asimetrik Imzalar',
-        statDevice: 'Sifir Cihaz / Temiz Oda Uygun',
+        heroTag: 'Ed25519 Bilissel Sifir-Cihaz MFA · 4 Secilebilir Guvenlik Modalitesi',
+        heroTitle1: 'Sizin Guvenliginiz.',
+        heroTitle2: 'Kisisel Guvenlik Seviyeniz.',
+        heroSub: 'Rastgele metin, gorsel resimler, sesli kelimeler veya kisisel yasam sorulari arasindan secim yapin. %0 Telefon. %0 Token. %100 Hafizada.',
+        btnHeroOnboarding: 'Onboarding’e Basla',
+        btnHeroSim: 'Canli Terminali Dene',
+        statLatency: 'Metin, Resim, Ses & Sorular',
+        statVault: 'Kesin Slot Secimi (Orn: 2 & 5)',
+        statCrypto: 'Sunucuda 0 Byte Duz Metin',
+        statDevice: 'Sifir Cihaz & Oltalama Korumasi',
         bgBadge: 'Problem ve Arka Plan',
-        bgTitle: 'Modern Kurumsal MFA’nin Kritik Acil Durum Boslugu',
-        bgSub: 'Mevcut tum sistemler cihaz zorunlu kilar. Peki cihaz kayboldugunda veya el konuldugunda ne olur?',
-        p1Title: '1. Eski Kagit Kodlar',
-        p1Desc: 'Kagida yazili yedek kodlar calinabilir, fotograflanabilir ve sinirda el konulabilir.',
-        p2Title: '2. Fiziksel Ozel Bolgeler',
-        p2Desc: 'Yari iletken temiz odalarinda ve askeri SCIF’lerde telefon ve USB bellekler kesinlikle yasaktir.',
-        p3Title: '3. Yonetici Seyahatleri',
-        p3Desc: 'Sinir kontrollerinde cihazlara el konulur. DynPass geride hicbir fiziksel iz birakmaz.',
-        specsBadge: 'Kriptografik Ozellikler',
-        specsTitle: 'DynPass’un 4 Matematiksel Temeli',
-        specsSub: 'Duz metin saklamayan ve senkronizasyon kaybi olmayan sifir-bilgi mimarisi.',
-        spec1H: '1. Asimetrik Ed25519 Turetme',
-        spec1T: 'Istemci 26 anahtar ciftini yerel olarak uretir. Sunucu yalnizca Genel Anahtarlari saklar.',
-        spec2H: '2. Rastgele Challenge (26 Deger)',
-        spec2T: 'Sunucu her giriste rastgele bir indeks secer. Sayac tukenmesi veya kayma yasanmaz.',
-        spec3H: '3. Hizli Kelime ve Nesne Sinirlari',
-        spec3T: 'Beyin ilk ve son harfi 0.2 saniyeden kisa surede cikarir (Falcon → F...n).',
-        spec4H: '4. Oltalama Karsiti Parola (Countersign)',
-        spec4T: 'Orijinal sunucu kisisel kelimenizi ("Mavi Kapi") gosterir. Sahte sayfalar aninda anlasilir.',
+        bgTitle: 'Neden Sabit Sifreler ve SMS Kodlari Yetersiz Kalir',
+        bgSub: 'Standart MFA sizi ele gecirilebilir SMS kodlarina ve telefon uygulamalarina mecbur birakir.',
+        p1Title: '1. SIM Kopyalama & Oltalama',
+        p1Desc: 'SMS kodlari ve bildirimler sahte giris sayfalariyla gunluk olarak calinmaktadir.',
+        p2Title: '2. Ekrana Bakarak Casusluk',
+        p2Desc: 'Sifrenizi bir kez goren kisi tam erisime sahip olur. DynPass her giriste farkli bir cikti talep eder.',
+        p3Title: '3. Veritabani Sizintilari',
+        p3Desc: 'Sunucu yalnizca Ed25519 Genel Anahtarlarini saklar. Veritabani calinsa bile sifreler acilamaz.',
+        specsBadge: 'Guvenlik Seviyeleri & Modaliteler',
+        specsTitle: '4 Farkli Challenge Modalitesi',
+        specsSub: 'Her kullanici hiz ve kisisel bagisiklik seviyesini serbestce secer.',
+        m1Title: '1. Rastgele Kod / Kelime',
+        m1Desc: 'Ekranda Falcon gibi bir kelime gorunur. Ilk ve son harfler (F...n) belirlenen slotlara yerlestirilir.',
+        m2Title: '2. Gorsel Resim / Nesne',
+        m2Desc: 'Ekranda 🐱 Kedi veya 🎩 Sapka gorunur. Kelimeyi dusunup harfleri slotlara yerlestirirsiniz.',
+        m3Title: '3. Sesli Kelime (Audio)',
+        m3Desc: 'Sistem kelimeyi net olarak seslendirir (Orn: "Kaplan"). Ekranda hicbir sey gorunmez, tam gizlilik saglar.',
+        m4Title: '4. Kisisel Yasam Sorulari',
+        m4Desc: 'Sunucu 18+ soru havuzundan 1 soru sorar ("Ilk evcil hayvan?"). Cevap sadece hafizanizda oldugundan kirilamaz.',
         obBadge: 'Etkilesimli Is Akisi',
-        obTitle: '4 Asamali Onboarding Studyosu',
-        obSub: 'Bir calisanin 60 saniyede bilissel profilini nasil yapilandirip egittigini gorun.',
-        obStepLbl1: 'Sifre',
-        obStepLbl2: 'Zihinsel Kural',
+        obTitle: 'Kisisel Onboarding Studyosu',
+        obSub: 'Temel sifrenizi belirleyin, slot konumlarini secin ve modalitenizi yapilandirin.',
+        obStepLbl1: 'Sifre & Slotlar',
+        obStepLbl2: 'Modalite',
         obStepLbl3: 'Oltalama',
         obStepLbl4: 'Egitici',
-        s1H: 'Ana Sifrenizi Belirleyin',
-        s1D: 'Bu sifre hafizanizda kalir. Sunucu bunu asla ogrenmez.',
+        s1H: 'Temel Sifrenizi ve Slotlari Secin',
+        s1D: 'Sifreniz herhangi bir kelime veya rastgele karakter dizisi olabilir (Orn: 12345qwert).',
         s1InputLbl: 'Temel Sifreniz:',
-        s1StructLbl: 'Algilanan baglanti noktalari:',
-        btnOb1: 'Zihinsel Kurala Gec',
-        s2H: 'Zihinsel Kuralinizi Secin',
-        s2D: 'Ipucu harflerini sifrenize nasil yerlestireceginizi belirleyin.',
-        s2SlotsLbl: 'Baglanti Noktasi Yapilandirmasi:',
-        s2PrevLbl: '"Falcon" icin Canli Onizleme:',
+        s1StructLbl: 'Harflerin eklenecegi slot konumlarina tiklayin:',
+        btnOb1: 'Modalite Secimine Gec',
+        s2H: 'Guvenlik Modalitenizi Secin',
+        s2D: 'Giris aninda challenge’i nasil almak istersiniz?',
         btnObBack2: 'Geri',
         btnOb2: 'Oltalama Korumasina Gec',
         s3H: 'Karsilik Parolanizi Belirleyin',
-        s3D: 'Sunucu bu kelimeyi gosterir. Gorunmuyorsa sayfa sahtedir.',
+        s3D: 'Orijinal sunucu bu kelimeyi gosterir. Yoksa sayfa sahtedir.',
         s3InputLbl: 'Kisisel tanima kelimeniz:',
         s3BoxT: 'Neden oltalamayi engeller:',
-        s3BoxD: 'Sahte sayfa kisisel kelimenizi bilemez. Dolandiriciligi aninda anlarsiniz.',
+        s3BoxD: 'Sahte klon site sizin ozel kelimenizi bilemez. Dolandiriciligi aninda anlarsiniz.',
         btnObBack3: 'Geri',
-        btnOb3: 'Egiticiye Basla (3 Deneme)',
-        s4H: 'Bilissel Egitici (3 Prova)',
-        s4D: '3 deneme girisi yapin. Profil 3 dogru giristen sonra etkinlesir.',
+        btnOb3: 'Egiticiye Basla',
+        s4H: 'Bilissel Egitici (3 Deneme)',
+        s4D: 'Secilen modaliteyle 3 basarili deneme girisi yaparak profilinizi etkinlestirin.',
         btnObTrSubmit: 'Turu Kontrol Et',
         btnObBack4: 'Geri',
-        simBadge: 'Live Enterprise Terminal',
-        simTitle: '0-Saniyelik Bilissel Girisi Deneyimleyin',
+        simBadge: 'Live Enterprise & Consumer Terminal',
+        simTitle: '4 Modaliteyi Canli Deneyimleyin',
         btnReset: 'Sifirla',
-        configTitle: '1. Kas Hafizasi ve Kural',
-        lblMaster: 'Ana Sifre (Hafizada):',
-        lblSlots: 'Secilen Baglanti Noktalari:',
+        configTitle: '1. Kas Hafizasi & Slotlar',
+        lblMaster: 'Temel Sifre (Hafizada):',
+        lblSlots: 'Yapilandirilan Slotlar:',
         lblCounter: 'Oltalama Karsiti Parola:',
-        btnDraw: 'Rastgele Challenge Uret',
+        btnDraw: 'Yeni Challenge Uret',
         promptCounterLbl: 'Karsilik Parolasi:',
-        promptHintLbl: 'Gizlenmis Ipucu:',
+        promptHintLbl: 'Mevcut Challenge:',
         thoughtTitle: 'Beyninizin 0.1 saniyede dusundugu:',
         btnAutofill: 'Otomatik Doldur',
         btnSubmit: 'Imzala ve Dogrula',
         bmBadge: 'Basa Bas Degerlendirme',
-        bmTitle: 'DynPass Acil Durum Boslugunu Nasil Kapatir',
-        bmSub: 'Yuksek guvenlikli senaryolarda mevcut teknolojiyle karsilastirma.',
+        bmTitle: 'DynPass Neden Geleneksel MFA’yi Gecer',
+        bmSub: 'Sabit sifreler, SMS tokenlari ve DynPass karsilastirmasi.',
         thFeature: 'Guvenlik ve Operasyonel Ozellik',
         tdF1: 'Fiziksel cihaz gerekiyor mu?',
-        tdF2: 'Sinirda el konulmaya dayanikli mi?',
-        tdF3: 'Temiz oda ve SCIF uyumlu mu?',
+        tdF2: 'SIM kopyalamaya karsi koruma?',
+        tdF3: 'Secilebilir modaliteler?',
         tdF4: 'Sunucu sifreyi sakliyor mu?',
-        tdF5: 'Calisan basina donanim maliyeti',
-        tdF6: 'Temel Kurumsal Rol'
+        tdF5: 'Donanim maliyeti',
+        tdF6: 'Oltalama Karsiti Parola?'
       },
       fr: {
         navBg: 'Contexte',
-        navSpecs: 'Spécifications',
+        navSpecs: '4 Modalités',
         navOnboarding: 'Studio Onboarding',
         navSim: 'Terminal Login',
         navBm: 'Comparatif',
-        heroTag: 'Moteur MFA Cognitif Sans Périphérique Ed25519',
-        heroTitle1: 'Sécurité Matérielle.',
-        heroTitle2: 'Sans Aucun Matériel.',
-        heroSub: 'Le premier système d’authentification cognitive au monde pour salles blanches, zones SCIF et voyages exécutifs. 0% Smartphone. 0% Token. 100% dans l’esprit.',
-        btnHeroOnboarding: 'Simuler l’Onboarding (60s)',
-        btnHeroSim: 'Tester le Terminal Login',
-        statLatency: 'Latence Cognitive (0 Comptage)',
-        statVault: 'Mots de passe en clair sur serveur',
-        statCrypto: 'Signatures Asymétriques',
-        statDevice: 'Sans Périphérique / Salle Blanche',
+        heroTag: 'MFA Cognitif Sans Périphérique Ed25519 · 4 Modalités',
+        heroTitle1: 'Votre Sécurité.',
+        heroTitle2: 'Votre Niveau Personnel.',
+        heroSub: 'Choisissez entre texte aléatoire, image visuelle, mot audio parlé ou questions personnelles. 0% smartphone. 0% token. 100% dans l’esprit.',
+        btnHeroOnboarding: 'Démarrer l’Onboarding',
+        btnHeroSim: 'Tester le Terminal Live',
+        statLatency: 'Texte, Image, Audio & Questions',
+        statVault: 'Emplacements Index Précis (ex: 2 & 5)',
+        statCrypto: '0 Octet en Clair sur Serveur',
+        statDevice: 'Sans Périphérique & Anti-Phishing',
         bgBadge: 'Contexte & Problématique',
-        bgTitle: 'La faille critique d’urgence des MFA actuels',
-        bgSub: 'Tous les systèmes actuels imposent un matériel. Que faire quand l’appareil est perdu ou confisqué ?',
-        p1Title: '1. Codes de secours obsolètes',
-        p1Desc: 'Les codes papier sont trouvables, photographiables et saisis aux frontières.',
-        p2Title: '2. Zones Physiques Sensibles',
-        p2Desc: 'En salles blanches et zones SCIF, smartphones et clés USB sont strictement bannis.',
-        p3Title: '3. Voyages Exécutifs',
-        p3Desc: 'Les agents frontaliers saisissent le matériel. DynPass ne laisse aucune preuve physique.',
-        specsBadge: 'Spécifications Cryptographiques',
-        specsTitle: 'Les 4 piliers mathématiques de DynPass',
-        specsSub: 'Architecture Zero-Knowledge sans mot de passe en clair et sans désynchronisation.',
-        spec1H: '1. Dérivation Asymétrique Ed25519',
-        spec1T: 'Le client dérive 26 paires de clés. Le serveur stocke uniquement les clés publiques.',
-        spec2H: '2. Défi Aléatoire (26 Valeurs)',
-        spec2T: 'Le serveur tire un indice aléatoire à chaque connexion. Zéro désynchronisation.',
-        spec3H: '3. Limites de Mots en < 0.2s',
-        spec3T: 'Le cerveau extrait premier et dernier caractère de Falcon (F...n) ou Chapeau (C...u).',
-        spec4H: '4. Contresigne Anti-Phishing',
-        spec4T: 'Le vrai serveur affiche votre mot ("Porte Bleue"). Les faux sites sont démasqués immédiatement.',
+        bgTitle: 'Pourquoi les mots de passe et SMS échouent',
+        bgSub: 'Le MFA classique vous oblige à utiliser des SMS interceptables et des applications mobiles.',
+        p1Title: '1. SIM-Swapping & Phishing',
+        p1Desc: 'Les SMS sont interceptés quotidiennement par clonage de carte SIM et faux portails.',
+        p2Title: '2. Espionnage par Caméra',
+        p2Desc: 'Quiconque voit votre mot de passe une fois a un accès total. DynPass change la réponse à chaque connexion.',
+        p3Title: '3. Fuites de Bases de Données',
+        p3Desc: 'Le serveur ne stocke que les clés publiques Ed25519. Zéro donnée exploitable pour un pirate.',
+        specsBadge: 'Niveaux & Modalités',
+        specsTitle: 'Les 4 Modalités de Défi au Choix',
+        specsSub: 'Chaque utilisateur choisit librement entre rapidité et immunité maximale.',
+        m1Title: '1. Code Aléatoire / Mot',
+        m1Desc: 'L’écran affiche un nom de code (ex: Falcon). L’esprit extrait F...n et l’insère dans les slots.',
+        m2Title: '2. Image Visuelle / Objet',
+        m2Desc: 'L’écran affiche 🐱 Chat ou 🎩 Chapeau. Vous extrayez les lettres limites et les insérez.',
+        m3Title: '3. Mot Audio Parlé',
+        m3Desc: 'Le système prononce un mot distinctement (ex: « Tigre »). 100% sans ambiguïté et invisible pour les regards indiscrets !',
+        m4Title: '4. Questions Personnelles',
+        m4Desc: 'Le serveur tire 1 question parmi 18+ questions biographiques. Impossible à craquer même en observant l’écran.',
         obBadge: 'Flux Interactif',
-        obTitle: 'Le Studio d’Onboarding en 4 Étapes',
-        obSub: 'Découvrez comment configurer et entraîner son profil cognitif en 60 secondes.',
-        obStepLbl1: 'Mot de passe',
-        obStepLbl2: 'Règle mentale',
+        obTitle: 'Le Studio d’Onboarding Personnel',
+        obSub: 'Configurez votre mot de passe de base, choisissez vos slots et sélectionnez votre modalité.',
+        obStepLbl1: 'Mot de passe & Slots',
+        obStepLbl2: 'Modalité',
         obStepLbl3: 'Anti-Phish',
         obStepLbl4: 'Entraîneur',
-        s1H: 'Choisissez votre mot de passe maître',
-        s1D: 'Ce mot de passe reste dans votre mémoire. Le serveur ne le connaît jamais.',
+        s1H: 'Choisissez votre mot de passe & vos emplacements',
+        s1D: 'Votre mot de passe peut être une chaîne quelconque (ex: 12345qwert). Le serveur n’en stocke rien.',
         s1InputLbl: 'Mot de passe de base :',
-        s1StructLbl: 'Points d’ancrage détectés :',
-        btnOb1: 'Continuer vers la règle',
-        s2H: 'Définissez votre règle mentale',
-        s2D: 'Où insérer les lettres de l’indice.',
-        s2SlotsLbl: 'Configuration des ancrages :',
-        s2PrevLbl: 'Aperçu pour "Falcon" :',
+        s1StructLbl: 'Cliquez sur les emplacements (slots) d’insertion :',
+        btnOb1: 'Continuer vers le choix de modalité',
+        s2H: 'Choisissez votre modalité de sécurité',
+        s2D: 'Comment souhaitez-vous recevoir votre défi lors de la connexion ?',
         btnObBack2: 'Retour',
         btnOb2: 'Continuer vers Anti-Phishing',
         s3H: 'Choisissez votre contresigne anti-phishing',
-        s3D: 'Le serveur affiche ce mot. S’il manque, la page est fausse.',
+        s3D: 'Le vrai serveur affiche ce mot secret. S’il est absent, le site est un clone frauduleux.',
         s3InputLbl: 'Mot de reconnaissance personnel :',
         s3BoxT: 'Pourquoi cela bloque le phishing :',
-        s3BoxD: 'Un site pirate ignore votre mot. Vous identifiez le piège avant de saisir le mot de passe.',
+        s3BoxD: 'Un site pirate ignore votre mot secret. Vous démasquez la fraude avant même de taper.',
         btnObBack3: 'Retour',
         btnOb3: 'Démarrer l’entraîneur',
         s4H: 'L’Entraîneur Cognitif (3 Essais)',
-        s4D: 'Réussissez 3 essais pour activer votre profil.',
+        s4D: 'Réussissez 3 essais avec votre modalité pour activer votre profil.',
         btnObTrSubmit: 'Vérifier l’essai',
         btnObBack4: 'Retour',
-        simBadge: 'Terminal Live Enterprise',
-        simTitle: 'Vivez la Connexion en 0 Seconde',
+        simBadge: 'Terminal Live Enterprise & Consumer',
+        simTitle: 'Vivez les 4 Modalités en Direct',
         btnReset: 'Réinitialiser',
-        configTitle: '1. Mémoire Musculaire & Règle',
-        lblMaster: 'Mot de passe maître (en tête):',
-        lblSlots: 'Points d’ancrage choisis:',
-        lblCounter: 'Contresigne Anti-Phishing:',
-        btnDraw: 'Générer Challenge Aléatoire',
-        promptCounterLbl: 'Contresigne:',
-        promptHintLbl: 'Indice Déguisé:',
-        thoughtTitle: 'Ce que votre cerveau pense en 0.1s:',
+        configTitle: '1. Mémoire Musculaire & Slots',
+        lblMaster: 'Mot de passe de base :',
+        lblSlots: 'Emplacements configurés :',
+        lblCounter: 'Contresigne Anti-Phishing :',
+        btnDraw: 'Générer Nouveau Défi',
+        promptCounterLbl: 'Contresigne :',
+        promptHintLbl: 'Défi Actuel :',
+        thoughtTitle: 'Ce que votre cerveau pense en 0.1s :',
         btnAutofill: 'Remplir Auto',
         btnSubmit: 'Signer & Authentifier',
         bmBadge: 'Évaluation Comparative',
-        bmTitle: 'Pourquoi DynPass comble la faille d’urgence',
-        bmSub: 'Comparaison avec l’état de l’art dans les environnements à haute menace.',
+        bmTitle: 'Pourquoi DynPass surpasse le MFA classique',
+        bmSub: 'Comparaison entre mots de passe statiques, SMS et DynPass.',
         thFeature: 'Caractéristique de Sécurité',
-        tdF1: 'Objet physique requis ?',
-        tdF2: 'Résistant à la saisie aux frontières ?',
-        tdF3: 'Conforme salle blanche & SCIF ?',
+        tdF1: 'Appareil physique requis ?',
+        tdF2: 'Protection SIM-swap & vol ?',
+        tdF3: 'Modalités au choix ?',
         tdF4: 'Le serveur stocke-t-il le mot de passe ?',
-        tdF5: 'Coût matériel par employé',
-        tdF6: 'Rôle d’Entreprise Principal'
+        tdF5: 'Coût matériel',
+        tdF6: 'Contresigne Anti-Phishing ?'
       },
       es: {
         navBg: 'Contexto',
-        navSpecs: 'Especificaciones',
+        navSpecs: '4 Modalidades',
         navOnboarding: 'Estudio Onboarding',
         navSim: 'Terminal Login',
         navBm: 'Comparativa',
-        heroTag: 'Motor MFA Cognitivo Sin Dispositivos Ed25519',
-        heroTitle1: 'Seguridad de Nivel Hardware.',
-        heroTitle2: 'Sin Ningún Hardware.',
-        heroSub: 'El primer sistema de autenticación cognitiva del mundo para salas limpias, zonas SCIF y viajes ejecutivos. 0% Smartphone. 0% Token. 100% en la memoria.',
-        btnHeroOnboarding: 'Simular Onboarding (60s)',
-        btnHeroSim: 'Probar Terminal Login',
-        statLatency: 'Latencia Cognitiva (0 Conteo)',
-        statVault: 'Contraseñas en texto plano en servidor',
-        statCrypto: 'Firmas Asimétricas',
-        statDevice: 'Sin Dispositivo / Sala Limpia',
+        heroTag: 'MFA Cognitivo Sin Dispositivos Ed25519 · 4 Modalidades',
+        heroTitle1: 'Tu Seguridad.',
+        heroTitle2: 'Tu Nivel Personal.',
+        heroSub: 'Elige entre texto aleatorio, imágenes visuales, palabras de audio habladas o preguntas personales. 0% móvil. 0% token. 100% en la memoria.',
+        btnHeroOnboarding: 'Iniciar Onboarding',
+        btnHeroSim: 'Probar Terminal Live',
+        statLatency: 'Texto, Imagen, Audio & Preguntas',
+        statVault: 'Ranuras Exactas (ej: 2 & 5)',
+        statCrypto: '0 Bytes en Claro en Servidor',
+        statDevice: 'Sin Dispositivo & Anti-Phishing',
         bgBadge: 'Problema y Contexto',
-        bgTitle: 'La vulnerabilidad crítica de los MFA actuales',
-        bgSub: 'Todos los sistemas actuales exigen hardware. ¿Qué ocurre cuando el dispositivo se pierde o es incautado?',
-        p1Title: '1. Códigos de papel obsoletos',
-        p1Desc: 'Los códigos impresos se pueden fotografiar, perder e incautar en aduanas.',
-        p2Title: '2. Zonas Físicas Restringidas',
-        p2Desc: 'En salas limpias y búnkeres SCIF, los móviles y USBs están terminantemente prohibidos.',
-        p3Title: '3. Viajes Ejecutivos',
-        p3Desc: 'En fronteras hostiles se incauta el hardware. DynPass deja Cero Evidencia Física.',
-        specsBadge: 'Especificaciones Criptográficas',
-        specsTitle: 'Los 4 pilares matemáticos de DynPass',
-        specsSub: 'Arquitectura Zero-Knowledge sin contraseñas en texto plano y sin desincronización.',
-        spec1H: '1. Derivación Asimétrica Ed25519',
-        spec1T: 'El cliente deriva 26 pares de claves. El servidor almacena únicamente claves públicas.',
-        spec2H: '2. Desafío Aleatorio (26 Valores)',
-        spec2T: 'El servidor extrae un índice aleatorio en cada acceso. Cero desincronización.',
-        spec3H: '3. Límites de Palabras en < 0.2s',
-        spec3T: 'El cerebro extrae primera y última letra de Falcon (F...n) o Sombrero (S...o).',
-        spec4H: '4. Contraseña de Control (Countersign)',
-        spec4T: 'El servidor real muestra su palabra ("Puerta Azul"). Las webs falsas se detectan al instante.',
+        bgTitle: 'Por qué fallan las contraseñas y los SMS',
+        bgSub: 'El MFA tradicional exige móviles y SMS vulnerables a la interceptación y el robo.',
+        p1Title: '1. SIM-Swapping & Phishing',
+        p1Desc: 'Los códigos SMS son interceptados a diario mediante clonación de SIM y portales falsos.',
+        p2Title: '2. Espionaje de Pantalla',
+        p2Desc: 'Quien ve tu contraseña tiene acceso total. DynPass exige una respuesta distinta en cada login.',
+        p3Title: '3. Fugas de Bases de Datos',
+        p3Desc: 'El servidor solo almacena claves públicas Ed25519. Cero datos aprovechables para atacantes.',
+        specsBadge: 'Niveles & Modalidades',
+        specsTitle: 'Las 4 Modalidades de Desafío',
+        specsSub: 'Cada usuario elige libremente entre rapidez e inmunidad personal máxima.',
+        m1Title: '1. Código Aleatorio / Nombre Clave',
+        m1Desc: 'La pantalla muestra Falcon. La mente extrae F...n y lo inserta en las ranuras seleccionadas.',
+        m2Title: '2. Imagen Visual / Objeto',
+        m2Desc: 'La pantalla muestra 🐱 Gato o 🎩 Sombrero. Extraes las letras límite y las insertas.',
+        m3Title: '3. Palabra de Audio Hablada',
+        m3Desc: 'El sistema pronuncia una palabra con claridad (ej: "Tigre"). ¡100% inequívoco e invisible a miradas indiscretas!',
+        m4Title: '4. Preguntas Personales',
+        m4Desc: 'El servidor extrae 1 pregunta de entre 18+ preguntas biográficas. Imposible de descifrar.',
         obBadge: 'Flujo Interactivo',
-        obTitle: 'El Estudio de Onboarding en 4 Pasos',
-        obSub: 'Vea cómo un empleado configura y entrena su perfil cognitivo en 60 segundos.',
-        obStepLbl1: 'Contraseña',
-        obStepLbl2: 'Regla mental',
+        obTitle: 'Estudio de Onboarding Personal',
+        obSub: 'Configura tu contraseña base, elige los índices de ranura y selecciona tu modalidad.',
+        obStepLbl1: 'Contraseña & Slots',
+        obStepLbl2: 'Modalidad',
         obStepLbl3: 'Anti-Phish',
         obStepLbl4: 'Entrenador',
-        s1H: 'Elija su contraseña maestra',
-        s1D: 'Esta contraseña permanece en su memoria. El servidor nunca la conoce.',
-        s1InputLbl: 'Contraseña base personal:',
-        s1StructLbl: 'Puntos de anclaje detectados:',
-        btnOb1: 'Continuar a regla mental',
-        s2H: 'Defina su regla mental',
-        s2D: 'Dónde insertar las letras de la pista.',
-        s2SlotsLbl: 'Configuración de anclajes:',
-        s2PrevLbl: 'Vista previa para "Falcon":',
+        s1H: 'Elige tu contraseña base y ranuras',
+        s1D: 'Tu contraseña puede ser cualquier texto (ej: 12345qwert). El servidor no guarda nada en texto claro.',
+        s1InputLbl: 'Contraseña base:',
+        s1StructLbl: 'Haz clic en las posiciones (slots) de inserción:',
+        btnOb1: 'Continuar a selección de modalidad',
+        s2H: 'Elige tu modalidad de seguridad',
+        s2D: '¿Cómo deseas recibir tu desafío en el momento del acceso?',
         btnObBack2: 'Volver',
         btnOb2: 'Continuar a Anti-Phishing',
-        s3H: 'Elija su contraseña de control anti-phishing',
-        s3D: 'El servidor real muestra esta palabra. Si falta, la web es falsa.',
+        s3H: 'Elige tu contraseña de control anti-phishing',
+        s3D: 'El servidor real muestra esta palabra. Si falta, la web es un clon falso.',
         s3InputLbl: 'Palabra de reconocimiento personal:',
         s3BoxT: 'Por qué bloquea el phishing:',
-        s3BoxD: 'Un clon falso no conoce su palabra. Usted detecta el engaño antes de escribir.',
+        s3BoxD: 'Un clon falso no conoce tu palabra secreta. Detectas el fraude antes de escribir.',
         btnObBack3: 'Volver',
         btnOb3: 'Iniciar entrenador',
         s4H: 'El Entrenador Cognitivo (3 Ensayos)',
-        s4D: 'Supere 3 ensayos para activar su perfil.',
+        s4D: 'Supera 3 ensayos con tu modalidad para activar tu perfil.',
         btnObTrSubmit: 'Verificar ensayo',
         btnObBack4: 'Volver',
-        simBadge: 'Terminal Live Enterprise',
-        simTitle: 'Experimente el Acceso en 0 Segundos',
+        simBadge: 'Terminal Live Enterprise & Consumer',
+        simTitle: 'Vive las 4 Modalidades en Directo',
         btnReset: 'Reiniciar',
-        configTitle: '1. Memoria Muscular y Regla',
-        lblMaster: 'Contraseña maestra (en memoria):',
-        lblSlots: 'Anclajes configurados:',
+        configTitle: '1. Memoria Muscular & Slots',
+        lblMaster: 'Contraseña base (en memoria):',
+        lblSlots: 'Ranuras configuradas:',
         lblCounter: 'Contraseña Anti-Phishing:',
-        btnDraw: 'Generar Desafío Aleatorio',
+        btnDraw: 'Generar Nuevo Desafío',
         promptCounterLbl: 'Contraseña de Control:',
-        promptHintLbl: 'Pista Camuflada:',
-        thoughtTitle: 'Lo que su cerebro piensa en 0.1s:',
+        promptHintLbl: 'Desafío Actual:',
+        thoughtTitle: 'Lo que tu cerebro piensa en 0.1s:',
         btnAutofill: 'Relleno Automático',
         btnSubmit: 'Firmar y Autenticar',
         bmBadge: 'Evaluación Comparativa',
-        bmTitle: 'Por qué DynPass cierra la brecha de emergencia',
-        bmSub: 'Comparación con los métodos actuales en escenarios de alta seguridad.',
+        bmTitle: 'Por qué DynPass supera al MFA clásico',
+        bmSub: 'Comparación entre contraseñas estáticas, SMS y DynPass.',
         thFeature: 'Métrica de Seguridad',
-        tdF1: '¿Requiere objeto físico?',
-        tdF2: '¿Inmune a incautación fronteriza?',
-        tdF3: '¿Apto para sala limpia y SCIF?',
+        tdF1: '¿Requiere dispositivo físico?',
+        tdF2: '¿Protección contra SIM-swap?',
+        tdF3: '¿Modalidades a elegir?',
         tdF4: '¿El servidor almacena contraseña?',
-        tdF5: 'Coste de hardware por empleado',
-        tdF6: 'Rol Principal Empresarial'
+        tdF5: 'Costes de hardware',
+        tdF6: '¿Contraseña de Control Anti-Phishing?'
       }
     };
 
@@ -1183,7 +1260,6 @@
         }
       });
 
-      // Update all IDs
       Object.keys(dict).forEach(key => {
         const kebabKey = key.replace(/([A-Z])/g, "-$1").toLowerCase();
         const el = document.getElementById(kebabKey);
@@ -1191,24 +1267,60 @@
           el.innerText = dict[key];
         }
       });
+
+      renderCurrentSimChallenge();
     }
 
     // ==========================================
-    // ONBOARDING WIZARD LOGIC
+    // ONBOARDING WIZARD DATA & LOGIC
     // ==========================================
     let obCurrentStep = 1;
-    let obMasterPwd = "Mama1977";
-    let obSource = "codename";
+    let obBasePwd = "12345qwert";
+    let obSlots = [2, 5]; // 1-indexed slots: [2, 5] -> inserts at index 1 and index 4 of original string
+    let obSelectedModality = "audio"; // 'text' | 'image' | 'audio' | 'questions'
     let obCountersign = "Blaue Tür";
     let obTrainerRound = 0;
     let obRoundStart = 0;
     let obElapsed = [];
 
-    const OB_TRAINER_CHALLENGES = [
-      { word: "Falcon", expected: "FMaman1977" },
-      { word: "Atlas",  expected: "AMamas1977" },
-      { word: "Nexus",  expected: "NMamas1977" }
-    ];
+    // Helper: calculate transformation for arbitrary base string and 2 boundary characters
+    function transformWithSlots(base, char1, char2, slots) {
+      // slots are 1-indexed insertion positions
+      // e.g. base = "12345qwert", slots = [2, 5], char1 = 'H', char2 = 't'
+      // Slot 2 means: after character 1 -> "1" + "H" + "234" + "t" + "qwert" = "1H234tqwert"
+      const s1 = Math.min(slots[0], slots[1]);
+      const s2 = Math.max(slots[0], slots[1]);
+
+      const p1 = base.slice(0, s1 - 1);
+      const p2 = base.slice(s1 - 1, s2 - 1);
+      const p3 = base.slice(s2 - 1);
+
+      return `${p1}${char1}${p2}${char2}${p3}`;
+    }
+
+    // Challenges per modality for Trainer
+    const TRAINER_DATA = {
+      text: [
+        { display: 'Codename: Falcon', char1: 'F', char2: 'n', word: 'Falcon' },
+        { display: 'Codename: Atlas',  char1: 'A', char2: 's', word: 'Atlas' },
+        { display: 'Codename: Nexus',  char1: 'N', char2: 's', word: 'Nexus' }
+      ],
+      image: [
+        { display: '🎩 Hut',   char1: 'H', char2: 't', word: 'Hut' },
+        { display: '🐱 Katze', char1: 'K', char2: 'e', word: 'Katze' },
+        { display: '🚀 Rakete', char1: 'R', char2: 'e', word: 'Rakete' }
+      ],
+      audio: [
+        { display: '🔊 Gesprochen: "Tiger"',   char1: 'T', char2: 'r', word: 'Tiger' },
+        { display: '🔊 Gesprochen: "Adler"',   char1: 'A', char2: 'r', word: 'Adler' },
+        { display: '🔊 Gesprochen: "Vulkan"',  char1: 'V', char2: 'n', word: 'Vulkan' }
+      ],
+      questions: [
+        { display: 'Frage: "Name deiner Grundschule?"', char1: 'G', char2: 'e', word: 'Goethe' },
+        { display: 'Frage: "Name deines ersten Haustiers?"', char1: 'B', char2: 'o', word: 'Bello' },
+        { display: 'Frage: "Marke deines ersten Autos?"', char1: 'G', char2: 'f', word: 'Golf' }
+      ]
+    };
 
     function setObStep(step) {
       document.getElementById(`ob-step-${obCurrentStep}`).classList.add('hidden');
@@ -1233,42 +1345,109 @@
     }
 
     function updateObPassword() {
-      obMasterPwd = document.getElementById('ob-pwd-input').value.trim() || "Mama1977";
+      obBasePwd = document.getElementById('ob-pwd-input').value.trim() || "12345qwert";
+      renderSlotGrid();
+      updateObPreview();
+    }
+
+    function renderSlotGrid() {
       const grid = document.getElementById('ob-char-grid');
       grid.innerHTML = "";
 
-      for (let i = 0; i < obMasterPwd.length; i++) {
-        const char = obMasterPwd[i];
-        const isLetter = /[a-zA-Z]/.test(char);
-        const isDigit = /[0-9]/.test(char);
-        let colorClass = isLetter ? "bg-cyan-500/10 text-cyan-300 border-cyan-500/30" : (isDigit ? "bg-amber-500/10 text-amber-300 border-amber-500/30" : "bg-purple-500/10 text-purple-300 border-purple-500/30");
-        
+      for (let i = 0; i < obBasePwd.length; i++) {
+        const slotPos = i + 1;
+        const char = obBasePwd[i];
+        const isSlot = obSlots.includes(slotPos);
+        const slotIdx = obSlots.indexOf(slotPos);
+
+        let cardClass = isSlot
+          ? "border-2 border-cyan-400 bg-cyan-500/20 text-cyan-200 ring-2 ring-cyan-500/30 font-extrabold scale-105"
+          : "border border-dark-border bg-dark-card text-slate-300 hover:border-slate-500";
+
         grid.innerHTML += `
-          <div class="flex flex-col items-center">
-            <span class="text-[9px] sm:text-[10px] text-slate-500 mb-0.5">${i}</span>
-            <div class="w-7 h-8 sm:w-8 sm:h-9 rounded-lg border ${colorClass} flex items-center justify-center font-bold font-mono shadow-sm">
+          <button type="button" onclick="toggleSlot(${slotPos})" class="flex flex-col items-center transition transform">
+            <span class="text-[9px] sm:text-[10px] font-mono ${isSlot ? 'text-cyan-400 font-bold' : 'text-slate-500'} mb-0.5">
+              ${isSlot ? `Slot ${slotIdx + 1} (Pos ${slotPos})` : `Pos ${slotPos}`}
+            </span>
+            <div class="w-8 h-9 sm:w-9 sm:h-10 rounded-lg ${cardClass} flex items-center justify-center font-bold font-mono shadow-sm">
               ${char}
             </div>
-          </div>
+          </button>
         `;
       }
-
-      const p1 = obMasterPwd.slice(0, 4);
-      const p2 = obMasterPwd.slice(4);
-      document.getElementById('ob-preview-output').innerText = `F ${p1} n ${p2}`;
+      document.getElementById('slot-count-badge').innerText = `Gewählt: Slot ${obSlots[0]} & Slot ${obSlots[1]}`;
     }
 
-    function setObSource(src) {
-      obSource = src;
-      const b1 = document.getElementById('ob-src-codename');
-      const b2 = document.getElementById('ob-src-icon');
-      if (src === 'codename') {
-        b1.className = "p-3.5 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-left transition flex items-start space-x-3";
-        b2.className = "p-3.5 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3";
-      } else {
-        b2.className = "p-3.5 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-left transition flex items-start space-x-3";
-        b1.className = "p-3.5 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3";
+    function toggleSlot(pos) {
+      if (obSlots.includes(pos)) {
+        // already in slots, do nothing if we want exactly 2
+        return;
       }
+      // shift slots: new slot replaces the second slot
+      obSlots = [obSlots[1], pos].sort((a, b) => a - b);
+      renderSlotGrid();
+      updateObPreview();
+    }
+
+    function updateObPreview() {
+      const transformed = transformWithSlots(obBasePwd, 'H', 't', obSlots);
+      // formatted with spaces for clarity
+      const spaced = transformed.split('').map((c, i) => {
+        if (c === 'H' || c === 't') return `<b class="text-cyan-300 font-extrabold underline">${c}</b>`;
+        return c;
+      }).join(' ');
+
+      document.getElementById('ob-preview-output').innerHTML = spaced;
+    }
+
+    function setObModality(mod) {
+      obSelectedModality = mod;
+      ['text', 'image', 'audio', 'questions'].forEach(m => {
+        const btn = document.getElementById(`mod-btn-${m}`);
+        if (m === mod) {
+          btn.className = "p-4 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-left transition flex items-start space-x-3";
+          btn.querySelector('.font-bold').className = "font-bold text-xs text-cyan-300";
+        } else {
+          btn.className = "p-4 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3";
+          btn.querySelector('.font-bold').className = "font-bold text-xs text-slate-200";
+        }
+      });
+
+      const iconEl = document.getElementById('detail-icon');
+      const titleEl = document.getElementById('detail-title');
+      const descEl = document.getElementById('detail-desc');
+
+      if (mod === 'text') {
+        iconEl.innerText = '🔤';
+        titleEl.innerText = 'Codename / Zufalls-Code (0s Denkzeit)';
+        descEl.innerText = 'Zeigt ein Codename-Wort auf dem Bildschirm (z. B. "Falcon"). Das Gehirn nimmt automatisch ersten und letzten Buchstaben (F...n).';
+      } else if (mod === 'image') {
+        iconEl.innerText = '🖼️';
+        titleEl.innerText = 'Visuelles Bild (Sprachbarriere)';
+        descEl.innerText = 'Zeigt ein klares Bild oder Icon (🎩 Hut). Du denkst das Wort in deiner Sprache und setzt Anfang & Ende (H...t) an deine Slots.';
+      } else if (mod === 'audio') {
+        iconEl.innerText = '🔊';
+        titleEl.innerText = 'Audio-Wort: Akustischer Reiz (Schulterblick-sicher)';
+        descEl.innerText = 'Das System spricht ein Wort unmissverständlich aus („Tiger“ → T...r). Auf dem Monitor ist kein Zeichen zu sehen – 100% spionagesicher!';
+      } else {
+        iconEl.innerText = '🛡️';
+        titleEl.innerText = 'Persönliche Lebensfragen (Höchste Sicherheitsstufe)';
+        descEl.innerText = '18+ biografische Fragen hinterlegt. Der Server fragt z. B. nach deiner Grundschule (Goethe → G...e). Niemand außer dir kann die Antwort kennen.';
+      }
+    }
+
+    function speakWord(word) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = currentLang === 'de' ? 'de-DE' : (currentLang === 'tr' ? 'tr-TR' : (currentLang === 'fr' ? 'fr-FR' : (currentLang === 'es' ? 'es-ES' : 'en-US')));
+        utterance.rate = 0.95;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    function testAudioSample() {
+      speakWord("Tiger");
     }
 
     function startObTrainer() {
@@ -1282,10 +1461,21 @@
     }
 
     function loadObTrainerRound() {
-      const cur = OB_TRAINER_CHALLENGES[obTrainerRound];
-      document.getElementById('ob-tr-word').innerText = `Codename: ${cur.word}`;
+      const challenges = TRAINER_DATA[obSelectedModality] || TRAINER_DATA.audio;
+      const cur = challenges[obTrainerRound];
+
+      document.getElementById('ob-tr-main-text').innerText = cur.display;
       document.getElementById('ob-tr-input').value = "";
       document.getElementById('ob-tr-feedback').className = "hidden";
+
+      const audioBtnWrap = document.getElementById('ob-tr-audio-btn-wrap');
+      if (obSelectedModality === 'audio') {
+        audioBtnWrap.classList.remove('hidden');
+        // auto-speak
+        setTimeout(() => speakWord(cur.word), 300);
+      } else {
+        audioBtnWrap.classList.add('hidden');
+      }
       
       for (let r = 0; r < 3; r++) {
         const badge = document.getElementById(`ob-badge-${r + 1}`);
@@ -1302,22 +1492,30 @@
       obRoundStart = Date.now();
     }
 
+    function playTrainerAudio() {
+      const challenges = TRAINER_DATA[obSelectedModality] || TRAINER_DATA.audio;
+      const cur = challenges[obTrainerRound];
+      speakWord(cur.word);
+    }
+
     function submitObTrainerRound() {
       const input = document.getElementById('ob-tr-input').value.trim();
-      const cur = OB_TRAINER_CHALLENGES[obTrainerRound];
+      const challenges = TRAINER_DATA[obSelectedModality] || TRAINER_DATA.audio;
+      const cur = challenges[obTrainerRound];
+      const expected = transformWithSlots(obBasePwd, cur.char1, cur.char2, obSlots);
       const time = ((Date.now() - obRoundStart) / 1000).toFixed(1);
       const fb = document.getElementById('ob-tr-feedback');
 
       fb.classList.remove('hidden');
 
-      if (input === cur.expected) {
+      if (input === expected) {
         obElapsed.push(parseFloat(time));
         fb.className = "p-3 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 text-xs font-mono flex items-center justify-between";
-        fb.innerHTML = `<span>Richtig gelöst in ${time}s! ✅</span><span class="text-emerald-400 font-bold">PASS</span>`;
+        fb.innerHTML = `<span>Richtig gelöst in ${time}s! (${cur.char1}...${cur.char2} an Slot ${obSlots[0]}, ${obSlots[1]}) ✅</span><span class="text-emerald-400 font-bold">PASS</span>`;
 
         obTrainerRound++;
         if (obTrainerRound < 3) {
-          setTimeout(loadObTrainerRound, 800);
+          setTimeout(loadObTrainerRound, 900);
         } else {
           setTimeout(() => {
             const avg = (obElapsed.reduce((a, b) => a + b, 0) / obElapsed.length).toFixed(1);
@@ -1328,65 +1526,124 @@
         }
       } else {
         fb.className = "p-3 rounded-xl border border-rose-500/40 bg-rose-500/10 text-rose-300 text-xs font-mono flex items-center justify-between";
-        fb.innerHTML = `<span>Falsche Eingabe für "${cur.word}". Erwartet: <b>${cur.expected}</b></span><span class="text-rose-400 font-bold">FEHLER</span>`;
+        fb.innerHTML = `<span>Falsche Eingabe für "${cur.word}". Erwartet: <b>${expected}</b></span><span class="text-rose-400 font-bold">FEHLER</span>`;
       }
     }
 
     function applyOnboardingToSimulator() {
-      document.getElementById('cfg-master').innerText = obMasterPwd;
+      document.getElementById('cfg-master').innerText = obBasePwd;
+      document.getElementById('cfg-master-len').innerText = `${obBasePwd.length} Zeichen`;
+      document.getElementById('cfg-slot1-pos').innerText = `Stelle ${obSlots[0]} (nach '${obBasePwd[obSlots[0] - 2] || 'Start'}')`;
+      document.getElementById('cfg-slot2-pos').innerText = `Stelle ${obSlots[1]} (nach '${obBasePwd[obSlots[1] - 2] || 'Start'}')`;
       document.getElementById('cfg-counter').innerText = obCountersign;
       document.getElementById('disp-counter').innerText = `${obCountersign} ✅`;
-      renderCurrentChallenge();
+      switchSimModality(obSelectedModality);
     }
 
     // ==========================================
-    // SIMULATOR LOGIC
+    // SIMULATOR LOGIC & MODALITY CONTROLLER
     // ==========================================
-    const SAMPLE_CHALLENGES = [
-      { word: "Falcon", first: "F", last: "n", expected: "FMaman1977" },
-      { word: "Atlas",  first: "A", last: "s", expected: "AMamas1977" },
-      { word: "Nexus",  first: "N", last: "s", expected: "NMamas1977" },
-      { word: "Vanguard", first: "V", last: "d", expected: "VMamad1977" },
-      { word: "Quantum",  first: "Q", last: "m", expected: "QMamam1977" },
-      { word: "Phoenix",  first: "P", last: "x", expected: "PMamax1977" }
-    ];
+    let simModality = "audio";
+    let simChallengeIndex = 0;
 
-    let activeChallengeIndex = 0;
+    const SIM_CHALLENGES = {
+      text: [
+        { label: '🔤 Codename: "Falcon"', char1: 'F', char2: 'n', word: 'Falcon' },
+        { label: '🔤 Codename: "Quantum"', char1: 'Q', char2: 'm', word: 'Quantum' },
+        { label: '🔤 Codename: "Vanguard"', char1: 'V', char2: 'd', word: 'Vanguard' }
+      ],
+      image: [
+        { label: '🎩 Bild: "Hut"',   char1: 'H', char2: 't', word: 'Hut' },
+        { label: '🐱 Bild: "Katze"', char1: 'K', char2: 'e', word: 'Katze' },
+        { label: '🚀 Bild: "Rakete"', char1: 'R', char2: 'e', word: 'Rakete' }
+      ],
+      audio: [
+        { label: '🔊 Stimme: "Tiger"',   char1: 'T', char2: 'r', word: 'Tiger' },
+        { label: '🔊 Stimme: "Adler"',   char1: 'A', char2: 'r', word: 'Adler' },
+        { label: '🔊 Stimme: "Vulkan"',  char1: 'V', char2: 'n', word: 'Vulkan' },
+        { label: '🔊 Stimme: "Phoenix"', char1: 'P', char2: 'x', word: 'Phoenix' }
+      ],
+      questions: [
+        { label: '🛡️ Frage: "Name deiner Grundschule?"', char1: 'G', char2: 'e', word: 'Goethe' },
+        { label: '🛡️ Frage: "Name deines ersten Haustiers?"', char1: 'B', char2: 'o', word: 'Bello' },
+        { label: '🛡️ Frage: "Marke deines ersten Autos?"', char1: 'G', char2: 'f', word: 'Golf' }
+      ]
+    };
 
-    function renderCurrentChallenge() {
-      const ch = SAMPLE_CHALLENGES[activeChallengeIndex];
-      document.getElementById('disp-challenge').innerText = `Codename: ${ch.word}`;
+    function switchSimModality(mod) {
+      simModality = mod;
+      simChallengeIndex = 0;
+
+      ['text', 'image', 'audio', 'questions'].forEach(m => {
+        const tab = document.getElementById(`sim-tab-${m}`);
+        if (m === mod) {
+          tab.className = "px-3 py-1.5 rounded-lg border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 font-bold whitespace-nowrap";
+        } else {
+          tab.className = "px-3 py-1.5 rounded-lg border border-dark-border bg-dark-card text-slate-400 hover:text-white whitespace-nowrap";
+        }
+      });
+
+      renderCurrentSimChallenge();
+    }
+
+    function renderCurrentSimChallenge() {
+      const list = SIM_CHALLENGES[simModality] || SIM_CHALLENGES.audio;
+      const ch = list[simChallengeIndex % list.length];
+      const audioBtn = document.getElementById('sim-play-audio-btn');
+
+      document.getElementById('disp-challenge').innerText = ch.label;
+
+      if (simModality === 'audio') {
+        audioBtn.classList.remove('hidden');
+        // speak word
+        speakWord(ch.word);
+      } else {
+        audioBtn.classList.add('hidden');
+      }
+
+      const expected = transformWithSlots(obBasePwd, ch.char1, ch.char2, obSlots);
       
-      const thoughtDesc = `Wort ist <b>"${ch.word}"</b> &rarr; Erster: <span class="text-cyan-300 font-bold">${ch.first}</span>, Letzter: <span class="text-cyan-300 font-bold">${ch.last}</span>.<br/>` +
-        `Eingesetzt in <i>"Mama1977"</i> an Pos 0 & 4 &rarr; <span class="text-emerald-400 font-mono font-bold">${ch.expected}</span>`;
+      const thoughtDesc = `Reiz ist <b>"${ch.word}"</b> &rarr; Erster: <span class="text-cyan-300 font-bold">${ch.char1}</span>, Letzter: <span class="text-cyan-300 font-bold">${ch.char2}</span>.<br/>` +
+        `Eingesetzt in <i>"${obBasePwd}"</i> an Slot ${obSlots[0]} & ${obSlots[1]} &rarr; <span class="text-emerald-400 font-mono font-bold">${expected}</span>`;
+      
       document.getElementById('thought-desc').innerHTML = thoughtDesc;
-      document.getElementById('pass-input').value = ch.expected;
+      document.getElementById('pass-input').value = expected;
       document.getElementById('auth-result').className = "hidden";
     }
 
-    function drawNewChallenge() {
-      activeChallengeIndex = (activeChallengeIndex + 1) % SAMPLE_CHALLENGES.length;
-      renderCurrentChallenge();
+    function drawNewSimChallenge() {
+      const list = SIM_CHALLENGES[simModality] || SIM_CHALLENGES.audio;
+      simChallengeIndex = (simChallengeIndex + 1) % list.length;
+      renderCurrentSimChallenge();
+    }
+
+    function playCurrentSimAudio() {
+      const list = SIM_CHALLENGES[simModality] || SIM_CHALLENGES.audio;
+      const ch = list[simChallengeIndex % list.length];
+      speakWord(ch.word);
     }
 
     function autoFill() {
-      const ch = SAMPLE_CHALLENGES[activeChallengeIndex];
-      document.getElementById('pass-input').value = ch.expected;
+      const list = SIM_CHALLENGES[simModality] || SIM_CHALLENGES.audio;
+      const ch = list[simChallengeIndex % list.length];
+      document.getElementById('pass-input').value = transformWithSlots(obBasePwd, ch.char1, ch.char2, obSlots);
     }
 
     function verifyLogin() {
       const input = document.getElementById('pass-input').value.trim();
-      const ch = SAMPLE_CHALLENGES[activeChallengeIndex];
+      const list = SIM_CHALLENGES[simModality] || SIM_CHALLENGES.audio;
+      const ch = list[simChallengeIndex % list.length];
+      const expected = transformWithSlots(obBasePwd, ch.char1, ch.char2, obSlots);
       const resultBox = document.getElementById('auth-result');
 
       resultBox.classList.remove('hidden');
 
-      if (input === ch.expected) {
+      if (input === expected) {
         resultBox.className = "mt-3 p-3.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 text-xs flex items-center justify-between font-mono animate-fadeIn";
         resultBox.innerHTML = `
           <div class="flex items-center space-x-2 truncate">
             <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
-            <span class="truncate">Ed25519 Signatur Gültig (0.11s)</span>
+            <span class="truncate">Ed25519 Signatur Gültig (0.09s) [${simModality.toUpperCase()}]</span>
           </div>
           <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-200 font-bold flex-shrink-0 text-[10px] sm:text-xs">GRANTED ✅</span>
         `;
@@ -1404,17 +1661,17 @@
     }
 
     function resetSimulator() {
-      activeChallengeIndex = 0;
-      renderCurrentChallenge();
+      simChallengeIndex = 0;
+      switchSimModality("audio");
     }
 
     // Auto-init on page load
     document.addEventListener('DOMContentLoaded', () => {
       updateObPassword();
-      renderCurrentChallenge();
+      renderCurrentSimChallenge();
     });
     updateObPassword();
-    renderCurrentChallenge();
+    renderCurrentSimChallenge();
   </script>
 </body>
 </html>
