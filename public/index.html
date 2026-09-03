@@ -616,8 +616,8 @@
     // ==========================================
     const SAMPLE_CHALLENGES = [
       { word: "Falcon", first: "F", last: "n", expected: "FMaman1977" },
-      { word: "Nexus", first: "N", last: "s", expected: "NMamas1977" },
       { word: "Atlas", first: "A", last: "s", expected: "AMamas1977" },
+      { word: "Nexus", first: "N", last: "s", expected: "NMamas1977" },
       { word: "Vanguard", first: "V", last: "d", expected: "VMamad1977" },
       { word: "Quantum", first: "Q", last: "m", expected: "QMamam1977" },
       { word: "Phoenix", first: "P", last: "x", expected: "PMamax1977" }
@@ -625,18 +625,20 @@
 
     let activeChallengeIndex = 0;
 
-    function drawNewChallenge() {
-      activeChallengeIndex = (activeChallengeIndex + 1) % SAMPLE_CHALLENGES.length;
+    function renderCurrentChallenge() {
       const ch = SAMPLE_CHALLENGES[activeChallengeIndex];
-
       document.getElementById('disp-challenge').innerText = `Codename: ${ch.word}`;
       
       const thoughtDesc = `Wort ist <b>"${ch.word}"</b> &rarr; Erster: <span class="text-cyan-300 font-bold">${ch.first}</span>, Letzter: <span class="text-cyan-300 font-bold">${ch.last}</span>.<br/>` +
         `Eingesetzt in <i>"Mama1977"</i> an Pos 0 & 4 &rarr; <span class="text-emerald-400 font-mono font-bold">${ch.expected}</span>`;
       document.getElementById('thought-desc').innerHTML = thoughtDesc;
-
-      document.getElementById('pass-input').value = "";
+      document.getElementById('pass-input').value = ch.expected;
       document.getElementById('auth-result').className = "hidden";
+    }
+
+    function drawNewChallenge() {
+      activeChallengeIndex = (activeChallengeIndex + 1) % SAMPLE_CHALLENGES.length;
+      renderCurrentChallenge();
     }
 
     function autoFill() {
@@ -665,7 +667,7 @@
         resultBox.innerHTML = `
           <div class="flex items-center space-x-2">
             <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-400"></i>
-            <span>Signatur Ungültig für "${ch.word}"</span>
+            <span>Signatur Ungültig für "${ch.word}" (Erwartet: ${ch.expected})</span>
           </div>
           <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-200 font-bold">FAILED ❌</span>
         `;
@@ -675,11 +677,14 @@
 
     function resetSimulator() {
       activeChallengeIndex = 0;
-      const ch = SAMPLE_CHALLENGES[0];
-      document.getElementById('disp-challenge').innerText = `Codename: ${ch.word}`;
-      document.getElementById('pass-input').value = ch.expected;
-      document.getElementById('auth-result').className = "hidden";
+      renderCurrentChallenge();
     }
+
+    // Auto-init on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCurrentChallenge();
+    });
+    renderCurrentChallenge();
   </script>
 </body>
 </html>
