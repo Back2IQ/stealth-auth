@@ -1,9 +1,12 @@
 /**
- * Back2IQ StealthAuth - Enterprise Server Engine & Zero-Knowledge Verifier
+ * Back2IQ StealthAuth - Enterprise Server Engine & Verifier
  * (c) Back2IQ - Ahead by Design (Deniz Kiran)
- * 
- * Implements Zero-Plaintext Storage: The server stores ONLY precomputed salted
- * verifier hashes V_N = HMAC-SHA256(Salt, P_N) and NEVER holds the master password in plaintext.
+ *
+ * The server draws a random challenge from a fixed space of 26 values and checks
+ * the answer against the Ed25519 public key stored for that value. It holds no
+ * master password, no cognitive rule and no per-login counter: there is nothing
+ * to desynchronize, nothing to exhaust, and nothing in the database that could
+ * answer a challenge.
  */
 
 import {
@@ -12,35 +15,45 @@ import {
   ChallengePayload,
   AuthResponsePayload,
   AuthVerificationResult,
+  AuthErrorCode,
   UserAuthRecord,
   ActiveSessionRecord,
   CognitiveRule,
   DisguiseConfig,
+  CHALLENGE_SPACE_SIZE,
 } from '../types.js';
 import { encodeRadix26, formatDisguisedHint } from '../core/radix26.js';
-import { applyCognitiveTransformation } from '../core/cognitive.js';
-import { generateCandidateWindow } from '../core/state-engine.js';
+import { buildPublicKeyTable } from '../core/key-table.js';
+import { verifyChallengeSignature } from '../crypto/keys.js';
 import {
   generateSecureNonce,
   generateSessionId,
   computeHmacSha256,
-  constantTimeCompare,
-  computeStateVerifier,
+  drawRandomInt,
 } from '../crypto/hasher.js';
 import { InMemoryStorageAdapter } from './storage.js';
+
+const SALT_HEX_LENGTH = 32;
+
+function messageFor(error: AuthErrorCode, retryAfterSeconds?: number): string {
+  switch (error) {
+    case 'SESSION_EXPIRED_OR_INVALID':
+      return 'This challenge was already used or has expired. Request a new one and try again.';
+    case 'ACCOUNT_LOCKED':
+      return `Too many failed attempts. You can try again in ${retryAfterSeconds} seconds.`;
+    case 'INVALID_CREDENTIALS':
+    default:
+      return 'That answer did not match the challenge shown. Check the challenge and try again.';
+  }
+}
 
 export class StealthAuthServer {
   private storage: IStorageAdapter;
   private config: Required<StealthAuthServerConfig>;
 
-  constructor(
-    storage?: IStorageAdapter,
-    config: StealthAuthServerConfig = {}
-  ) {
+  constructor(storage?: IStorageAdapter, config: StealthAuthServerConfig = {}) {
     this.storage = storage ?? new InMemoryStorageAdapter();
     this.config = {
-      lookaheadWindowForward: config.lookaheadWindowForward ?? 3,
-      lookbackWindowBackward: config.lookbackWindowBackward ?? 1,
       sessionTtlSeconds: config.sessionTtlSeconds ?? 180,
       maxFailedAttempts: config.maxFailedAttempts ?? 5,
       lockoutDurationSeconds: config.lockoutDurationSeconds ?? 300,
@@ -50,67 +63,53 @@ export class StealthAuthServer {
   }
 
   /**
-   * Registers a user by storing ONLY precomputed salted verifier hashes.
-   * NEVER stores or retains the master password in plaintext!
+   * Registers a user from either a master password (key table built here, the
+   * password discarded immediately) or a table the client precomputed, in which
+   * case the password never reaches the server at all.
    */
   async registerUser(
     userId: string,
     masterPasswordOrTable: string | Record<number, string>,
     cognitiveRule: CognitiveRule,
-    initialCounter = 0,
     customSalt?: string
-  ): Promise<{ userId: string; initialCounter: number }> {
+  ): Promise<{ userId: string }> {
     if (!userId) {
       throw new Error('UserId is required');
     }
 
     const salt = customSalt ?? generateSecureNonce(16);
-    let verifierTable: Record<number, string> = {};
-
-    if (typeof masterPasswordOrTable === 'string') {
-      // Precompute verifier table locally for 500 states and discard plaintext password immediately
-      for (let c = initialCounter; c < initialCounter + 500; c++) {
-        const state = encodeRadix26(c);
-        const transformed = applyCognitiveTransformation(masterPasswordOrTable, state, cognitiveRule);
-        verifierTable[c] = computeStateVerifier(salt, transformed);
-      }
-    } else {
-      verifierTable = masterPasswordOrTable;
-    }
+    const publicKeyTable =
+      typeof masterPasswordOrTable === 'string'
+        ? buildPublicKeyTable(masterPasswordOrTable, cognitiveRule, salt)
+        : masterPasswordOrTable;
 
     const userRecord: UserAuthRecord = {
       userId,
-      counter: initialCounter,
       passwordSalt: salt,
-      cognitiveRule,
-      verifierTable,
+      publicKeyTable,
       failedAttempts: 0,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     };
 
     await this.storage.saveUser(userRecord);
-    return { userId, initialCounter };
+    return { userId };
   }
 
   /**
-   * Generates a new dynamic challenge with a disguised Radix-26 hint
+   * Draws a challenge and returns it in its disguised UI form.
+   *
+   * Unknown and locked accounts receive an ordinary-looking challenge too, so
+   * that this endpoint cannot be used to discover which accounts exist or which
+   * are currently locked. Both are reported at verification time instead.
    */
   async createChallenge(
     userId: string,
     disguiseConfig?: DisguiseConfig
   ): Promise<ChallengePayload> {
     const user = await this.storage.getUser(userId);
-    if (!user) {
-      throw new Error(`User not found: ${userId}`);
-    }
-
-    if (user.lockedUntil && Date.now() < user.lockedUntil) {
-      const remainingSeconds = Math.ceil((user.lockedUntil - Date.now()) / 1000);
-      throw new Error(`Account locked due to excessive failed attempts. Try again in ${remainingSeconds}s.`);
-    }
-
-    const state = encodeRadix26(user.counter);
+    const challengeIndex = drawRandomInt(1, CHALLENGE_SPACE_SIZE);
+    const state = encodeRadix26(challengeIndex - 1);
     const activeDisguise = disguiseConfig ?? this.config.defaultDisguise;
     const disguisedHint = formatDisguisedHint(
       state.hint,
@@ -128,7 +127,7 @@ export class StealthAuthServer {
     const sessionRecord: ActiveSessionRecord = {
       sessionId,
       userId,
-      expectedCounter: user.counter,
+      challengeIndex,
       nonce,
       createdAt: Date.now(),
       expiresAt,
@@ -146,105 +145,79 @@ export class StealthAuthServer {
       gridMatrix: state.gridMatrix,
       disguisedHint,
       nonce,
-      passwordSalt: user.passwordSalt,
+      passwordSalt: user ? user.passwordSalt : this.decoySalt(userId),
       expiresAt,
-      cycle: state.cycle,
-      index: state.index,
+      index: challengeIndex,
     };
   }
 
-  /**
-   * Verifies the client's cognitive response against precomputed verifier hashes
-   */
-  async verifyResponse(
-    payload: AuthResponsePayload
-  ): Promise<AuthVerificationResult> {
+  /** Checks the signature against the public key stored for this challenge. */
+  async verifyResponse(payload: AuthResponsePayload): Promise<AuthVerificationResult> {
     const { sessionId, responseHash } = payload;
 
     const session = await this.storage.getSession(sessionId);
     if (!session) {
-      return {
-        success: false,
-        error: 'SESSION_EXPIRED_OR_INVALID',
-      };
+      return this.failure('SESSION_EXPIRED_OR_INVALID');
     }
 
     await this.storage.deleteSession(sessionId);
 
     const user = await this.storage.getUser(session.userId);
     if (!user) {
-      return {
-        success: false,
-        error: 'USER_NOT_FOUND',
-      };
+      return this.failure('INVALID_CREDENTIALS');
     }
 
     if (user.lockedUntil && Date.now() < user.lockedUntil) {
-      return {
-        success: false,
-        error: 'ACCOUNT_LOCKED',
-      };
+      const retryAfterSeconds = Math.ceil((user.lockedUntil - Date.now()) / 1000);
+      return this.failure('ACCOUNT_LOCKED', retryAfterSeconds);
     }
 
-    const candidates = generateCandidateWindow(session.expectedCounter, {
-      lookforwardWindow: this.config.lookaheadWindowForward,
-      lookbackwardWindow: this.config.lookbackWindowBackward,
-    });
+    const publicKey = user.publicKeyTable[session.challengeIndex];
+    const signatureValid =
+      !!publicKey &&
+      verifyChallengeSignature(publicKey, `${session.nonce}:${session.sessionId}`, responseHash);
 
-    let matchedCandidate: (typeof candidates)[0] | null = null;
-    const table = user.verifierTable as Record<number, string>;
-
-    for (const candidate of candidates) {
-      const verifierToken = table[candidate.counter];
-      if (!verifierToken) continue;
-
-      // Check response: HMAC(VerifierToken, Nonce:SessionId)
-      const expectedResponseHash = computeHmacSha256(
-        verifierToken,
-        `${session.nonce}:${session.sessionId}`
-      );
-
-      if (constantTimeCompare(expectedResponseHash, responseHash)) {
-        matchedCandidate = candidate;
-        break;
-      }
-    }
-
-    if (matchedCandidate) {
-      const nextCounter = matchedCandidate.counter + 1;
-      await this.storage.updateUserCounter(user.userId, nextCounter);
-
-      const authToken = this.generateAuthToken(user.userId, nextCounter);
+    if (signatureValid) {
+      await this.storage.updateUserFailedAttempts(user.userId, 0, undefined);
 
       return {
         success: true,
         userId: user.userId,
-        verifiedCounter: matchedCandidate.counter,
-        resynced: matchedCandidate.delta !== 0,
-        delta: matchedCandidate.delta,
-        authToken,
+        challengeIndex: session.challengeIndex,
+        authToken: this.generateAuthToken(user.userId),
       };
     }
 
     const newFailedCount = (user.failedAttempts || 0) + 1;
-    let lockedUntil: number | undefined;
-
-    if (newFailedCount >= this.config.maxFailedAttempts) {
-      lockedUntil = Date.now() + this.config.lockoutDurationSeconds * 1000;
-    }
+    const locked = newFailedCount >= this.config.maxFailedAttempts;
+    const lockedUntil = locked
+      ? Date.now() + this.config.lockoutDurationSeconds * 1000
+      : undefined;
 
     await this.storage.updateUserFailedAttempts(user.userId, newFailedCount, lockedUntil);
 
+    return locked
+      ? this.failure('ACCOUNT_LOCKED', this.config.lockoutDurationSeconds)
+      : this.failure('INVALID_CREDENTIALS');
+  }
+
+  private failure(error: AuthErrorCode, retryAfterSeconds?: number): AuthVerificationResult {
     return {
       success: false,
-      error: lockedUntil ? 'ACCOUNT_LOCKED' : 'INVALID_CREDENTIALS',
+      error,
+      message: messageFor(error, retryAfterSeconds),
+      ...(retryAfterSeconds !== undefined ? { retryAfterSeconds } : {}),
     };
   }
 
-  private generateAuthToken(userId: string, currentCounter: number): string {
+  /** Stable, plausible salt for an account that does not exist. */
+  private decoySalt(userId: string): string {
+    return computeHmacSha256(this.config.jwtSecret, `decoy:${userId}`).slice(0, SALT_HEX_LENGTH);
+  }
+
+  private generateAuthToken(userId: string): string {
     const payload = {
       sub: userId,
-      counter: currentCounter,
       iss: 'back2iq-stealthauth',
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + 3600,

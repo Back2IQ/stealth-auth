@@ -168,7 +168,8 @@ describe('Radix-26 Mathematical & Hint Engine', () => {
       expect(formatDisguisedHint('1-14', { mode: 'patch-id' })).toBe('SEC-PATCH-1-14');
       expect(formatDisguisedHint('1-14', { mode: 'status-badge' })).toBe('Node-1-14-OK');
       expect(formatDisguisedHint('6', { mode: 'codename-word' }, 'Falcon')).toBe('Codename: Falcon');
-      expect(formatDisguisedHint('1', { mode: 'pictorial-object', locale: 'de' })).toContain('Hut');
+      // Pictorial mode must not name the object - that word is the user's secret half
+      expect(formatDisguisedHint('1', { mode: 'pictorial-object', locale: 'de' })).not.toContain('Hut');
     });
 
     it('extracts hint from build-version strings', () => {

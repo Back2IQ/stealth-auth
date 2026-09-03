@@ -87,13 +87,18 @@ export interface CognitiveRule {
   customTransform?: (baseSecret: string, state: Radix26State) => string;
 }
 
+/** Number of distinct challenge values; also the size of every verifier table. */
+export const CHALLENGE_SPACE_SIZE = 26;
+
 export interface UserAuthRecord {
   userId: string;
-  counter: number;
   passwordSalt: string;
-  cognitiveRule: CognitiveRule;
-  /** Server stores ONLY salted precomputed verifier hashes, NEVER plaintext password */
-  verifierTable: Map<number, string> | Record<number, string>;
+  /**
+   * One Ed25519 public key per challenge index 1..26. This is the whole of what
+   * the server knows: no master password, no cognitive rule, no counter, and
+   * nothing that can answer a challenge on the user's behalf.
+   */
+  publicKeyTable: Record<number, string>;
   failedAttempts: number;
   lockedUntil?: number;
   createdAt: number;
@@ -130,7 +135,7 @@ export interface ChallengePayload {
   nonce: string;
   passwordSalt?: string;
   expiresAt: number;
-  cycle: number;
+  /** The drawn challenge value, 1..26. */
   index: number;
 }
 
@@ -140,20 +145,28 @@ export interface AuthResponsePayload {
   clientTimestamp: number;
 }
 
+export type AuthErrorCode =
+  | 'SESSION_EXPIRED_OR_INVALID'
+  | 'INVALID_CREDENTIALS'
+  | 'ACCOUNT_LOCKED';
+
 export interface AuthVerificationResult {
   success: boolean;
   userId?: string;
-  verifiedCounter?: number;
-  resynced?: boolean;
-  delta?: number;
-  error?: string;
+  challengeIndex?: number;
+  error?: AuthErrorCode;
+  /** Human-readable wording safe to show the person logging in. */
+  message?: string;
+  /** Present on ACCOUNT_LOCKED: how long until another attempt is accepted. */
+  retryAfterSeconds?: number;
   authToken?: string;
 }
 
 export interface ActiveSessionRecord {
   sessionId: string;
   userId: string;
-  expectedCounter: number;
+  /** The challenge value this session was issued for, 1..26. */
+  challengeIndex: number;
   nonce: string;
   createdAt: number;
   expiresAt: number;
@@ -162,25 +175,17 @@ export interface ActiveSessionRecord {
 export interface IStorageAdapter {
   getUser(userId: string): Promise<UserAuthRecord | null>;
   saveUser(user: UserAuthRecord): Promise<void>;
-  updateUserCounter(userId: string, newCounter: number): Promise<void>;
   updateUserFailedAttempts(userId: string, failedAttempts: number, lockedUntil?: number): Promise<void>;
-  
+
   createSession(session: ActiveSessionRecord): Promise<void>;
   getSession(sessionId: string): Promise<ActiveSessionRecord | null>;
   deleteSession(sessionId: string): Promise<void>;
 }
 
 export interface StealthAuthServerConfig {
-  lookaheadWindowForward?: number;
-  lookbackWindowBackward?: number;
   sessionTtlSeconds?: number;
   maxFailedAttempts?: number;
   lockoutDurationSeconds?: number;
   defaultDisguise?: DisguiseConfig;
   jwtSecret?: string;
-}
-
-export interface StealthAuthClientConfig {
-  defaultDisguiseMode?: DisguiseConfig['mode'];
-  defaultLocale?: SupportedLocale;
 }

@@ -151,8 +151,7 @@ describe('Combinatorics, Math Operators & Pipeline Engine', () => {
         recipe: customRecipe,
       };
 
-      // Counter 15 -> Index 16: sqrt(16) = 4, 16^2 % 10 = 256 % 10 = 6
-      await server.registerUser('quant@hedgefund.ny', masterPassword, rule, 15);
+      await server.registerUser('quant@hedgefund.ny', masterPassword, rule);
 
       const challenge = await server.createChallenge('quant@hedgefund.ny', {
         mode: 'build-version',
@@ -164,14 +163,17 @@ describe('Combinatorics, Math Operators & Pipeline Engine', () => {
         rule
       );
 
-      // "!!!!!" + "4" + "1g0750n17!!!!!" + "6"
-      expect(transformed).toBe('!!!!!41g0750n17!!!!!6');
+      // e.g. index 16: sqrt(16) = 4 inserted at pos 5, 16^2 % 10 = 6 appended
+      const idx = challenge.index;
+      expect(transformed).toBe(
+        `!!!!!${Math.floor(Math.sqrt(idx))}1g0750n17!!!!!${(idx ** 2) % 10}`
+      );
 
       const authPayload = StealthAuthClient.createAuthResponse(transformed, challenge);
       const result = await server.verifyResponse(authPayload);
 
       expect(result.success).toBe(true);
-      expect(result.verifiedCounter).toBe(15);
+      expect(result.challengeIndex).toBe(idx);
     });
   });
 });

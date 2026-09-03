@@ -3,10 +3,7 @@ import {
   generateSecureNonce,
   generateSessionId,
   computeHmacSha256,
-  computeClientResponseHash,
-  constantTimeCompare,
-  signPayload,
-  verifyPayloadSignature,
+  drawRandomInt,
 } from '../src/crypto/hasher.js';
 
 describe('Cryptographic Primitives & Security', () => {
@@ -27,30 +24,14 @@ describe('Cryptographic Primitives & Security', () => {
     expect(hash1.length).toBe(64);
   });
 
-  it('performs constant-time string comparison', () => {
-    const valid = 'a'.repeat(64);
-    const validClone = 'a'.repeat(64);
-    const invalid = 'b'.repeat(64);
-
-    expect(constantTimeCompare(valid, validClone)).toBe(true);
-    expect(constantTimeCompare(valid, invalid)).toBe(false);
-    expect(constantTimeCompare(valid, 'short')).toBe(false);
-  });
-
-  it('computes client response hash with session binding', () => {
-    const res1 = computeClientResponseHash('password123', 'nonceA', 'sess_1');
-    const res2 = computeClientResponseHash('password123', 'nonceB', 'sess_1');
-    expect(res1).not.toBe(res2);
-  });
-
-  it('signs and verifies payload tamper-proof signatures', () => {
-    const secret = 'master-anti-tamper-key';
-    const payload = { userId: 'usr_1', counter: 42, tier: 'ENTERPRISE' };
-    const sig = signPayload(secret, payload);
-
-    expect(verifyPayloadSignature(secret, payload, sig)).toBe(true);
-
-    const tampered = { ...payload, tier: 'FREE' };
-    expect(verifyPayloadSignature(secret, tampered, sig)).toBe(false);
+  it('draws integers across the whole inclusive range', () => {
+    const seen = new Set<number>();
+    for (let i = 0; i < 2000; i++) {
+      const value = drawRandomInt(1, 26);
+      expect(value).toBeGreaterThanOrEqual(1);
+      expect(value).toBeLessThanOrEqual(26);
+      seen.add(value);
+    }
+    expect(seen.size).toBe(26);
   });
 });

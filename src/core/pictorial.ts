@@ -153,15 +153,79 @@ export const PICTORIAL_OBJECT_DICTIONARY: VisualObjectHint[] = [
       es: 'Llave',
     },
   },
+  {
+    objectId: 'lamp',
+    iconSvg: '<svg viewBox="0 0 24 24"><path d="M9 21h6v-1H9v1zm3-19a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>',
+    localizedNames: { de: 'Lampe', en: 'Lamp', tr: 'Lamba', fr: 'Lampe', es: 'Lampara' },
+  },
+  {
+    objectId: 'chair',
+    iconSvg: '<svg viewBox="0 0 24 24"><path d="M6 3v9h12V3h-2v7H8V3H6zm-1 11v7h2v-3h10v3h2v-7H5z"/></svg>',
+    localizedNames: { de: 'Stuhl', en: 'Chair', tr: 'Sandalye', fr: 'Chaise', es: 'Silla' },
+  },
+  {
+    objectId: 'clock',
+    iconSvg: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+    localizedNames: { de: 'Uhr', en: 'Clock', tr: 'Saat', fr: 'Horloge', es: 'Reloj' },
+  },
+  {
+    objectId: 'door',
+    iconSvg: '<svg viewBox="0 0 24 24"><path d="M6 2h12v20H6V2zm9 9a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>',
+    localizedNames: { de: 'Tuer', en: 'Door', tr: 'Kapi', fr: 'Porte', es: 'Puerta' },
+  },
+  {
+    objectId: 'shoe',
+    iconSvg: '<svg viewBox="0 0 24 24"><path d="M2 16h20v3H2v-3zm0-2 4-6h4l3 3h5a4 4 0 0 1 4 3H2z"/></svg>',
+    localizedNames: { de: 'Schuh', en: 'Shoe', tr: 'Ayakkabi', fr: 'Chaussure', es: 'Zapato' },
+  },
+  {
+    objectId: 'bread',
+    iconSvg: '<svg viewBox="0 0 24 24"><path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2h-2v7H6v-7H4v-2z"/></svg>',
+    localizedNames: { de: 'Brot', en: 'Bread', tr: 'Ekmek', fr: 'Pain', es: 'Pan' },
+  },
+  {
+    objectId: 'flower',
+    iconSvg: '<svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3"/><path d="M12 12v9m0-15a3 3 0 1 1 3 3m-6 0a3 3 0 1 1 3-3"/></svg>',
+    localizedNames: { de: 'Blume', en: 'Flower', tr: 'Cicek', fr: 'Fleur', es: 'Flor' },
+  },
+  {
+    objectId: 'mountain',
+    iconSvg: '<svg viewBox="0 0 24 24"><path d="M2 20 9 7l4 7 3-4 6 10H2z"/></svg>',
+    localizedNames: { de: 'Berg', en: 'Mountain', tr: 'Dag', fr: 'Montagne', es: 'Montana' },
+  },
+  {
+    objectId: 'river',
+    iconSvg: '<svg viewBox="0 0 24 24"><path d="M2 8c4-3 6 3 10 0s6-3 10 0M2 14c4-3 6 3 10 0s6-3 10 0"/></svg>',
+    localizedNames: { de: 'Fluss', en: 'River', tr: 'Nehir', fr: 'Riviere', es: 'Rio' },
+  },
+  {
+    objectId: 'cloud',
+    iconSvg: '<svg viewBox="0 0 24 24"><path d="M7 18h10a4 4 0 0 0 0-8 6 6 0 0 0-11.7 1.5A3.5 3.5 0 0 0 7 18z"/></svg>',
+    localizedNames: { de: 'Wolke', en: 'Cloud', tr: 'Bulut', fr: 'Nuage', es: 'Nube' },
+  },
+  {
+    objectId: 'ship',
+    iconSvg: '<svg viewBox="0 0 24 24"><path d="M3 18h18l-2 3H5l-2-3zm3-8h12l1 6H5l1-6zm5-7h2v6h-2V3z"/></svg>',
+    localizedNames: { de: 'Schiff', en: 'Ship', tr: 'Gemi', fr: 'Navire', es: 'Barco' },
+  },
+  {
+    objectId: 'bridge',
+    iconSvg: '<svg viewBox="0 0 24 24"><path d="M2 12h20M4 12v8m16-8v8M2 12a10 10 0 0 1 20 0"/></svg>',
+    localizedNames: { de: 'Bruecke', en: 'Bridge', tr: 'Kopru', fr: 'Pont', es: 'Puente' },
+  },
+  {
+    objectId: 'heart',
+    iconSvg: '<svg viewBox="0 0 24 24"><path d="M12 21s-8-5.1-8-10.2A4.8 4.8 0 0 1 12 7a4.8 4.8 0 0 1 8 3.8C20 15.9 12 21 12 21z"/></svg>',
+    localizedNames: { de: 'Herz', en: 'Heart', tr: 'Kalp', fr: 'Coeur', es: 'Corazon' },
+  },
 ];
 
 /**
  * Returns a visual object hint for a given index and cycle
  */
 export function getVisualObjectForState(index: number, cycle = 0): VisualObjectHint {
-  const dictionaryLength = PICTORIAL_OBJECT_DICTIONARY.length;
-  // Map index (1..26) and cycle into dictionary
-  const offset = ((index - 1) + cycle * 7) % dictionaryLength;
+  // One distinct object per challenge value, so no two challenges look alike.
+  const offset = ((index - 1) + cycle) % PICTORIAL_OBJECT_DICTIONARY.length;
   return PICTORIAL_OBJECT_DICTIONARY[offset];
 }
 

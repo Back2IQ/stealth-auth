@@ -11,11 +11,28 @@ import {
   DisguiseMode,
   Radix26State,
 } from '../types.js';
-import { decodeRadix26, extractHintFromDisguise, formatDisguisedHint, encodeRadix26 } from '../core/radix26.js';
+import { decodeRadix26, extractHintFromDisguise, formatDisguisedHint } from '../core/radix26.js';
 import { applyCognitiveTransformation } from '../core/cognitive.js';
-import { computeClientResponseHash, computeStateVerifier } from '../crypto/hasher.js';
+import { buildPublicKeyTable } from '../core/key-table.js';
+import { signChallenge } from '../crypto/keys.js';
 
 export class StealthAuthClient {
+  /**
+   * Answers a challenge in one step: transform the master password as the rule
+   * says, then sign this session with the key that follows from it.
+   *
+   * This is the only call a login form needs.
+   */
+  static answerChallenge(
+    masterPassword: string,
+    challenge: ChallengePayload,
+    rule: CognitiveRule,
+    passwordSalt?: string
+  ): AuthResponsePayload {
+    const transformed = StealthAuthClient.transformPassword(masterPassword, challenge.hint, rule);
+    return StealthAuthClient.createAuthResponse(transformed, challenge, passwordSalt);
+  }
+
   /**
    * Resolves a Radix-26 state from a disguised UI text string
    */
@@ -27,7 +44,7 @@ export class StealthAuthClient {
   }
 
   /**
-   * Performs cognitive transformation on master password
+   * Performs the cognitive transformation on the master password
    */
   static transformPassword(
     masterPassword: string,
@@ -42,40 +59,30 @@ export class StealthAuthClient {
   }
 
   /**
-   * Generates a precomputed Zero-Knowledge verifier table for a counter range.
-   * Allows the server to verify candidate window states without EVER seeing the plaintext password!
+   * Builds the public key table for all 26 challenge values locally, so a server
+   * can be registered without ever receiving the master password.
    */
-  static generateVerifierTable(
+  static generatePublicKeyTable(
     masterPassword: string,
     rule: CognitiveRule,
-    passwordSalt: string,
-    startCounter = 0,
-    count = 500
+    passwordSalt: string
   ): Record<number, string> {
-    const table: Record<number, string> = {};
-
-    for (let c = startCounter; c < startCounter + count; c++) {
-      const state = encodeRadix26(c);
-      const transformed = applyCognitiveTransformation(masterPassword, state, rule);
-      table[c] = computeStateVerifier(passwordSalt, transformed);
-    }
-
-    return table;
+    return buildPublicKeyTable(masterPassword, rule, passwordSalt);
   }
 
   /**
-   * Prepares the encrypted/hashed response payload to be sent to the authentication server
+   * Signs the session with the key derived from an already transformed password.
    */
   static createAuthResponse(
     transformedPassword: string,
     challenge: ChallengePayload,
     passwordSalt?: string
   ): AuthResponsePayload {
-    const responseHash = computeClientResponseHash(
+    const salt = passwordSalt || challenge.passwordSalt || '';
+    const responseHash = signChallenge(
+      salt,
       transformedPassword,
-      challenge.nonce,
-      challenge.sessionId,
-      passwordSalt || challenge.passwordSalt
+      `${challenge.nonce}:${challenge.sessionId}`
     );
 
     return {

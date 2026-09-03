@@ -1,9 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { encodeRadix26 } from '../src/core/radix26.js';
-import {
-  applyCognitiveTransformation,
-  generateEmergencyResyncSequence,
-} from '../src/core/cognitive.js';
+import { applyCognitiveTransformation } from '../src/core/cognitive.js';
 
 describe('Cognitive Transformation Engine', () => {
   const masterPassword = '!!!!!1g0750n17!!!!!';
@@ -44,14 +41,5 @@ describe('Cognitive Transformation Engine', () => {
       anchorIndex: 0,
     });
     expect(transformed).toBe('bdmin123');
-  });
-
-  it('generates emergency resynchronization sequence', () => {
-    const resync = generateEmergencyResyncSequence(26);
-    expect(resync.stateA.counter).toBe(26);
-    expect(resync.stateA.hint).toBe('1-1');
-    expect(resync.stateB.counter).toBe(27);
-    expect(resync.stateB.hint).toBe('1-2');
-    expect(resync.resyncToken).toBe('RSYNC-1-1:1-2');
   });
 });

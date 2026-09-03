@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="de" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Back2IQ StealthAuth — Cognitive Zero-Device MFA & Break-Glass Credential</title>
+  
+  <!-- Tailwind CSS CDN & Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#ecfeff',
+              400: '#22d3ee',
+              500: '#06b6d4',
+              600: '#0891b2',
+              glow: '#00f2fe',
+            },
+            dark: {
+              bg: '#05070a',
+              card: '#0c1017',
+              border: '#1a2333',
+              hover: '#131b2a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #05070a;
+      color: #f1f5f9;
+      overflow-x: hidden;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .glow-radial {
+      background: radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.15) 0%, rgba(5, 7, 10, 0) 70%);
+    }
+    .glass-panel {
+      background: rgba(12, 16, 23, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-panel:hover {
+      border-color: rgba(6, 182, 212, 0.3);
+    }
+    .code-chip {
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      color: #22d3ee;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500/30 selection:text-cyan-200">
+
+  <!-- Background Ambient Glow -->
+  <div class="fixed inset-0 pointer-events-none glow-radial z-0"></div>
+
+  <!-- Navigation Header -->
+  <header class="relative z-50 border-b border-white/5 glass-panel sticky top-0 px-4 lg:px-8 py-3.5">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+          <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+        </div>
+        <div>
+          <span class="font-bold text-lg tracking-tight text-white">Back2IQ <span class="text-cyan-400 font-medium">StealthAuth</span></span>
+          <span class="hidden sm:inline-block ml-2 px-2 py-0.5 text-[10px] uppercase font-mono tracking-wider code-chip rounded">Zero-Device MFA</span>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <!-- Language Selector -->
+        <div class="flex items-center bg-dark-card border border-dark-border rounded-lg p-1 text-xs">
+          <button onclick="setLanguage('de')" id="lang-de" class="px-2 py-1 rounded bg-cyan-500/20 text-cyan-300 font-medium">DE</button>
+          <button onclick="setLanguage('en')" id="lang-en" class="px-2 py-1 rounded text-slate-400 hover:text-white">EN</button>
+          <button onclick="setLanguage('tr')" id="lang-tr" class="px-2 py-1 rounded text-slate-400 hover:text-white">TR</button>
+          <button onclick="setLanguage('fr')" id="lang-fr" class="px-2 py-1 rounded text-slate-400 hover:text-white">FR</button>
+          <button onclick="setLanguage('es')" id="lang-es" class="px-2 py-1 rounded text-slate-400 hover:text-white">ES</button>
+        </div>
+
+        <a href="https://github.com/Back2IQ/stealth-auth" target="_blank" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-slate-200 transition">
+          <i data-lucide="github" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="relative z-10 flex-grow max-w-7xl mx-auto px-4 lg:px-8 py-12 lg:py-20 flex flex-col items-center text-center">
+    
+    <!-- Hero Badge -->
+    <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-xs font-mono mb-8 animate-pulse">
+      <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+      <span id="hero-tag">Ed25519 Cognitive Zero-Device MFA Engine</span>
+    </div>
+
+    <!-- Main Headline -->
+    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-5xl leading-[1.1] mb-6">
+      <span id="hero-title-1">Hardware-Sicherheit.</span><br/>
+      <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-blue-500" id="hero-title-2">Ganz ohne Hardware.</span>
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="text-base sm:text-xl text-slate-400 max-w-3xl mb-10 leading-relaxed" id="hero-sub">
+      Das weltweit erste kognitive Authentifizierungssystem für Reinräume, SCIF-Militärzonen, Executive Travel und unzerstörbare Break-Glass Notfälle. 0% Smartphone. 0% Token. 100% im Kopf.
+    </p>
+
+    <!-- CTAs -->
+    <div class="flex flex-wrap items-center justify-center gap-4 mb-16">
+      <a href="#simulator" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-sm shadow-xl shadow-cyan-500/25 transition transform hover:-translate-y-0.5 flex items-center space-x-2">
+        <span id="btn-demo">Live-Simulator testen</span>
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </a>
+      <a href="#benchmark" class="px-6 py-3.5 rounded-xl bg-dark-card hover:bg-dark-hover border border-dark-border text-slate-300 font-semibold text-sm transition flex items-center space-x-2">
+        <i data-lucide="bar-chart-3" class="w-4 h-4 text-cyan-400"></i>
+        <span id="btn-benchmark">Benchmark vs FIDO2</span>
+      </a>
+    </div>
+
+    <!-- Quick Stats Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-5xl mb-20 text-left">
+      <div class="glass-panel p-5 rounded-2xl">
+        <div class="text-2xl lg:text-3xl font-bold font-mono text-cyan-400">&lt; 0.2 s</div>
+        <div class="text-xs text-slate-400 mt-1" id="stat-latency">Kognitive Latenz (0 Zählzeit)</div>
+      </div>
+      <div class="glass-panel p-5 rounded-2xl">
+        <div class="text-2xl lg:text-3xl font-bold font-mono text-cyan-400">0 Byte</div>
+        <div class="text-xs text-slate-400 mt-1" id="stat-vault">Klartext-Passwörter auf Server</div>
+      </div>
+      <div class="glass-panel p-5 rounded-2xl">
+        <div class="text-2xl lg:text-3xl font-bold font-mono text-cyan-400">Ed25519</div>
+        <div class="text-xs text-slate-400 mt-1" id="stat-crypto">Asymmetrische Signaturen</div>
+      </div>
+      <div class="glass-panel p-5 rounded-2xl">
+        <div class="text-2xl lg:text-3xl font-bold font-mono text-cyan-400">100%</div>
+        <div class="text-xs text-slate-400 mt-1" id="stat-device">Zero-Device / Cleanroom Safe</div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- INTERACTIVE SIMULATOR SECTION              -->
+    <!-- ========================================== -->
+    <section id="simulator" class="w-full max-w-5xl scroll-mt-24 mb-24 text-left">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider" id="sim-badge">Live Interactive Simulator</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1" id="sim-title">Erlebe den 0-Sekunden Kognitiven Login</h2>
+        </div>
+        <button onclick="resetSimulator()" class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs flex items-center space-x-1.5 transition">
+          <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline" id="btn-reset">Reset</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left: User Brain Config -->
+        <div class="lg:col-span-5 glass-panel p-6 rounded-2xl flex flex-col justify-between">
+          <div>
+            <div class="flex items-center space-x-2 text-cyan-400 text-sm font-semibold mb-4">
+              <i data-lucide="brain" class="w-4 h-4"></i>
+              <span id="config-title">1. Muskelgedächtnis & Regel</span>
+            </div>
+
+            <div class="space-y-4 text-xs">
+              <div>
+                <label class="text-slate-400 block mb-1.5" id="lbl-master">Master-Passwort (im Kopf):</label>
+                <div class="flex items-center bg-dark-bg border border-dark-border rounded-lg px-3 py-2 text-slate-200 font-mono">
+                  <span id="cfg-master">Mama1977</span>
+                  <span class="ml-auto text-[10px] text-slate-500">8 Zeichen</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="text-slate-400 block mb-1.5" id="lbl-slots">Gewählte Nahtstellen (Slots):</label>
+                <div class="space-y-1.5">
+                  <div class="p-2 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 font-mono text-[11px] flex justify-between">
+                    <span>Slot 1: Erster Buchstabe</span>
+                    <span class="font-bold">Position 0 (Vorne)</span>
+                  </div>
+                  <div class="p-2 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 font-mono text-[11px] flex justify-between">
+                    <span>Slot 2: Letzter Buchstabe</span>
+                    <span class="font-bold">Position 4 (Mitte)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label class="text-slate-400 block mb-1.5" id="lbl-counter">Anti-Phishing Gegenlosung:</label>
+                <div class="flex items-center bg-dark-bg border border-dark-border rounded-lg px-3 py-2 text-emerald-400 font-mono">
+                  <i data-lucide="shield-check" class="w-3.5 h-3.5 mr-2"></i>
+                  <span id="cfg-counter">Blaue Tür</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-white/5">
+            <button onclick="drawNewChallenge()" class="w-full py-2.5 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 font-medium text-xs flex items-center justify-center space-x-2 transition">
+              <i data-lucide="dice-5" class="w-4 h-4"></i>
+              <span id="btn-draw">Zufalls-Challenge generieren</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Login Terminal Screen -->
+        <div class="lg:col-span-7 bg-[#080c14] border border-dark-border rounded-2xl p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden">
+          
+          <div class="flex items-center justify-between border-b border-white/5 pb-3 mb-5 text-xs font-mono">
+            <div class="flex items-center space-x-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              <span class="text-slate-400">SCIF Terminal #04</span>
+            </div>
+            <div class="text-emerald-400 flex items-center space-x-1">
+              <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+              <span id="term-status">TLS 1.3 / Ed25519 Ready</span>
+            </div>
+          </div>
+
+          <!-- Challenge Prompt Box -->
+          <div class="bg-dark-card border border-dark-border rounded-xl p-4 mb-5">
+            <div class="flex items-center justify-between text-xs mb-2">
+              <span class="text-slate-400" id="prompt-counter-lbl">Gegenlosung:</span>
+              <span class="font-bold text-emerald-400 font-mono" id="disp-counter">Blaue Tür ✅</span>
+            </div>
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-slate-400" id="prompt-hint-lbl">Getarnter Hinweis:</span>
+              <span class="font-bold text-cyan-300 font-mono text-sm px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20" id="disp-challenge">Codename: Falcon</span>
+            </div>
+          </div>
+
+          <!-- Cognitive Explanation Bubble -->
+          <div id="thought-bubble" class="p-3 rounded-lg bg-blue-950/40 border border-blue-500/30 text-xs text-blue-200 mb-5 flex items-start space-x-2.5">
+            <i data-lucide="sparkles" class="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5"></i>
+            <div>
+              <span class="font-semibold text-cyan-300" id="thought-title">Was dein Gehirn in 0.1s denkt:</span>
+              <p class="text-slate-300 mt-0.5 text-[11px]" id="thought-desc">
+                Wort ist <b>"Falcon"</b> &rarr; Erster: <span class="text-cyan-300 font-bold">F</span>, Letzter: <span class="text-cyan-300 font-bold">n</span>.<br/>
+                Eingesetzt in <i>"Mama1977"</i> an Pos 0 & 4 &rarr; <span class="text-emerald-400 font-mono font-bold">F M a m a n 1 9 7 7</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Interactive Password Input -->
+          <div class="space-y-3">
+            <div class="relative">
+              <input type="text" id="pass-input" value="FMaman1977" placeholder="Passphrase eingeben..." class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-4 py-3 text-sm text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition">
+              <button onclick="autoFill()" class="absolute right-2.5 top-2.5 px-2.5 py-1 rounded bg-white/5 hover:bg-white/10 text-slate-400 text-xs font-mono transition" id="btn-autofill">Auto-Fill</button>
+            </div>
+
+            <button onclick="verifyLogin()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold text-sm shadow-lg shadow-emerald-500/20 transition flex items-center justify-center space-x-2">
+              <i data-lucide="key" class="w-4 h-4"></i>
+              <span id="btn-submit">Signieren & Authentifizieren</span>
+            </button>
+          </div>
+
+          <!-- Verification Result Banner -->
+          <div id="auth-result" class="hidden mt-4 p-3 rounded-xl border text-xs flex items-center justify-between font-mono animate-fadeIn">
+            <!-- Dynamic Result Content -->
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- BENCHMARK COMPARISON MATRIX                -->
+    <!-- ========================================== -->
+    <section id="benchmark" class="w-full max-w-5xl scroll-mt-24 mb-24 text-left">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider" id="bm-badge">Head-to-Head Evaluation</span>
+        <h2 class="text-3xl font-bold text-white mt-1" id="bm-title">Warum StealthAuth die Notfall-Lücke schließt</h2>
+        <p class="text-sm text-slate-400 mt-2" id="bm-sub">Vergleich mit dem aktuellen Stand der Technik in High-Security- und Notfall-Szenarien.</p>
+      </div>
+
+      <div class="glass-panel rounded-2xl overflow-x-auto border border-white/10">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="border-b border-white/10 bg-white/5 font-semibold text-slate-300">
+              <th class="p-4" id="th-feature">Sicherheits- & Betriebsmerkmal</th>
+              <th class="p-4 text-center">Papier-Backup-Codes</th>
+              <th class="p-4 text-center">PIV / CAC Smartcard</th>
+              <th class="p-4 text-center">FIDO2 YubiKey</th>
+              <th class="p-4 text-center text-cyan-400 bg-cyan-500/10 border-l border-r border-cyan-500/20">Back2IQ StealthAuth</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5 text-slate-300 font-mono">
+            <tr class="hover:bg-white/[0.02]">
+              <td class="p-4 font-sans font-medium" id="td-f1">Physisches Objekt nötig?</td>
+              <td class="p-4 text-center text-rose-400">📄 Ja (Papier)</td>
+              <td class="p-4 text-center text-rose-400">💳 Ja (Karte)</td>
+              <td class="p-4 text-center text-rose-400">🔑 Ja (USB-Stick)</td>
+              <td class="p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">❌ 0% (Im Kopf)</td>
+            </tr>
+            <tr class="hover:bg-white/[0.02]">
+              <td class="p-4 font-sans font-medium" id="td-f2">Beschlagnahmungssicher (Grenze)?</td>
+              <td class="p-4 text-center text-rose-400">❌ Kopierbar</td>
+              <td class="p-4 text-center text-rose-400">❌ Einbehaltbar</td>
+              <td class="p-4 text-center text-rose-400">❌ Einbehaltbar</td>
+              <td class="p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">✅ Zero Evidence</td>
+            </tr>
+            <tr class="hover:bg-white/[0.02]">
+              <td class="p-4 font-sans font-medium" id="td-f3">Reinraum (ISO 1-5) & SCIF konform?</td>
+              <td class="p-4 text-center text-amber-400">⚠️ Partikel</td>
+              <td class="p-4 text-center text-emerald-400">✅ Zertifiziert</td>
+              <td class="p-4 text-center text-rose-400">❌ Kontamination</td>
+              <td class="p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">✅ 100% Sicher</td>
+            </tr>
+            <tr class="hover:bg-white/[0.02]">
+              <td class="p-4 font-sans font-medium" id="td-f4">Server speichert Klartext-Passwort?</td>
+              <td class="p-4 text-center text-rose-400">❌ Oft Hashes</td>
+              <td class="p-4 text-center text-emerald-400">✅ Public Key</td>
+              <td class="p-4 text-center text-emerald-400">✅ Public Key</td>
+              <td class="p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">✅ Nur Public Keys</td>
+            </tr>
+            <tr class="hover:bg-white/[0.02]">
+              <td class="p-4 font-sans font-medium" id="td-f5">Hardwarekosten pro Mitarbeiter</td>
+              <td class="p-4 text-center">0 €</td>
+              <td class="p-4 text-center text-amber-400">$20–$50</td>
+              <td class="p-4 text-center text-rose-400">$50–$90</td>
+              <td class="p-4 text-center text-emerald-400 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">0 € Hardware</td>
+            </tr>
+            <tr class="hover:bg-white/[0.02]">
+              <td class="p-4 font-sans font-medium" id="td-f6">Primäre Enterprise-Rolle</td>
+              <td class="p-4 text-center text-slate-400">Veraltetes Fallback</td>
+              <td class="p-4 text-center text-slate-300">Konzern-Badge</td>
+              <td class="p-4 text-center text-slate-300">Phishing-Resistenz</td>
+              <td class="p-4 text-center text-cyan-300 font-bold bg-cyan-500/5 border-l border-r border-cyan-500/20">Break-Glass & Travel</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="relative z-10 border-t border-white/5 py-8 text-center text-xs text-slate-500 glass-panel">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-2">
+        <span class="font-bold text-slate-300">Back2IQ</span>
+        <span>— Ahead by Design</span>
+      </div>
+      <div class="text-slate-400">
+        Founder: <span class="text-slate-200 font-medium">Deniz Kiran</span> (Antalya / Germany)
+      </div>
+      <div class="flex items-center space-x-4 text-slate-400">
+        <a href="https://back2iq.com" target="_blank" class="hover:text-cyan-400 transition">back2iq.com</a>
+        <a href="https://trust2iq.com" target="_blank" class="hover:text-cyan-400 transition">Trust2IQ</a>
+        <a href="https://csrd2iq.com" target="_blank" class="hover:text-cyan-400 transition">CSRD2IQ</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT SIMULATOR & I18N ENGINE         -->
+  <!-- ========================================== -->
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Multilingual Dictionary (DE, EN, TR, FR, ES)
+    const I18N = {
+      de: {
+        heroTag: 'Ed25519 Cognitive Zero-Device MFA Engine',
+        heroTitle1: 'Hardware-Sicherheit.',
+        heroTitle2: 'Ganz ohne Hardware.',
+        heroSub: 'Das weltweit erste kognitive Authentifizierungssystem für Reinräume, SCIF-Militärzonen, Executive Travel und unzerstörbare Break-Glass Notfälle. 0% Smartphone. 0% Token. 100% im Kopf.',
+        btnDemo: 'Live-Simulator testen',
+        btnBenchmark: 'Benchmark vs FIDO2',
+        statLatency: 'Kognitive Latenz (0 Zählzeit)',
+        statVault: 'Klartext-Passwörter auf Server',
+        statCrypto: 'Asymmetrische Signaturen',
+        statDevice: 'Zero-Device / Cleanroom Safe',
+        simBadge: 'Live Interactive Simulator',
+        simTitle: 'Erlebe den 0-Sekunden Kognitiven Login',
+        btnReset: 'Zurücksetzen',
+        configTitle: '1. Muskelgedächtnis & Regel',
+        lblMaster: 'Master-Passwort (im Kopf):',
+        lblSlots: 'Gewählte Nahtstellen (Slots):',
+        lblCounter: 'Anti-Phishing Gegenlosung:',
+        btnDraw: 'Zufalls-Challenge generieren',
+        promptCounterLbl: 'Gegenlosung:',
+        promptHintLbl: 'Getarnter Hinweis:',
+        thoughtTitle: 'Was dein Gehirn in 0.1s denkt:',
+        btnAutofill: 'Auto-Fill',
+        btnSubmit: 'Signieren & Authentifizieren',
+        bmBadge: 'Head-to-Head Evaluation',
+        bmTitle: 'Warum StealthAuth die Notfall-Lücke schließt',
+        bmSub: 'Vergleich mit dem aktuellen Stand der Technik in High-Security- und Notfall-Szenarien.',
+        thFeature: 'Sicherheits- & Betriebsmerkmal',
+        tdF1: 'Physisches Objekt nötig?',
+        tdF2: 'Beschlagnahmungssicher (Grenze)?',
+        tdF3: 'Reinraum (ISO 1-5) & SCIF konform?',
+        tdF4: 'Server speichert Klartext-Passwort?',
+        tdF5: 'Hardwarekosten pro Mitarbeiter',
+        tdF6: 'Primäre Enterprise-Rolle'
+      },
+      en: {
+        heroTag: 'Ed25519 Cognitive Zero-Device MFA Engine',
+        heroTitle1: 'Hardware-Grade Security.',
+        heroTitle2: 'Without the Hardware.',
+        heroSub: 'The world’s first cognitive authentication system for cleanrooms, military SCIF zones, executive travel, and indestructible break-glass emergencies. 0% smartphone. 0% token. 100% in your mind.',
+        btnDemo: 'Test Live Simulator',
+        btnBenchmark: 'Benchmark vs FIDO2',
+        statLatency: 'Cognitive Latency (0 Counting)',
+        statVault: 'Plaintext Passwords on Server',
+        statCrypto: 'Asymmetric Signatures',
+        statDevice: 'Zero-Device / Cleanroom Safe',
+        simBadge: 'Live Interactive Simulator',
+        simTitle: 'Experience the 0-Second Cognitive Login',
+        btnReset: 'Reset',
+        configTitle: '1. Muscle Memory & Rule',
+        lblMaster: 'Master Password (in memory):',
+        lblSlots: 'Configured Anchors (Slots):',
+        lblCounter: 'Anti-Phishing Countersign:',
+        btnDraw: 'Generate Random Challenge',
+        promptCounterLbl: 'Countersign:',
+        promptHintLbl: 'Disguised Challenge:',
+        thoughtTitle: 'What your brain thinks in 0.1s:',
+        btnAutofill: 'Auto-Fill',
+        btnSubmit: 'Sign & Authenticate',
+        bmBadge: 'Head-to-Head Evaluation',
+        bmTitle: 'Why StealthAuth Closes the Emergency Gap',
+        bmSub: 'Comparison with modern authentication methods in high-threat scenarios.',
+        thFeature: 'Security & Operational Metric',
+        tdF1: 'Physical device required?',
+        tdF2: 'Seizure-proof at hostile borders?',
+        tdF3: 'Cleanroom (ISO 1-5) & SCIF compliant?',
+        tdF4: 'Server stores plaintext secret?',
+        tdF5: 'Hardware cost per employee',
+        tdF6: 'Primary Enterprise Role'
+      },
+      tr: {
+        heroTag: 'Ed25519 Bilissel Sifir-Cihaz MFA Motoru',
+        heroTitle1: 'Donanim Seviyesinde Guvenlik.',
+        heroTitle2: 'Sifir Donanim Ile.',
+        heroSub: 'Temiz odalar, askeri SCIF alanlari, yonetici seyahatleri ve acil durum girisleri icin dunyanin ilk bilissel kimlik dogrulama sistemi. %0 Akilli Telefon. %0 Token. %100 Hafizada.',
+        btnDemo: 'Canli Simulatoru Dene',
+        btnBenchmark: 'FIDO2 Karsilastirmasi',
+        statLatency: 'Bilissel Gecikme (0 Sayma)',
+        statVault: 'Sunucuda Duz Metin Sifre',
+        statCrypto: 'Asimetrik Imzalar',
+        statDevice: 'Sifir Cihaz / Temiz Oda Uygun',
+        simBadge: 'Canli Interaktif Simulator',
+        simTitle: '0-Saniyelik Bilissel Girisi Deneyimleyin',
+        btnReset: 'Sifirla',
+        configTitle: '1. Kas Hafizasi ve Kural',
+        lblMaster: 'Ana Sifre (Hafizada):',
+        lblSlots: 'Secilen Baglanti Noktalari:',
+        lblCounter: 'Oltalama Karsiti Parola:',
+        btnDraw: 'Rastgele Challenge Uret',
+        promptCounterLbl: 'Karsilik Parolasi:',
+        promptHintLbl: 'Gizlenmis Ipucu:',
+        thoughtTitle: 'Beyninizin 0.1 saniyede dusundugu:',
+        btnAutofill: 'Otomatik Doldur',
+        btnSubmit: 'Imzala ve Dogrula',
+        bmBadge: 'Basa Bas Degerlendirme',
+        bmTitle: 'StealthAuth Acil Durum Boslugunu Nasil Kapatir',
+        bmSub: 'Yuksek guvenlikli senaryolarda mevcut teknolojiyle karsilastirma.',
+        thFeature: 'Guvenlik ve Operasyonel Ozellik',
+        tdF1: 'Fiziksel cihaz gerekiyor mu?',
+        tdF2: 'Sinirda el konulmaya dayanikli mi?',
+        tdF3: 'Temiz oda ve SCIF uyumlu mu?',
+        tdF4: 'Sunucu sifreyi sakliyor mu?',
+        tdF5: 'Calisan basina donanim maliyeti',
+        tdF6: 'Temel Kurumsal Rol'
+      },
+      fr: {
+        heroTag: 'Moteur MFA Cognitif Sans Périphérique Ed25519',
+        heroTitle1: 'Sécurité Matérielle.',
+        heroTitle2: 'Sans Aucun Matériel.',
+        heroSub: 'Le premier système d’authentification cognitive au monde pour salles blanches, zones SCIF et voyages exécutifs. 0% Smartphone. 0% Token. 100% dans l’esprit.',
+        btnDemo: 'Tester le Simulateur',
+        btnBenchmark: 'Comparatif FIDO2',
+        statLatency: 'Latence Cognitive (0 Comptage)',
+        statVault: 'Mots de passe en clair sur serveur',
+        statCrypto: 'Signatures Asymétriques',
+        statDevice: 'Sans Périphérique / Salle Blanche',
+        simBadge: 'Simulateur Interactif',
+        simTitle: 'Vivez la Connexion Cognitive en 0 Seconde',
+        btnReset: 'Réinitialiser',
+        configTitle: '1. Mémoire Musculaire & Règle',
+        lblMaster: 'Mot de passe maître (en tête):',
+        lblSlots: 'Points d’ancrage choisis:',
+        lblCounter: 'Contresigne Anti-Phishing:',
+        btnDraw: 'Générer Challenge Aléatoire',
+        promptCounterLbl: 'Contresigne:',
+        promptHintLbl: 'Indice Déguisé:',
+        thoughtTitle: 'Ce que votre cerveau pense en 0.1s:',
+        btnAutofill: 'Remplir Auto',
+        btnSubmit: 'Signer & Authentifier',
+        bmBadge: 'Évaluation Comparative',
+        bmTitle: 'Pourquoi StealthAuth comble la faille d’urgence',
+        bmSub: 'Comparaison avec l’état de l’art dans les environnements à haute menace.',
+        thFeature: 'Caractéristique de Sécurité',
+        tdF1: 'Objet physique requis ?',
+        tdF2: 'Résistant à la saisie aux frontières ?',
+        tdF3: 'Conforme salle blanche & SCIF ?',
+        tdF4: 'Le serveur stocke-t-il le mot de passe ?',
+        tdF5: 'Coût matériel par employé',
+        tdF6: 'Rôle d’Entreprise Principal'
+      },
+      es: {
+        heroTag: 'Motor MFA Cognitivo Sin Dispositivos Ed25519',
+        heroTitle1: 'Seguridad de Nivel Hardware.',
+        heroTitle2: 'Sin Ningún Hardware.',
+        heroSub: 'El primer sistema de autenticación cognitiva del mundo para salas limpias, zonas SCIF y viajes ejecutivos. 0% Smartphone. 0% Token. 100% en la memoria.',
+        btnDemo: 'Probar Simulador',
+        btnBenchmark: 'Comparativa FIDO2',
+        statLatency: 'Latencia Cognitiva (0 Conteo)',
+        statVault: 'Contraseñas en texto plano en servidor',
+        statCrypto: 'Firmas Asimétricas',
+        statDevice: 'Sin Dispositivo / Sala Limpia',
+        simBadge: 'Simulador Interactivo',
+        simTitle: 'Experimente el Acceso Cognitivo en 0 Segundos',
+        btnReset: 'Reiniciar',
+        configTitle: '1. Memoria Muscular y Regla',
+        lblMaster: 'Contraseña maestra (en memoria):',
+        lblSlots: 'Anclajes configurados:',
+        lblCounter: 'Contraseña Anti-Phishing:',
+        btnDraw: 'Generar Desafío Aleatorio',
+        promptCounterLbl: 'Contraseña de Control:',
+        promptHintLbl: 'Pista Camuflada:',
+        thoughtTitle: 'Lo que su cerebro piensa en 0.1s:',
+        btnAutofill: 'Relleno Automático',
+        btnSubmit: 'Firmar y Autenticar',
+        bmBadge: 'Evaluación Comparativa',
+        bmTitle: 'Por qué StealthAuth cierra la brecha de emergencia',
+        bmSub: 'Comparación con los métodos actuales en escenarios de alta seguridad.',
+        thFeature: 'Métrica de Seguridad',
+        tdF1: '¿Requiere objeto físico?',
+        tdF2: '¿Inmune a incautación fronteriza?',
+        tdF3: '¿Apto para sala limpia y SCIF?',
+        tdF4: '¿El servidor almacena contraseña?',
+        tdF5: 'Coste de hardware por empleado',
+        tdF6: 'Rol Principal Empresarial'
+      }
+    };
+
+    let currentLang = 'de';
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      const dict = I18N[lang] || I18N.de;
+
+      ['de', 'en', 'tr', 'fr', 'es'].forEach(l => {
+        const btn = document.getElementById(`lang-${l}`);
+        if (btn) {
+          if (l === lang) {
+            btn.className = "px-2 py-1 rounded bg-cyan-500/20 text-cyan-300 font-medium";
+          } else {
+            btn.className = "px-2 py-1 rounded text-slate-400 hover:text-white";
+          }
+        }
+      });
+
+      // Update text elements
+      document.getElementById('hero-tag').innerText = dict.heroTag;
+      document.getElementById('hero-title-1').innerText = dict.heroTitle1;
+      document.getElementById('hero-title-2').innerText = dict.heroTitle2;
+      document.getElementById('hero-sub').innerText = dict.heroSub;
+      document.getElementById('btn-demo').innerText = dict.btnDemo;
+      document.getElementById('btn-benchmark').innerText = dict.btnBenchmark;
+      document.getElementById('stat-latency').innerText = dict.statLatency;
+      document.getElementById('stat-vault').innerText = dict.statVault;
+      document.getElementById('stat-crypto').innerText = dict.statCrypto;
+      document.getElementById('stat-device').innerText = dict.statDevice;
+      document.getElementById('sim-badge').innerText = dict.simBadge;
+      document.getElementById('sim-title').innerText = dict.simTitle;
+      document.getElementById('btn-reset').innerText = dict.btnReset;
+      document.getElementById('config-title').innerText = dict.configTitle;
+      document.getElementById('lbl-master').innerText = dict.lblMaster;
+      document.getElementById('lbl-slots').innerText = dict.lblSlots;
+      document.getElementById('lbl-counter').innerText = dict.lblCounter;
+      document.getElementById('btn-draw').innerText = dict.btnDraw;
+      document.getElementById('prompt-counter-lbl').innerText = dict.promptCounterLbl;
+      document.getElementById('prompt-hint-lbl').innerText = dict.promptHintLbl;
+      document.getElementById('thought-title').innerText = dict.thoughtTitle;
+      document.getElementById('btn-autofill').innerText = dict.btnAutofill;
+      document.getElementById('btn-submit').innerText = dict.btnSubmit;
+      document.getElementById('bm-badge').innerText = dict.bmBadge;
+      document.getElementById('bm-title').innerText = dict.bmTitle;
+      document.getElementById('bm-sub').innerText = dict.bmSub;
+      document.getElementById('th-feature').innerText = dict.thFeature;
+      document.getElementById('td-f1').innerText = dict.tdF1;
+      document.getElementById('td-f2').innerText = dict.tdF2;
+      document.getElementById('td-f3').innerText = dict.tdF3;
+      document.getElementById('td-f4').innerText = dict.tdF4;
+      document.getElementById('td-f5').innerText = dict.tdF5;
+      document.getElementById('td-f6').innerText = dict.tdF6;
+    }
+
+    // ==========================================
+    // SIMULATOR LOGIC
+    // ==========================================
+    const SAMPLE_CHALLENGES = [
+      { word: "Falcon", first: "F", last: "n", expected: "FMaman1977" },
+      { word: "Nexus", first: "N", last: "s", expected: "NMamas1977" },
+      { word: "Atlas", first: "A", last: "s", expected: "AMamas1977" },
+      { word: "Vanguard", first: "V", last: "d", expected: "VMamad1977" },
+      { word: "Quantum", first: "Q", last: "m", expected: "QMamam1977" },
+      { word: "Phoenix", first: "P", last: "x", expected: "PMamax1977" }
+    ];
+
+    let activeChallengeIndex = 0;
+
+    function drawNewChallenge() {
+      activeChallengeIndex = (activeChallengeIndex + 1) % SAMPLE_CHALLENGES.length;
+      const ch = SAMPLE_CHALLENGES[activeChallengeIndex];
+
+      document.getElementById('disp-challenge').innerText = `Codename: ${ch.word}`;
+      
+      const thoughtDesc = `Wort ist <b>"${ch.word}"</b> &rarr; Erster: <span class="text-cyan-300 font-bold">${ch.first}</span>, Letzter: <span class="text-cyan-300 font-bold">${ch.last}</span>.<br/>` +
+        `Eingesetzt in <i>"Mama1977"</i> an Pos 0 & 4 &rarr; <span class="text-emerald-400 font-mono font-bold">${ch.expected}</span>`;
+      document.getElementById('thought-desc').innerHTML = thoughtDesc;
+
+      document.getElementById('pass-input').value = "";
+      document.getElementById('auth-result').className = "hidden";
+    }
+
+    function autoFill() {
+      const ch = SAMPLE_CHALLENGES[activeChallengeIndex];
+      document.getElementById('pass-input').value = ch.expected;
+    }
+
+    function verifyLogin() {
+      const input = document.getElementById('pass-input').value.trim();
+      const ch = SAMPLE_CHALLENGES[activeChallengeIndex];
+      const resultBox = document.getElementById('auth-result');
+
+      resultBox.classList.remove('hidden');
+
+      if (input === ch.expected) {
+        resultBox.className = "mt-4 p-3.5 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 text-xs flex items-center justify-between font-mono animate-fadeIn";
+        resultBox.innerHTML = `
+          <div class="flex items-center space-x-2">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+            <span>Ed25519 Signatur Gültig (0.11s)</span>
+          </div>
+          <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-200 font-bold">ACCESS GRANTED ✅</span>
+        `;
+      } else {
+        resultBox.className = "mt-4 p-3.5 rounded-xl border border-rose-500/40 bg-rose-500/10 text-rose-300 text-xs flex items-center justify-between font-mono animate-fadeIn";
+        resultBox.innerHTML = `
+          <div class="flex items-center space-x-2">
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-400"></i>
+            <span>Signatur Ungültig für "${ch.word}"</span>
+          </div>
+          <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-200 font-bold">FAILED ❌</span>
+        `;
+      }
+      lucide.createIcons();
+    }
+
+    function resetSimulator() {
+      activeChallengeIndex = 0;
+      const ch = SAMPLE_CHALLENGES[0];
+      document.getElementById('disp-challenge').innerText = `Codename: ${ch.word}`;
+      document.getElementById('pass-input').value = ch.expected;
+      document.getElementById('auth-result').className = "hidden";
+    }
+  </script>
+</body>
+</html>

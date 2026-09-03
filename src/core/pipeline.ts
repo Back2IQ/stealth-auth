@@ -133,6 +133,12 @@ export function executePipelineStep(
       return `${currentPassword}${letter}`;
     }
 
+    case 'caesar-shift': {
+      const targetChar = currentPassword[anchor] || '';
+      const shiftedChar = shiftCharacter(targetChar, index);
+      return `${currentPassword.slice(0, anchor)}${shiftedChar}${currentPassword.slice(anchor + 1)}`;
+    }
+
     case 'custom': {
       if (step.customTransform) {
         return step.customTransform(currentPassword, state);
@@ -143,6 +149,20 @@ export function executePipelineStep(
     default:
       return currentPassword;
   }
+}
+
+function shiftCharacter(char: string, shift: number): string {
+  const code = char.charCodeAt(0);
+  if (code >= 65 && code <= 90) {
+    return String.fromCharCode(65 + ((code - 65 + shift) % 26));
+  }
+  if (code >= 97 && code <= 122) {
+    return String.fromCharCode(97 + ((code - 97 + shift) % 26));
+  }
+  if (code >= 48 && code <= 57) {
+    return String.fromCharCode(48 + ((code - 48 + shift) % 10));
+  }
+  return char;
 }
 
 /**

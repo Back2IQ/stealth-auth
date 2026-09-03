@@ -18,14 +18,6 @@ import {
 import { encodeRadix26, formatDisguisedHint } from '../core/radix26.js';
 import { applyCognitiveTransformation } from '../core/cognitive.js';
 
-export interface OnboardingProfileConfig {
-  userId: string;
-  masterPassword: string;
-  rule: CognitiveRule;
-  disguise: DisguiseConfig;
-  locale: SupportedLocale;
-}
-
 export interface TrainingChallenge {
   step: number;
   simulatedCounter: number;

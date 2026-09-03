@@ -22,55 +22,44 @@ async function runDemo() {
     anchorIndex: 5, // Insert at 5th position: "!!!!!" + LETTER + "1g0750n17!!!!!"
   };
 
-  await server.registerUser(userId, masterPassword, cognitiveRule, 0);
+  await server.registerUser(userId, masterPassword, cognitiveRule);
   console.log(`[+] User Registered: ${userId}`);
   console.log(`[+] Master Secret in Muscle Memory: ${masterPassword}`);
-  console.log(`[+] Cognitive Rule: Insert dynamic Radix-26 letter at index 5\n`);
+  console.log(`[+] Cognitive Rule: Insert drawn Radix-26 letter at index 5`);
+  console.log(`[+] Server stores 26 Ed25519 public keys - no password, no rule, no counter\n`);
 
-  // 2. Perform 3 Consecutive Logins across cycle transitions
-  const loginSteps = [
-    { label: 'Initial Login (Cycle 0, Counter 0)' },
-    { label: 'Second Login (Cycle 0, Counter 1)' },
-    { label: 'Simulated 14th Login (Counter 13 -> Hint 14 -> Letter N)' },
-  ];
-
+  // 2. Perform 3 logins, each against a freshly drawn challenge
   for (let i = 0; i < 3; i++) {
-    console.log(`--- STEP ${i + 1}: ${loginSteps[i].label} ---`);
-    
+    console.log(`--- STEP ${i + 1}: Login with a freshly drawn challenge ---`);
+
     // Server generates challenge
     const challenge = await server.createChallenge(userId, { mode: 'build-version' });
     console.log(`  [Server] Disguised UI Hint: "${challenge.disguisedHint}" (Raw Hint: ${challenge.hint})`);
     console.log(`  [Server] Session Nonce: ${challenge.nonce.slice(0, 16)}...`);
 
-    // Client/User reads hint from UI, transforms password in brain
-    const transformed = StealthAuthClient.transformPassword(masterPassword, challenge.hint, cognitiveRule);
-    console.log(`  [User Brain] Cognitive Output: ${transformed}`);
+    // User reads the hint and transforms the password in their head
+    console.log(`  [User Brain] Cognitive Output: ${StealthAuthClient.transformPassword(masterPassword, challenge.hint, cognitiveRule)}`);
 
-    // Client creates session-bound HMAC payload
-    const authPayload = StealthAuthClient.createAuthResponse(transformed, challenge);
+    // One call does the rest: transform, derive this challenge's key, sign the session
+    const authPayload = StealthAuthClient.answerChallenge(masterPassword, challenge, cognitiveRule);
 
     // Server verifies
     const result = await server.verifyResponse(authPayload);
     console.log(`  [Server Verification]: ${result.success ? '✅ SUCCESS' : '❌ FAILED'}`);
-    console.log(`  [New Persistent Counter]: ${result.verifiedCounter! + 1}\n`);
+    console.log(`  [Verified Challenge]: ${result.challengeIndex}`);
+    console.log(`  [Auth Token]: ${result.authToken?.slice(0, 32)}...\n`);
   }
 
-  // 3. Demonstrate Desynchronization Window Recovery
-  console.log('--- STEP 4: Anti-Desynchronization Window Recovery ---');
-  console.log('  Scenario: User skipped 2 challenges on an aborted terminal session.');
-  
-  const challengeDesync = await server.createChallenge(userId);
-  console.log(`  [Server] Expected Counter: ${challengeDesync.hint}`);
+  // 3. There is no counter to desynchronize: the challenge is drawn, not counted
+  console.log('--- STEP 4: No Desynchronization by Construction ---');
+  console.log('  Each login draws independently from 26 values, so an aborted');
+  console.log('  session leaves no state behind to fall out of sync.');
 
-  // User enters password corresponding to +2 forward
-  const forwardState = { counter: 5, cycle: 0, index: 6, letter: 'F', hint: '6' };
-  const desyncPassword = StealthAuthClient.transformPassword(masterPassword, forwardState, cognitiveRule);
-  const desyncPayload = StealthAuthClient.createAuthResponse(desyncPassword, challengeDesync);
-
-  const desyncResult = await server.verifyResponse(desyncPayload);
-  console.log(`  [Server Verification]: ${desyncResult.success ? '✅ RESYNC SUCCESS' : '❌ FAILED'}`);
-  console.log(`  [Resynced Auto-Alignment]: ${desyncResult.resynced ? 'TRUE (Delta: +' + desyncResult.delta + ')' : 'FALSE'}`);
-  console.log(`  [Auth Token Generated]: ${desyncResult.authToken?.slice(0, 32)}...\n`);
+  const drawn = new Set<number>();
+  for (let i = 0; i < 12; i++) {
+    drawn.add((await server.createChallenge(userId)).index);
+  }
+  console.log(`  [12 Draws]: ${[...drawn].sort((a, b) => a - b).join(', ')}\n`);
 
   console.log('===========================================================');
   console.log('  Demo Completed Successfully.');

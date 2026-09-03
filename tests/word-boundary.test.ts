@@ -49,29 +49,31 @@ describe('Word-Boundary 0-Counting Cognitive Mode', () => {
       caseMode: 'as-is',
     };
 
-    await server.registerUser('pilot@stealth2iq.com', masterPassword, rule, 5); // Starts at Falcon
+    await server.registerUser('pilot@stealth2iq.com', masterPassword, rule);
 
-    // 1. Server generates challenge with codename disguise
+    // 1. Server draws a challenge and shows it as a codename
     const challenge = await server.createChallenge('pilot@stealth2iq.com', {
       mode: 'codename-word',
     });
 
-    expect(challenge.disguisedHint).toBe('Codename: Falcon');
-    expect(challenge.wordHint).toBe('Falcon');
+    const codename = challenge.wordHint!;
+    expect(challenge.disguisedHint).toBe(`Codename: ${codename}`);
 
-    // 2. User sees "Codename: Falcon", types: 'F' + master + 'n'
+    // 2. User reads the codename and types: first char + master + last char
     const transformed = StealthAuthClient.transformPassword(
       masterPassword,
       challenge.hint,
       rule
     );
-    expect(transformed).toBe('F!!!!!1g0750n17!!!!!n');
+    expect(transformed).toBe(
+      `${codename[0]}${masterPassword}${codename[codename.length - 1]}`
+    );
 
     // 3. Submit and verify
     const authPayload = StealthAuthClient.createAuthResponse(transformed, challenge);
     const result = await server.verifyResponse(authPayload);
 
     expect(result.success).toBe(true);
-    expect(result.verifiedCounter).toBe(5);
+    expect(result.challengeIndex).toBe(challenge.index);
   });
 });

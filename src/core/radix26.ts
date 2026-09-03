@@ -150,9 +150,10 @@ export function formatDisguisedHint(
       return `Codename: ${activeWord}`;
     }
     case 'pictorial-object': {
-      const obj = objectHint || decodeRadix26(hint).objectHint || getVisualObjectForState(1);
-      const localized = getVisualObjectWord(obj, locale);
-      return `Icon: [ ${obj.objectId} ] (${localized})`;
+      // Deliberately carries no word in any language: the user names the drawn
+      // icon themselves, and that naming is the hidden factor. The icon itself
+      // travels on the challenge payload as `objectHint.iconSvg`.
+      return 'Security Icon: [ see badge ]';
     }
     case 'pseudo-captcha': {
       const token = captchaToken || decodeRadix26(hint).captchaToken || 'X492yZ';

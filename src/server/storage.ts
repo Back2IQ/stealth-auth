@@ -18,17 +18,6 @@ export class InMemoryStorageAdapter implements IStorageAdapter {
     this.users.set(user.userId, JSON.parse(JSON.stringify(user)));
   }
 
-  async updateUserCounter(userId: string, newCounter: number): Promise<void> {
-    const user = this.users.get(userId);
-    if (!user) {
-      throw new Error(`User not found: ${userId}`);
-    }
-    user.counter = newCounter;
-    user.failedAttempts = 0;
-    user.lockedUntil = undefined;
-    user.updatedAt = Date.now();
-  }
-
   async updateUserFailedAttempts(userId: string, failedAttempts: number, lockedUntil?: number): Promise<void> {
     const user = this.users.get(userId);
     if (!user) {
