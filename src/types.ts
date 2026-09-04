@@ -69,6 +69,7 @@ export interface SlotPlacementRule {
   modality?: ChallengeModality;
   countersign?: string;
   caseSensitive?: boolean;
+  dynamicShift?: boolean; // When true: slots wander deterministically with challenge index
 }
 
 export interface PipelineStep {
@@ -77,6 +78,7 @@ export interface PipelineStep {
   anchorIndex2?: number;
   slots?: [number, number];
   modality?: ChallengeModality;
+  dynamicShift?: boolean;
   segmentStart?: number;
   segmentLength?: number;
   exponent?: number;
@@ -103,6 +105,7 @@ export interface CognitiveRule {
   slots?: [number, number];
   modality?: ChallengeModality;
   countersign?: string;
+  dynamicShift?: boolean;
   locale?: SupportedLocale;
   caseMode?: 'upper' | 'lower' | 'first-upper-last-lower' | 'as-is';
   caseSensitive?: boolean;
@@ -222,6 +225,76 @@ export interface DynPassServerConfig {
   lockoutDurationSeconds?: number;
   defaultDisguise?: DisguiseConfig;
   jwtSecret?: string;
+  enableImmunityEngine?: boolean;
 }
 
 export type StealthAuthServerConfig = DynPassServerConfig;
+
+// ==========================================
+// Antifragile Immunity & Bug-to-Improvement Types
+// ==========================================
+
+export type AnomalyCategory =
+  | 'SLOT_OUT_OF_BOUNDS'
+  | 'BOUNDARY_OVERFLOW'
+  | 'MODALITY_DESYNC'
+  | 'EXPIRED_SESSION_REPLAY'
+  | 'CRYPTO_CORRUPTION'
+  | 'MALFORMED_PAYLOAD'
+  | 'TIMING_ANOMALY'
+  | 'STATE_DESYNC'
+  | 'UNKNOWN_ANOMALY';
+
+export type AdaptiveThreatLevel = 'NORMAL' | 'ELEVATED' | 'CRITICAL';
+
+export interface ImmunityVector {
+  id: string;
+  timestamp: number;
+  category: AnomalyCategory;
+  fingerprint: string;
+  sanitizedPayload: Record<string, unknown>;
+  mitigationApplied: string;
+  synthesizedTestCode: string;
+}
+
+export interface ImmunitySystemStats {
+  totalAnomaliesTrapped: number;
+  hardenedRulesCount: number;
+  adaptiveThreatLevel: AdaptiveThreatLevel;
+  activeImmunityVectors: number;
+  vectorsByCategory: Record<AnomalyCategory, number>;
+  effectiveMaxFailedAttempts: number;
+  effectiveLockoutSeconds: number;
+}
+
+// ==========================================
+// TPA Jacket-Garderoben-Modell Types
+// ==========================================
+
+export type JacketStatus = 'IN_WARDROBE' | 'DONNED' | 'RETIRED';
+
+export interface Jacket {
+  jacketId: string;
+  challengeIndex: number;
+  modality: ChallengeModality;
+  slots?: [number, number];
+  status: JacketStatus;
+  donnedAt?: number;
+  doffedAt?: number;
+  provenanceHash: string;
+}
+
+export interface WardrobeHook {
+  hookIndex: number; // 1..26
+  publicKeyHex: string; // Ed25519 public key
+  createdAt: number;
+}
+
+export interface WardrobeProof {
+  jacketId: string;
+  sessionId: string;
+  signatureHex: string;
+  timestamp: number;
+  contextModality?: ChallengeModality;
+}
+

@@ -233,8 +233,11 @@ export function getVisualObjectForState(index: number, cycle = 0): VisualObjectH
  * Resolves the localized object word for a given visual object and locale
  */
 export function getVisualObjectWord(
-  object: VisualObjectHint,
+  object?: VisualObjectHint,
   locale: SupportedLocale = 'de'
 ): string {
-  return object.localizedNames[locale] || object.localizedNames.en || object.objectId;
+  if (!object || !object.localizedNames) {
+    return 'Object';
+  }
+  return object.localizedNames[locale] || object.localizedNames.en || object.objectId || 'Object';
 }

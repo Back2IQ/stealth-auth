@@ -126,21 +126,28 @@ export function executePipelineStep(
     }
 
     case 'slot-placement': {
-      const slots = step.slots ?? [2, 5];
+      let slots = step.slots ?? [2, 5];
+      if (step.dynamicShift) {
+        slots = computeDynamicSlotShift(slots, state.index, currentPassword.length);
+      }
       let word = '';
 
-      if (step.modality === 'personal-questions' || state.questionHint) {
+      if (step.modality === 'personal-questions') {
         word = state.questionHint?.exampleAnswer?.[step.locale || 'de'] || 'Secure';
-      } else if (step.modality === 'audio' || state.spokenAudioWord) {
+      } else if (step.modality === 'audio') {
         word = state.spokenAudioWord || state.wordHint || 'Secure';
       } else if (step.modality === 'image') {
         word = state.objectHint ? getVisualObjectWord(state.objectHint, step.locale || 'de') : 'Secure';
+      } else if (step.modality === 'text') {
+        word = state.wordHint || 'Secure';
       } else {
+        // Untyped or default modality fallback
         word = state.wordHint || 'Secure';
       }
 
-      let first = word[0];
-      let last = word[word.length - 1];
+      const safeWord = word && word.length > 0 ? word : 'Secure';
+      let first = safeWord[0];
+      let last = safeWord[safeWord.length - 1];
 
       if (step.caseMode === 'upper') {
         first = first.toUpperCase();
@@ -183,6 +190,7 @@ export function executePipelineStep(
 }
 
 function shiftCharacter(char: string, shift: number): string {
+  if (!char) return '';
   const code = char.charCodeAt(0);
   if (code >= 65 && code <= 90) {
     return String.fromCharCode(65 + ((code - 65 + shift) % 26));
@@ -198,22 +206,62 @@ function shiftCharacter(char: string, shift: number): string {
 
 /**
  * Pure slot insertion helper: Inserts char1 at slot1 and char2 at slot2
- * slots are 1-indexed insertion positions.
+ * slots are 1-indexed insertion positions. Handles edge-cases and out-of-bounds cleanly.
  */
 export function applySlotTransformation(
   base: string,
   char1: string,
   char2: string,
-  slots: [number, number]
+  slots?: [number, number]
 ): string {
-  const s1 = Math.max(1, Math.min(slots[0], slots[1]));
-  const s2 = Math.max(s1, Math.max(slots[0], slots[1]));
+  const safeBase = base ?? '';
+  const c1 = char1 ?? '';
+  const c2 = char2 ?? '';
 
-  const p1 = base.slice(0, s1 - 1);
-  const p2 = base.slice(s1 - 1, s2 - 1);
-  const p3 = base.slice(s2 - 1);
+  const rawS1 = Number(slots?.[0]);
+  const rawS2 = Number(slots?.[1]);
+  const validS1 = Number.isFinite(rawS1) && rawS1 >= 1 ? Math.floor(rawS1) : 1;
+  const validS2 = Number.isFinite(rawS2) && rawS2 >= 1 ? Math.floor(rawS2) : (validS1 + 1);
 
-  return `${p1}${char1}${p2}${char2}${p3}`;
+  const s1 = Math.max(1, Math.min(validS1, validS2));
+  const s2 = Math.max(s1, Math.max(validS1, validS2));
+
+  const p1 = safeBase.slice(0, s1 - 1);
+  const p2 = safeBase.slice(s1 - 1, s2 - 1);
+  const p3 = safeBase.slice(s2 - 1);
+
+  return `${p1}${c1}${p2}${c2}${p3}`;
+}
+
+/**
+ * Computes deterministic dynamic slot shift based on challenge index.
+ * Breaks differential cryptanalysis by moving insertion points per challenge.
+ */
+export function computeDynamicSlotShift(
+  baseSlots: [number, number],
+  challengeIndex: number,
+  passwordLength: number
+): [number, number] {
+  if (passwordLength <= 1) return baseSlots;
+
+  const rawS1 = Number(baseSlots?.[0]) || 1;
+  const rawS2 = Number(baseSlots?.[1]) || (rawS1 + 1);
+
+  const s1Base = Math.max(1, Math.min(rawS1, rawS2));
+  const s2Base = Math.max(s1Base, Math.max(rawS1, rawS2));
+
+  const shift = Math.max(0, challengeIndex - 1);
+  const s1Shifted = ((s1Base - 1 + shift) % passwordLength) + 1;
+  let s2Shifted = ((s2Base - 1 + shift) % passwordLength) + 1;
+
+  if (s1Shifted === s2Shifted) {
+    s2Shifted = (s1Shifted % passwordLength) + 1;
+  }
+
+  const finalS1 = Math.min(s1Shifted, s2Shifted);
+  const finalS2 = Math.max(s1Shifted, s2Shifted);
+
+  return [finalS1, finalS2];
 }
 
 /**
@@ -230,3 +278,4 @@ export function executeRecipePipeline(
   }
   return result;
 }
+

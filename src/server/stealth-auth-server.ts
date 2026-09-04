@@ -34,6 +34,7 @@ import {
   drawRandomInt,
 } from '../crypto/hasher.js';
 import { InMemoryStorageAdapter } from './storage.js';
+import { SystemImmunityEngine, globalImmunityEngine } from '../core/antifragility.js';
 
 const SALT_HEX_LENGTH = 32;
 
@@ -52,16 +53,27 @@ function messageFor(error: AuthErrorCode, retryAfterSeconds?: number): string {
 export class DynPassServer {
   private storage: IStorageAdapter;
   private config: Required<DynPassServerConfig>;
+  private immunityEngine: SystemImmunityEngine;
 
-  constructor(storage?: IStorageAdapter, config: DynPassServerConfig = {}) {
+  constructor(
+    storage?: IStorageAdapter,
+    config: DynPassServerConfig = {},
+    immunityEngine?: SystemImmunityEngine
+  ) {
     this.storage = storage ?? new InMemoryStorageAdapter();
+    this.immunityEngine = immunityEngine ?? new SystemImmunityEngine();
     this.config = {
       sessionTtlSeconds: config.sessionTtlSeconds ?? 180,
       maxFailedAttempts: config.maxFailedAttempts ?? 5,
       lockoutDurationSeconds: config.lockoutDurationSeconds ?? 300,
       defaultDisguise: config.defaultDisguise ?? { mode: 'build-version' },
       jwtSecret: config.jwtSecret ?? generateSecureNonce(32),
+      enableImmunityEngine: config.enableImmunityEngine ?? false,
     };
+  }
+
+  get immunity(): SystemImmunityEngine {
+    return this.immunityEngine;
   }
 
   /**
@@ -174,10 +186,27 @@ export class DynPassServer {
 
   /** Checks the signature against the public key stored for this challenge. */
   async verifyResponse(payload: AuthResponsePayload): Promise<AuthVerificationResult> {
+    if (!payload || !payload.sessionId) {
+      this.immunityEngine.trapAnomaly('MALFORMED_PAYLOAD', { payload });
+      return this.failure('SESSION_EXPIRED_OR_INVALID');
+    }
+
     const { sessionId, responseHash } = payload;
+    if (!responseHash || typeof responseHash !== 'string') {
+      this.immunityEngine.trapAnomaly('MALFORMED_PAYLOAD', { sessionId, responseHash });
+      return this.failure('INVALID_CREDENTIALS');
+    }
+
+    if (responseHash.length !== 128 || !/^[0-9a-fA-F]+$/.test(responseHash)) {
+      this.immunityEngine.trapAnomaly('CRYPTO_CORRUPTION', { responseHashLength: responseHash?.length });
+    }
 
     const session = await this.storage.getSession(sessionId);
-    if (!session) {
+    if (!session || (session.expiresAt && Date.now() > session.expiresAt)) {
+      if (session) {
+        await this.storage.deleteSession(sessionId);
+      }
+      this.immunityEngine.trapAnomaly('EXPIRED_SESSION_REPLAY', { sessionId });
       return this.failure('SESSION_EXPIRED_OR_INVALID');
     }
 
@@ -209,16 +238,24 @@ export class DynPassServer {
       };
     }
 
+    // Adaptive Defense Escalation: contracts attempt window and escalates lockout under stress if enabled
+    const effectiveMaxAttempts = this.config.enableImmunityEngine
+      ? this.immunityEngine.getAdaptiveMaxAttempts(this.config.maxFailedAttempts)
+      : this.config.maxFailedAttempts;
+    const effectiveLockout = this.config.enableImmunityEngine
+      ? this.immunityEngine.getAdaptiveLockoutSeconds(this.config.lockoutDurationSeconds)
+      : this.config.lockoutDurationSeconds;
+
     const newFailedCount = (user.failedAttempts || 0) + 1;
-    const locked = newFailedCount >= this.config.maxFailedAttempts;
+    const locked = newFailedCount >= effectiveMaxAttempts;
     const lockedUntil = locked
-      ? Date.now() + this.config.lockoutDurationSeconds * 1000
+      ? Date.now() + effectiveLockout * 1000
       : undefined;
 
     await this.storage.updateUserFailedAttempts(user.userId, newFailedCount, lockedUntil);
 
     return locked
-      ? this.failure('ACCOUNT_LOCKED', this.config.lockoutDurationSeconds)
+      ? this.failure('ACCOUNT_LOCKED', effectiveLockout)
       : this.failure('INVALID_CREDENTIALS');
   }
 

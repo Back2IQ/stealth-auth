@@ -8,6 +8,7 @@ import { getWordForState } from './word-dictionary.js';
 import { getVisualObjectForState, getVisualObjectWord } from './pictorial.js';
 import { generatePseudoCaptchaBadge } from './captcha.js';
 import { generate3x3GridMatrix, formatGridMatrixAscii } from './matrix-grid.js';
+import { getPersonalQuestionForIndex } from './personal-questions.js';
 
 /**
  * Returns the uppercase character corresponding to index 1..26 (1='A', 26='Z')
@@ -51,6 +52,8 @@ export function encodeRadix26(counter: number): Radix26State {
 
   const lastLetter = getLetterForIndex(((index + cycle * 3) % 26) + 1).toLowerCase();
   const captcha = generatePseudoCaptchaBadge(letter, lastLetter);
+  const questionHint = getPersonalQuestionForIndex(index);
+  const spokenAudioWord = wordHint;
 
   return {
     counter,
@@ -60,6 +63,8 @@ export function encodeRadix26(counter: number): Radix26State {
     hint,
     wordHint,
     objectHint,
+    questionHint,
+    spokenAudioWord,
     captchaToken: captcha.token,
     gridMatrix,
   };
@@ -109,6 +114,8 @@ export function decodeRadix26(hint: string): Radix26State {
 
   const lastLetter = getLetterForIndex(((index + cycle * 3) % 26) + 1).toLowerCase();
   const captcha = generatePseudoCaptchaBadge(letter, lastLetter);
+  const questionHint = getPersonalQuestionForIndex(index);
+  const spokenAudioWord = wordHint;
 
   return {
     counter,
@@ -118,6 +125,8 @@ export function decodeRadix26(hint: string): Radix26State {
     hint: cycle === 0 ? `${index}` : `${cycle}-${index}`,
     wordHint,
     objectHint,
+    questionHint,
+    spokenAudioWord,
     captchaToken: captcha.token,
     gridMatrix,
   };

@@ -15,6 +15,8 @@ export * from './core/captcha.js';
 export * from './core/word-dictionary.js';
 export * from './core/personal-questions.js';
 export * from './core/key-table.js';
+export * from './core/antifragility.js';
+export * from './core/jacket-wardrobe.js';
 export * from './crypto/hasher.js';
 export * from './crypto/keys.js';
 export * from './server/storage.js';
