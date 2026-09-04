@@ -231,6 +231,11 @@ export function getPersonalQuestionById(id: string): PersonalQuestionItem | unde
   return PERSONAL_QUESTIONS_POOL.find((q) => q.id === id);
 }
 
+export function getPersonalQuestionForIndex(index: number): PersonalQuestionItem {
+  const normalizedIndex = Math.abs(index - 1) % PERSONAL_QUESTIONS_POOL.length;
+  return PERSONAL_QUESTIONS_POOL[normalizedIndex];
+}
+
 export function getRandomPersonalQuestion(): PersonalQuestionItem {
   const idx = Math.floor(Math.random() * PERSONAL_QUESTIONS_POOL.length);
   return PERSONAL_QUESTIONS_POOL[idx];

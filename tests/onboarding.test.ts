@@ -7,9 +7,12 @@ describe('Cognitive Onboarding Wizard & Training Simulator', () => {
 
   it('provides pre-configured preset profiles', () => {
     const presets = CognitiveOnboardingWizard.getPresetProfiles();
-    expect(presets.length).toBeGreaterThanOrEqual(5);
-    expect(presets[0].id).toBe('word-boundary-instant');
-    expect(presets[1].id).toBe('pictorial-icon-i18n');
+    expect(presets.length).toBeGreaterThanOrEqual(4);
+    const ids = presets.map((p) => p.id);
+    expect(ids).toContain('slot-placement-audio');
+    expect(ids).toContain('slot-placement-questions');
+    expect(ids).toContain('slot-placement-text');
+    expect(ids).toContain('slot-placement-image');
   });
 
   it('generates a 3-step training session for word-boundary rule', () => {

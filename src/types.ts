@@ -58,15 +58,25 @@ export type MathOperatorType =
   | 'pictorial-object'
   | 'pseudo-captcha'
   | 'insert-at-anchor'
+  | 'slot-placement'
   | 'prefix'
   | 'suffix'
   | 'caesar-shift'
   | 'custom';
 
+export interface SlotPlacementRule {
+  slots: [number, number]; // 1-indexed insertion positions, e.g. [2, 5]
+  modality?: ChallengeModality;
+  countersign?: string;
+  caseSensitive?: boolean;
+}
+
 export interface PipelineStep {
   op: MathOperatorType;
   anchorIndex?: number;
   anchorIndex2?: number;
+  slots?: [number, number];
+  modality?: ChallengeModality;
   segmentStart?: number;
   segmentLength?: number;
   exponent?: number;
@@ -74,6 +84,7 @@ export interface PipelineStep {
   gridPath?: GridTraversalPath;
   locale?: SupportedLocale;
   caseMode?: 'upper' | 'lower' | 'first-upper-last-lower' | 'as-is';
+  caseSensitive?: boolean;
   customTransform?: (currentSecret: string, state: Radix26State) => string;
 }
 
@@ -89,8 +100,12 @@ export interface CognitiveRule {
   type: TransformationType;
   anchorIndex?: number;
   anchorIndex2?: number;
+  slots?: [number, number];
+  modality?: ChallengeModality;
+  countersign?: string;
   locale?: SupportedLocale;
   caseMode?: 'upper' | 'lower' | 'first-upper-last-lower' | 'as-is';
+  caseSensitive?: boolean;
   gridPath?: GridTraversalPath;
   exponent?: number;
   modulo?: number;
@@ -110,6 +125,8 @@ export interface UserAuthRecord {
    * nothing that can answer a challenge on the user's behalf.
    */
   publicKeyTable: Record<number, string>;
+  modality?: ChallengeModality;
+  countersign?: string;
   failedAttempts: number;
   lockedUntil?: number;
   createdAt: number;
@@ -123,6 +140,8 @@ export type DisguiseMode =
   | 'status-badge' 
   | 'codename-word' 
   | 'pictorial-object' 
+  | 'spoken-audio'
+  | 'personal-questions'
   | 'pseudo-captcha' 
   | 'grid-matrix-3x3' 
   | 'raw' 
@@ -140,6 +159,10 @@ export interface ChallengePayload {
   hint: string;
   wordHint?: string;
   objectHint?: VisualObjectHint;
+  questionHint?: PersonalQuestionItem;
+  spokenAudioWord?: string;
+  modality?: ChallengeModality;
+  countersign?: string;
   captchaToken?: string;
   gridMatrix?: string[][];
   disguisedHint: string;

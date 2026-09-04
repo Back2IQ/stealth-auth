@@ -25,6 +25,7 @@ import {
 } from '../types.js';
 import { encodeRadix26, formatDisguisedHint } from '../core/radix26.js';
 import { buildPublicKeyTable } from '../core/key-table.js';
+import { getPersonalQuestionForIndex } from '../core/personal-questions.js';
 import { verifyChallengeSignature } from '../crypto/keys.js';
 import {
   generateSecureNonce,
@@ -88,6 +89,8 @@ export class DynPassServer {
       userId,
       passwordSalt: salt,
       publicKeyTable,
+      modality: cognitiveRule.modality,
+      countersign: cognitiveRule.countersign,
       failedAttempts: 0,
       createdAt: Date.now(),
       updatedAt: Date.now(),
@@ -111,7 +114,20 @@ export class DynPassServer {
     const user = await this.storage.getUser(userId);
     const challengeIndex = drawRandomInt(1, CHALLENGE_SPACE_SIZE);
     const state = encodeRadix26(challengeIndex - 1);
-    const activeDisguise = disguiseConfig ?? this.config.defaultDisguise;
+    
+    // Determine effective disguise mode from user preference if not explicitly overridden
+    let activeDisguise = disguiseConfig ?? this.config.defaultDisguise;
+    if (!disguiseConfig && user?.modality) {
+      if (user.modality === 'text') activeDisguise = { mode: 'codename-word' };
+      else if (user.modality === 'image') activeDisguise = { mode: 'pictorial-object' };
+      else if (user.modality === 'audio') activeDisguise = { mode: 'spoken-audio' };
+      else if (user.modality === 'personal-questions') activeDisguise = { mode: 'personal-questions' };
+    }
+
+    const questionHint = (user?.modality === 'personal-questions' || activeDisguise.mode === 'personal-questions')
+      ? getPersonalQuestionForIndex(challengeIndex)
+      : undefined;
+
     const disguisedHint = formatDisguisedHint(
       state.hint,
       activeDisguise,
@@ -142,6 +158,10 @@ export class DynPassServer {
       hint: state.hint,
       wordHint: state.wordHint,
       objectHint: state.objectHint,
+      questionHint,
+      spokenAudioWord: state.wordHint,
+      modality: user?.modality,
+      countersign: user?.countersign,
       captchaToken: state.captchaToken,
       gridMatrix: state.gridMatrix,
       disguisedHint,

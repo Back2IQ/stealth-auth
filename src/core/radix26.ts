@@ -149,6 +149,13 @@ export function formatDisguisedHint(
       const activeWord = wordHint || decodeRadix26(hint).wordHint || 'System';
       return `Codename: ${activeWord}`;
     }
+    case 'spoken-audio': {
+      const activeWord = wordHint || decodeRadix26(hint).wordHint || 'System';
+      return `Voice Prompt: [ Audio Token #${hint} ]`;
+    }
+    case 'personal-questions': {
+      return `Security Question: [ Bio Challenge #${hint} ]`;
+    }
     case 'pictorial-object': {
       // Deliberately carries no word in any language: the user names the drawn
       // icon themselves, and that naming is the hidden factor. The icon itself

@@ -125,6 +125,37 @@ export function executePipelineStep(
       return `${currentPassword.slice(0, anchor)}${letter}${currentPassword.slice(anchor)}`;
     }
 
+    case 'slot-placement': {
+      const slots = step.slots ?? [2, 5];
+      let word = '';
+
+      if (step.modality === 'personal-questions' || state.questionHint) {
+        word = state.questionHint?.exampleAnswer?.[step.locale || 'de'] || 'Secure';
+      } else if (step.modality === 'audio' || state.spokenAudioWord) {
+        word = state.spokenAudioWord || state.wordHint || 'Secure';
+      } else if (step.modality === 'image') {
+        word = state.objectHint ? getVisualObjectWord(state.objectHint, step.locale || 'de') : 'Secure';
+      } else {
+        word = state.wordHint || 'Secure';
+      }
+
+      let first = word[0];
+      let last = word[word.length - 1];
+
+      if (step.caseMode === 'upper') {
+        first = first.toUpperCase();
+        last = last.toUpperCase();
+      } else if (step.caseMode === 'lower') {
+        first = first.toLowerCase();
+        last = last.toLowerCase();
+      } else {
+        first = first.toUpperCase();
+        last = last.toLowerCase();
+      }
+
+      return applySlotTransformation(currentPassword, first, last, slots);
+    }
+
     case 'prefix': {
       return `${letter}${currentPassword}`;
     }
@@ -163,6 +194,26 @@ function shiftCharacter(char: string, shift: number): string {
     return String.fromCharCode(48 + ((code - 48 + shift) % 10));
   }
   return char;
+}
+
+/**
+ * Pure slot insertion helper: Inserts char1 at slot1 and char2 at slot2
+ * slots are 1-indexed insertion positions.
+ */
+export function applySlotTransformation(
+  base: string,
+  char1: string,
+  char2: string,
+  slots: [number, number]
+): string {
+  const s1 = Math.max(1, Math.min(slots[0], slots[1]));
+  const s2 = Math.max(s1, Math.max(slots[0], slots[1]));
+
+  const p1 = base.slice(0, s1 - 1);
+  const p2 = base.slice(s1 - 1, s2 - 1);
+  const p3 = base.slice(s2 - 1);
+
+  return `${p1}${char1}${p2}${char2}${p3}`;
 }
 
 /**

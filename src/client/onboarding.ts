@@ -70,9 +70,15 @@ export class CognitiveOnboardingWizard {
    */
   static verifyTrainingAttempt(
     userAttempt: string,
-    challenge: TrainingChallenge
+    challenge: TrainingChallenge,
+    caseSensitive: boolean = false
   ): boolean {
-    return userAttempt.trim() === challenge.expectedTransformedPassword;
+    const attempt = userAttempt.trim();
+    const expected = challenge.expectedTransformedPassword.trim();
+    if (caseSensitive) {
+      return attempt === expected;
+    }
+    return attempt.toLowerCase() === expected.toLowerCase();
   }
 
   /**
@@ -83,55 +89,46 @@ export class CognitiveOnboardingWizard {
     name: string;
     description: string;
     recommendedFor: string;
-    difficulty: 'Instant (0s)' | 'Easy (1s)' | 'Power-User (2s)';
+    difficulty: 'Instant (0s)' | 'Easy (1s)' | 'Power-User (2s)' | 'Ultra-Secure (3m)';
     rule: CognitiveRule;
     disguise: DisguiseConfig;
   }> {
     return [
       {
-        id: 'word-boundary-instant',
-        name: 'Wort-Grenzen 0-Latenz (Empfohlen)',
-        description: 'Nutzt ersten und letzten Buchstaben eines Codenamens (z. B. "Falcon" -> F...n)',
-        recommendedFor: '90% aller Mitarbeiter, höchste Geschwindigkeit',
+        id: 'slot-placement-audio',
+        name: 'Gesprochenes Audio-Wort (100% Schulterblick-sicher)',
+        description: 'Stimme spricht ein klares Wort (z. B. "Tiger" -> T...r an Slot 2 & 5)',
+        recommendedFor: 'Reisen, öffentliche Terminals, Kameraschutz',
+        difficulty: 'Easy (1s)',
+        rule: { type: 'slot-placement', slots: [2, 5], modality: 'audio' },
+        disguise: { mode: 'spoken-audio' },
+      },
+      {
+        id: 'slot-placement-questions',
+        name: 'Persönliche Lebensfragen (Höchste Sicherheitsstufe)',
+        description: 'Beantwortet 1 von 18+ biografischen Lebensfragen (z. B. Grundschule "Goethe" -> G...e)',
+        recommendedFor: 'Executive Access, Air-Gapped SCIF & High-Threat Umgebungen',
+        difficulty: 'Ultra-Secure (3m)',
+        rule: { type: 'slot-placement', slots: [2, 5], modality: 'personal-questions' },
+        disguise: { mode: 'personal-questions' },
+      },
+      {
+        id: 'slot-placement-text',
+        name: 'Codename / Zufalls-Code (0-Latenz)',
+        description: 'Nutzt ersten und letzten Buchstaben eines Codenamens (z. B. "Falcon" -> F...n an Slot 2 & 5)',
+        recommendedFor: '90% aller Nutzer, höchste Geschwindigkeit',
         difficulty: 'Instant (0s)',
-        rule: { type: 'word-boundary', caseMode: 'as-is' },
+        rule: { type: 'slot-placement', slots: [2, 5], modality: 'text' },
         disguise: { mode: 'codename-word' },
       },
       {
-        id: 'pictorial-icon-i18n',
+        id: 'slot-placement-image',
         name: 'Bild-/Icon-Erkennung (Sprachbarriere-Schutz)',
-        description: 'Erkennt Alltagsgegenstände (z. B. 🎩 "Hut" -> H...t) in deiner Muttersprache',
+        description: 'Erkennt Alltagsgegenstände (z. B. 🎩 "Hut" -> H...t an Slot 2 & 5)',
         recommendedFor: 'Reinräume, internationale Teams, Anti-OCR Schutz',
         difficulty: 'Instant (0s)',
-        rule: { type: 'pictorial-object', locale: 'de' },
+        rule: { type: 'slot-placement', slots: [2, 5], modality: 'image', locale: 'de' },
         disguise: { mode: 'pictorial-object', locale: 'de' },
-      },
-      {
-        id: 'single-anchor-muscle',
-        name: 'Muskelgedächtnis-Anker (Klassisch)',
-        description: 'Fügt dynamischen Radix-26 Buchstaben an einer festen Nahtstelle ein',
-        recommendedFor: 'Klassische Passwörter mit Sonderzeichen-Block',
-        difficulty: 'Easy (1s)',
-        rule: { type: 'insert-at-anchor', anchorIndex: 5 },
-        disguise: { mode: 'build-version' },
-      },
-      {
-        id: 'math-digit-sum',
-        name: 'Quersummen-Offset (Mathematisch)',
-        description: 'Fügt die Quersumme des Zählers (z. B. Q(14) = 5) an definierter Stelle ein',
-        recommendedFor: 'Zahlenliebhaber & mathematisch affine Teams',
-        difficulty: 'Easy (1s)',
-        rule: { type: 'digit-sum', anchorIndex: 5 },
-        disguise: { mode: 'session-ticket' },
-      },
-      {
-        id: 'grid-matrix-diagonal',
-        name: '3x3 Geometrisches Matrix-Gitter',
-        description: 'Liest eine 3-stellige Kombination entlang der Hauptdiagonale ab',
-        recommendedFor: 'High-Security Terminals, Defense & SCIF',
-        difficulty: 'Power-User (2s)',
-        rule: { type: 'grid-matrix-traverse', gridPath: 'diagonal-main', anchorIndex: 5 },
-        disguise: { mode: 'grid-matrix-3x3' },
       },
     ];
   }
