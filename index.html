@@ -341,34 +341,96 @@
       <!-- WIZARD STEP CONTAINER -->
       <div class="glass-panel p-4 sm:p-6 lg:p-8 rounded-2xl border border-white/10 shadow-2xl relative">
         
-        <!-- STEP 1: BASIS PASSWORT & PRÄZISE SLOT-WAHL -->
+        <!-- STEP 1: BASIS PASSWORT & KOGNITIVE 3-ZONEN-ENGINE -->
         <div id="ob-step-1" class="space-y-5 sm:space-y-6">
           <div>
-            <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider">Stufe 1 von 4</span>
-            <h3 class="text-lg sm:text-xl font-bold text-white mt-1" id="s1-h">Wähle dein Basis-Passwort & deine Einfügestellen</h3>
-            <p class="text-xs text-slate-400 mt-1" id="s1-d">Dein Passwort kann ein Wort oder eine beliebige Zeichenfolge sein (z. B. 12345qwert). Der Server speichert davon 0 Byte.</p>
+            <div class="flex items-center space-x-2">
+              <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider">Stufe 1 von 4</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">In-Place Overwrite ($L = const$)</span>
+            </div>
+            <h3 class="text-lg sm:text-xl font-bold text-white mt-1 break-words" id="s1-h">Wähle dein Passwort & deine Kognitive Zone</h3>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed" id="s1-d">Kein Verlängern des Wortes! Das Zeichen im Ziel-Slot wird <b>in-place ausgetauscht</b>. Dein Tippfluss (Muscle Memory) bleibt 100% erhalten.</p>
           </div>
 
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5" id="s1-input-lbl">Dein Basis-Passwort:</label>
-            <input type="text" id="ob-pwd-input" value="12345qwert" oninput="updateObPassword()" class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-3.5 py-3 text-sm sm:text-base text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition min-h-[44px]">
+            <input type="text" id="ob-pwd-input" value="Geheim123" oninput="updateObPassword()" class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-3.5 py-3 text-sm sm:text-base text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition min-h-[44px]">
+          </div>
+
+          <!-- 3 KOGNITIVE ZONEN AUSWAHL -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="block text-xs font-semibold text-slate-300" id="lbl-ob-zones-title">Kognitive Zone wählen (Intuitiver Einstieg):</label>
+              <span class="text-[11px] font-mono text-cyan-400" id="ob-active-zone-badge">Aktiv: Zone 1 (Vorne)</span>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+              <!-- Zone 1: Vorne / Start (Empfohlen) -->
+              <button type="button" onclick="selectObZone('prefix')" id="ob-zone-btn-prefix" class="p-3.5 rounded-xl border border-cyan-500/50 bg-cyan-500/15 text-left transition relative group min-h-[44px]">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-bold text-cyan-300 text-xs flex items-center space-x-1.5">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                    <span>Zone 1: Vorne</span>
+                  </span>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-400/20 text-cyan-200 font-mono font-bold">Empfohlen</span>
+                </div>
+                <p class="text-[11px] text-slate-300 leading-snug">Slots [1, 2] &rarr; Startet mit Hint, Rest fließt aus Muskelgedächtnis.</p>
+                <div class="text-[11px] font-mono text-cyan-300 mt-2 font-bold" id="ob-z1-sample">z. B. Htheim123</div>
+              </button>
+
+              <!-- Zone 2: Rahmen (Kopf & Schwanz) -->
+              <button type="button" onclick="selectObZone('frame')" id="ob-zone-btn-frame" class="p-3.5 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition relative group min-h-[44px]">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-bold text-slate-300 text-xs flex items-center space-x-1.5">
+                    <span class="w-2 h-2 rounded-full bg-slate-500"></span>
+                    <span>Zone 2: Rahmen</span>
+                  </span>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-slate-400 font-mono">Kopf & Schwanz</span>
+                </div>
+                <p class="text-[11px] text-slate-400 leading-snug">Slot 1 & Ende &rarr; Klammert das Passwort kognitiv ein.</p>
+                <div class="text-[11px] font-mono text-slate-400 mt-2 font-bold" id="ob-z2-sample">z. B. Heheim12t</div>
+              </button>
+
+              <!-- Zone 3: Zahlen-Zone (Am Ende) -->
+              <button type="button" onclick="selectObZone('suffix-digits')" id="ob-zone-btn-suffix-digits" class="p-3.5 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition relative group min-h-[44px]">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-bold text-slate-300 text-xs flex items-center space-x-1.5">
+                    <span class="w-2 h-2 rounded-full bg-slate-500"></span>
+                    <span>Zone 3: Zahlen</span>
+                  </span>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-slate-400 font-mono">Am Ende</span>
+                </div>
+                <p class="text-[11px] text-slate-400 leading-snug">Ersetzt Ziffern am Ende. Wortstamm bleibt unberührt.</p>
+                <div class="text-[11px] font-mono text-slate-400 mt-2 font-bold" id="ob-z3-sample">z. B. GeheimHt3</div>
+              </button>
+            </div>
           </div>
 
           <div class="p-3.5 sm:p-4 rounded-xl bg-dark-bg border border-dark-border space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-semibold text-slate-300 block" id="s1-struct-lbl">Klicke auf die Positionen (Slots), an denen Buchstaben eingefügt werden:</span>
-              <span class="text-[11px] font-mono text-cyan-400" id="slot-count-badge">Gewählt: Slot 2 & Slot 5</span>
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <span class="text-xs font-semibold text-slate-300 block" id="s1-struct-lbl">Freie Slot-Wahl auf dem Buchstaben-Raster (Power-User):</span>
+              <span class="text-[11px] font-mono text-cyan-400" id="slot-count-badge">Gewählt: Slot 1 & Slot 2</span>
             </div>
             
             <!-- Interactive Character & Slot Grid -->
             <div id="ob-char-grid" class="flex flex-wrap gap-1 sm:gap-1.5 font-mono text-xs sm:text-sm pt-1"></div>
 
-            <!-- Live Insertion Preview -->
-            <div class="mt-3 pt-3 border-t border-white/5 text-xs">
-              <span class="text-slate-400" id="s1-prev-lbl">Live-Vorschau mit Challenge <b>"Hut"</b> (Buchstaben: <span class="text-cyan-300 font-bold">H</span> und <span class="text-cyan-300 font-bold">t</span>):</span>
-              <div class="mt-1.5 p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/30 font-mono text-emerald-400 font-bold flex items-center space-x-2 break-all">
-                <i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
-                <span id="ob-preview-output">1 H 2 3 4 t q w e r t</span>
+            <!-- Live Overwrite Preview -->
+            <div class="mt-3 pt-3 border-t border-white/5 text-xs space-y-2">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <span class="text-slate-400" id="s1-prev-lbl">Live-Vorschau mit Challenge <b>"Hut"</b> (Buchstaben: <span class="text-cyan-300 font-bold">H</span> und <span class="text-cyan-300 font-bold">t</span>):</span>
+                <span class="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">Länge invariant ($L = const$)</span>
+              </div>
+              <div class="p-3 rounded-lg bg-emerald-950/30 border border-emerald-500/30 font-mono text-emerald-400 font-bold flex items-center justify-between flex-wrap gap-2">
+                <div class="flex items-center space-x-2 break-all text-sm sm:text-base">
+                  <i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
+                  <span id="ob-preview-output">H t h e i m 1 2 3</span>
+                </div>
+                <span class="text-[11px] text-emerald-300 font-normal" id="ob-preview-len-count">9 Zeichen (exakt unverändert)</span>
+              </div>
+              <div id="ob-preview-diff" class="text-[11px] font-mono text-slate-400 flex items-center space-x-2">
+                <i data-lucide="replace" class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>
+                <span id="ob-preview-diff-text">Austausch: <span class="line-through text-rose-400">G</span> &rarr; <b class="text-cyan-300">H</b>, <span class="line-through text-rose-400">e</span> &rarr; <b class="text-cyan-300">t</b></span>
               </div>
             </div>
           </div>
@@ -608,21 +670,21 @@
               <div>
                 <label class="text-slate-400 block mb-1" id="lbl-master">Basis-Passwort (im Kopf):</label>
                 <div class="flex items-center bg-dark-bg border border-dark-border rounded-lg px-3 py-2 text-slate-200 font-mono">
-                  <span id="cfg-master" class="truncate font-bold">12345qwert</span>
-                  <span class="ml-auto text-[10px] text-slate-500 flex-shrink-0" id="cfg-master-len">10 Zeichen</span>
+                  <span id="cfg-master" class="truncate font-bold">Geheim123</span>
+                  <span class="ml-auto text-[10px] text-slate-500 flex-shrink-0" id="cfg-master-len">9 Zeichen</span>
                 </div>
               </div>
 
               <div>
-                <label class="text-slate-400 block mb-1" id="lbl-slots">Feste Einfügestellen (Slots):</label>
+                <label class="text-slate-400 block mb-1" id="lbl-slots">In-Place Overwrite Slots (L = const):</label>
                 <div class="space-y-1.5">
                   <div class="p-2 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 font-mono text-[11px] flex justify-between">
                     <span id="cfg-slot1-lbl">Slot 1 (Anfangsbuchstabe)</span>
-                    <span class="font-bold" id="cfg-slot1-pos">Stelle 2 (nach '1')</span>
+                    <span class="font-bold" id="cfg-slot1-pos">Stelle 1 (ersetzt 'G')</span>
                   </div>
                   <div class="p-2 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 font-mono text-[11px] flex justify-between">
                     <span id="cfg-slot2-lbl">Slot 2 (Endbuchstabe)</span>
-                    <span class="font-bold" id="cfg-slot2-pos">Stelle 5 (nach '4')</span>
+                    <span class="font-bold" id="cfg-slot2-pos">Stelle 2 (ersetzt 'e')</span>
                   </div>
                 </div>
               </div>
@@ -1272,30 +1334,39 @@
     }
 
     // ==========================================
-    // ONBOARDING WIZARD DATA & LOGIC
+    // ONBOARDING WIZARD DATA & LOGIC (IN-PLACE OVERWRITE ENGINE)
     // ==========================================
     let obCurrentStep = 1;
-    let obBasePwd = "12345qwert";
-    let obSlots = [2, 5]; // 1-indexed slots: [2, 5] -> inserts at index 1 and index 4 of original string
+    let obBasePwd = "Geheim123";
+    let obActiveZone = "prefix"; // 'prefix' | 'frame' | 'suffix-digits' | 'custom'
+    let obSlots = [1, 2]; // 1-indexed slots for in-place overwrite
     let obSelectedModality = "audio"; // 'text' | 'image' | 'audio' | 'questions'
     let obCountersign = "Blaue Tür";
     let obTrainerRound = 0;
     let obRoundStart = 0;
     let obElapsed = [];
 
-    // Helper: calculate transformation for arbitrary base string and 2 boundary characters
-    function transformWithSlots(base, char1, char2, slots) {
-      // slots are 1-indexed insertion positions
-      // e.g. base = "12345qwert", slots = [2, 5], char1 = 'H', char2 = 't'
-      // Slot 2 means: after character 1 -> "1" + "H" + "234" + "t" + "qwert" = "1H234tqwert"
-      const s1 = Math.min(slots[0], slots[1]);
-      const s2 = Math.max(slots[0], slots[1]);
+    // IN-PLACE SLOT OVERWRITE ENGINE (L = CONST)
+    function applySlotOverwrite(base, char1, char2, slots) {
+      if (!base || base.length === 0) return '';
+      const len = base.length;
+      const chars = base.split('');
 
-      const p1 = base.slice(0, s1 - 1);
-      const p2 = base.slice(s1 - 1, s2 - 1);
-      const p3 = base.slice(s2 - 1);
+      const resolveIndex = (slotVal, fallback) => {
+        if (!Number.isFinite(slotVal) || slotVal === 0) return fallback;
+        if (slotVal < 0) return Math.max(0, Math.min(len - 1, len + slotVal));
+        return Math.max(0, Math.min(len - 1, Math.floor(slotVal) - 1));
+      };
 
-      return `${p1}${char1}${p2}${char2}${p3}`;
+      const idx1 = resolveIndex(slots[0], 0);
+      const idx2 = resolveIndex(slots[1], Math.min(len - 1, idx1 + 1));
+      const minIdx = Math.min(idx1, idx2);
+      const maxIdx = Math.max(idx1, idx2);
+
+      if (char1 && char1.length > 0) chars[minIdx] = char1[0];
+      if (char2 && char2.length > 0) chars[maxIdx] = char2[0];
+
+      return chars.join('');
     }
 
     // Challenges per modality for Trainer
@@ -1322,6 +1393,77 @@
       ]
     };
 
+    function selectObZone(zoneId) {
+      obActiveZone = zoneId;
+      const len = obBasePwd.length || 9;
+
+      if (zoneId === 'prefix') {
+        obSlots = [1, 2];
+      } else if (zoneId === 'frame') {
+        obSlots = [1, len];
+      } else if (zoneId === 'suffix-digits') {
+        const digitMatch = obBasePwd.match(/\d+$/);
+        if (digitMatch && digitMatch.index !== undefined) {
+          const digitStart = digitMatch.index + 1;
+          obSlots = [digitStart, Math.min(len, digitStart + 1)];
+        } else {
+          obSlots = [Math.max(1, len - 1), len];
+        }
+      }
+
+      updateObZoneBadges();
+      renderSlotGrid();
+      updateObPreview();
+      renderCurrentSimChallenge();
+    }
+
+    function updateObZoneBadges() {
+      const badgeEl = document.getElementById('ob-active-zone-badge');
+      if (badgeEl) {
+        if (obActiveZone === 'prefix') badgeEl.innerText = 'Aktiv: Zone 1 (Vorne)';
+        else if (obActiveZone === 'frame') badgeEl.innerText = 'Aktiv: Zone 2 (Rahmen)';
+        else if (obActiveZone === 'suffix-digits') badgeEl.innerText = 'Aktiv: Zone 3 (Zahlen)';
+        else badgeEl.innerText = 'Aktiv: Custom-Slots';
+      }
+
+      ['prefix', 'frame', 'suffix-digits'].forEach(z => {
+        const btn = document.getElementById(`ob-zone-btn-${z}`);
+        if (!btn) return;
+        if (z === obActiveZone) {
+          btn.className = "p-3.5 rounded-xl border border-cyan-500/50 bg-cyan-500/15 text-left transition relative group ring-1 ring-cyan-500/30 min-h-[44px]";
+          const title = btn.querySelector('.font-bold');
+          if (title) title.className = "font-bold text-cyan-300 text-xs flex items-center space-x-1.5";
+          const dot = btn.querySelector('.rounded-full');
+          if (dot) dot.className = "w-2 h-2 rounded-full bg-cyan-400";
+        } else {
+          btn.className = "p-3.5 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition relative group min-h-[44px]";
+          const title = btn.querySelector('.font-bold');
+          if (title) title.className = "font-bold text-slate-300 text-xs flex items-center space-x-1.5";
+          const dot = btn.querySelector('.rounded-full');
+          if (dot) dot.className = "w-2 h-2 rounded-full bg-slate-500";
+        }
+      });
+    }
+
+    function updateObZonePillsPreview() {
+      const p1 = applySlotOverwrite(obBasePwd, 'H', 't', [1, 2]);
+      const p2 = applySlotOverwrite(obBasePwd, 'H', 't', [1, obBasePwd.length]);
+      let z3Slots = [Math.max(1, obBasePwd.length - 1), obBasePwd.length];
+      const match = obBasePwd.match(/\d+$/);
+      if (match && match.index !== undefined) {
+        const start = match.index + 1;
+        z3Slots = [start, Math.min(obBasePwd.length, start + 1)];
+      }
+      const p3 = applySlotOverwrite(obBasePwd, 'H', 't', z3Slots);
+
+      const z1Sample = document.getElementById('ob-z1-sample');
+      const z2Sample = document.getElementById('ob-z2-sample');
+      const z3Sample = document.getElementById('ob-z3-sample');
+      if (z1Sample) z1Sample.innerText = `z. B. ${p1}`;
+      if (z2Sample) z2Sample.innerText = `z. B. ${p2}`;
+      if (z3Sample) z3Sample.innerText = `z. B. ${p3}`;
+    }
+
     function setObStep(step) {
       document.getElementById(`ob-step-${obCurrentStep}`).classList.add('hidden');
       obCurrentStep = step;
@@ -1345,20 +1487,25 @@
     }
 
     function updateObPassword() {
-      obBasePwd = document.getElementById('ob-pwd-input').value.trim() || "12345qwert";
-      renderSlotGrid();
-      updateObPreview();
+      obBasePwd = document.getElementById('ob-pwd-input').value.trim() || "Geheim123";
+      updateObZonePillsPreview();
+      selectObZone(obActiveZone);
     }
 
     function renderSlotGrid() {
       const grid = document.getElementById('ob-char-grid');
       grid.innerHTML = "";
+      const len = obBasePwd.length;
 
-      for (let i = 0; i < obBasePwd.length; i++) {
+      const idx1 = Math.min(obSlots[0], obSlots[1]) - 1;
+      const idx2 = Math.max(obSlots[0], obSlots[1]) - 1;
+
+      for (let i = 0; i < len; i++) {
         const slotPos = i + 1;
         const char = obBasePwd[i];
-        const isSlot = obSlots.includes(slotPos);
-        const slotIdx = obSlots.indexOf(slotPos);
+        const isSlot1 = (i === idx1);
+        const isSlot2 = (i === idx2);
+        const isSlot = isSlot1 || isSlot2;
 
         let cardClass = isSlot
           ? "border-2 border-cyan-400 bg-cyan-500/20 text-cyan-200 ring-2 ring-cyan-500/30 font-extrabold scale-105"
@@ -1367,7 +1514,7 @@
         grid.innerHTML += `
           <button type="button" onclick="toggleSlot(${slotPos})" class="flex flex-col items-center transition transform">
             <span class="text-[9px] sm:text-[10px] font-mono ${isSlot ? 'text-cyan-400 font-bold' : 'text-slate-500'} mb-0.5">
-              ${isSlot ? `Slot ${slotIdx + 1} (Pos ${slotPos})` : `Pos ${slotPos}`}
+              ${isSlot ? (isSlot1 ? 'Slot 1' : 'Slot 2') : `Pos ${slotPos}`}
             </span>
             <div class="w-8 h-9 sm:w-9 sm:h-10 rounded-lg ${cardClass} flex items-center justify-center font-bold font-mono shadow-sm">
               ${char}
@@ -1375,29 +1522,39 @@
           </button>
         `;
       }
-      document.getElementById('slot-count-badge').innerText = `Gewählt: Slot ${obSlots[0]} & Slot ${obSlots[1]}`;
+
+      const s1 = Math.min(obSlots[0], obSlots[1]);
+      const s2 = Math.max(obSlots[0], obSlots[1]);
+      document.getElementById('slot-count-badge').innerText = `Gewählt: Slot ${s1} & Slot ${s2}`;
     }
 
     function toggleSlot(pos) {
-      if (obSlots.includes(pos)) {
-        // already in slots, do nothing if we want exactly 2
-        return;
-      }
-      // shift slots: new slot replaces the second slot
+      obActiveZone = 'custom';
+      updateObZoneBadges();
+
+      if (obSlots.includes(pos)) return;
       obSlots = [obSlots[1], pos].sort((a, b) => a - b);
       renderSlotGrid();
       updateObPreview();
+      renderCurrentSimChallenge();
     }
 
     function updateObPreview() {
-      const transformed = transformWithSlots(obBasePwd, 'H', 't', obSlots);
-      // formatted with spaces for clarity
+      const transformed = applySlotOverwrite(obBasePwd, 'H', 't', obSlots);
+      const idx1 = Math.min(obSlots[0], obSlots[1]) - 1;
+      const idx2 = Math.max(obSlots[0], obSlots[1]) - 1;
+
+      const old1 = obBasePwd[idx1] || '';
+      const old2 = obBasePwd[idx2] || '';
+
       const spaced = transformed.split('').map((c, i) => {
-        if (c === 'H' || c === 't') return `<b class="text-cyan-300 font-extrabold underline">${c}</b>`;
+        if (i === idx1 || i === idx2) return `<b class="text-cyan-300 font-extrabold underline">${c}</b>`;
         return c;
       }).join(' ');
 
       document.getElementById('ob-preview-output').innerHTML = spaced;
+      document.getElementById('ob-preview-len-count').innerText = `${transformed.length} Zeichen (exakt unverändert, L = const)`;
+      document.getElementById('ob-preview-diff-text').innerHTML = `Austausch: <span class="line-through text-rose-400">${old1}</span> &rarr; <b class="text-cyan-300">H</b> (Slot ${idx1 + 1}), <span class="line-through text-rose-400">${old2}</span> &rarr; <b class="text-cyan-300">t</b> (Slot ${idx2 + 1})`;
     }
 
     function setObModality(mod) {
@@ -1500,7 +1657,7 @@
       const input = document.getElementById('ob-tr-input').value.trim();
       const challenges = TRAINER_DATA[obSelectedModality] || TRAINER_DATA.audio;
       const cur = challenges[obTrainerRound];
-      const expected = transformWithSlots(obBasePwd, cur.char1, cur.char2, obSlots);
+      const expected = applySlotOverwrite(obBasePwd, cur.char1, cur.char2, obSlots);
       const time = ((Date.now() - obRoundStart) / 1000).toFixed(1);
       const fb = document.getElementById('ob-tr-feedback');
 
@@ -1524,15 +1681,17 @@
         }
       } else {
         fb.className = "p-3 rounded-xl border border-rose-500/40 bg-rose-500/10 text-rose-300 text-xs font-mono flex items-center justify-between";
-        fb.innerHTML = `<span>Falsche Eingabe für "${cur.word}". Erwartet: <b>${expected}</b></span><span class="text-rose-400 font-bold">FEHLER</span>`;
+        fb.innerHTML = `<span>Falsche Eingabe für "${cur.word}". Erwartet: <b>${expected}</b> (Länge: ${expected.length})</span><span class="text-rose-400 font-bold">FEHLER</span>`;
       }
     }
 
     function applyOnboardingToSimulator() {
+      const s1 = Math.min(obSlots[0], obSlots[1]);
+      const s2 = Math.max(obSlots[0], obSlots[1]);
       document.getElementById('cfg-master').innerText = obBasePwd;
       document.getElementById('cfg-master-len').innerText = `${obBasePwd.length} Zeichen`;
-      document.getElementById('cfg-slot1-pos').innerText = `Stelle ${obSlots[0]} (nach '${obBasePwd[obSlots[0] - 2] || 'Start'}')`;
-      document.getElementById('cfg-slot2-pos').innerText = `Stelle ${obSlots[1]} (nach '${obBasePwd[obSlots[1] - 2] || 'Start'}')`;
+      document.getElementById('cfg-slot1-pos').innerText = `Stelle ${s1} (ersetzt '${obBasePwd[s1 - 1] || ''}')`;
+      document.getElementById('cfg-slot2-pos').innerText = `Stelle ${s2} (ersetzt '${obBasePwd[s2 - 1] || ''}')`;
       document.getElementById('cfg-counter').innerText = obCountersign;
       document.getElementById('disp-counter').innerText = `${obCountersign} ✅`;
       switchSimModality(obSelectedModality);
@@ -1597,10 +1756,12 @@
         audioBtn.classList.add('hidden');
       }
 
-      const expected = transformWithSlots(obBasePwd, ch.char1, ch.char2, obSlots);
+      const expected = applySlotOverwrite(obBasePwd, ch.char1, ch.char2, obSlots);
+      const s1 = Math.min(obSlots[0], obSlots[1]);
+      const s2 = Math.max(obSlots[0], obSlots[1]);
       
       const thoughtDesc = `Reiz ist <b>"${ch.word}"</b> &rarr; Erster: <span class="text-cyan-300 font-bold">${ch.char1}</span>, Letzter: <span class="text-cyan-300 font-bold">${ch.char2}</span>.<br/>` +
-        `Eingesetzt in <i>"${obBasePwd}"</i> an Slot ${obSlots[0]} & ${obSlots[1]} &rarr; <span class="text-emerald-400 font-mono font-bold">${expected}</span>`;
+        `In-Place überschrieben in <i>"${obBasePwd}"</i> an Slot ${s1} & ${s2} &rarr; <span class="text-emerald-400 font-mono font-bold">${expected}</span> <span class="text-[10px] text-cyan-300 font-mono font-normal">(${expected.length} Zeichen, L = const)</span>`;
       
       document.getElementById('thought-desc').innerHTML = thoughtDesc;
       document.getElementById('pass-input').value = expected;
@@ -1622,14 +1783,14 @@
     function autoFill() {
       const list = SIM_CHALLENGES[simModality] || SIM_CHALLENGES.text;
       const ch = list[simChallengeIndex % list.length];
-      document.getElementById('pass-input').value = transformWithSlots(obBasePwd, ch.char1, ch.char2, obSlots);
+      document.getElementById('pass-input').value = applySlotOverwrite(obBasePwd, ch.char1, ch.char2, obSlots);
     }
 
     function verifyLogin() {
       const input = document.getElementById('pass-input').value.trim();
       const list = SIM_CHALLENGES[simModality] || SIM_CHALLENGES.text;
       const ch = list[simChallengeIndex % list.length];
-      const expected = transformWithSlots(obBasePwd, ch.char1, ch.char2, obSlots);
+      const expected = applySlotOverwrite(obBasePwd, ch.char1, ch.char2, obSlots);
       const resultBox = document.getElementById('auth-result');
 
       resultBox.classList.remove('hidden');

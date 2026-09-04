@@ -64,12 +64,17 @@ export type MathOperatorType =
   | 'caesar-shift'
   | 'custom';
 
+export type SlotPlacementMode = 'insert' | 'overwrite';
+export type CognitiveZone = 'prefix' | 'frame' | 'suffix-digits' | 'custom';
+
 export interface SlotPlacementRule {
-  slots: [number, number]; // 1-indexed insertion positions, e.g. [2, 5]
+  slots: [number, number]; // 1-indexed positions, e.g. [1, 2]
   modality?: ChallengeModality;
   countersign?: string;
   caseSensitive?: boolean;
   dynamicShift?: boolean; // When true: slots wander deterministically with challenge index
+  mode?: SlotPlacementMode; // 'overwrite' (L = const, muscle memory) or 'insert'
+  zone?: CognitiveZone;
 }
 
 export interface PipelineStep {
@@ -79,6 +84,8 @@ export interface PipelineStep {
   slots?: [number, number];
   modality?: ChallengeModality;
   dynamicShift?: boolean;
+  mode?: SlotPlacementMode;
+  zone?: CognitiveZone;
   segmentStart?: number;
   segmentLength?: number;
   exponent?: number;
@@ -106,6 +113,8 @@ export interface CognitiveRule {
   modality?: ChallengeModality;
   countersign?: string;
   dynamicShift?: boolean;
+  mode?: SlotPlacementMode;
+  zone?: CognitiveZone;
   locale?: SupportedLocale;
   caseMode?: 'upper' | 'lower' | 'first-upper-last-lower' | 'as-is';
   caseSensitive?: boolean;

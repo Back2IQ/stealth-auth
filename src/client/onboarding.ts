@@ -82,7 +82,70 @@ export class CognitiveOnboardingWizard {
   }
 
   /**
+   * Returns the 3 intuitive cognitive zones with dynamic slot resolution
+   */
+  static getCognitiveZones(passwordOrLength: string | number = 9): Array<{
+    id: 'prefix' | 'frame' | 'suffix-digits';
+    name: string;
+    description: string;
+    recommended: boolean;
+    available: boolean;
+    slots: [number, number];
+    samplePreview: string;
+  }> {
+    const isString = typeof passwordOrLength === 'string';
+    const pwd = isString ? passwordOrLength : '';
+    const len = isString ? pwd.length : Math.max(4, passwordOrLength);
+
+    let z3Available = true;
+    let z3Slot1 = Math.max(1, len - 2);
+    let z3Slot2 = Math.max(z3Slot1 + 1, len - 1);
+
+    if (isString) {
+      const digitMatch = pwd.match(/\d+$/);
+      if (!digitMatch) {
+        z3Available = false;
+      } else {
+        const digitStart = (digitMatch.index ?? 0) + 1;
+        z3Slot1 = digitStart;
+        z3Slot2 = Math.min(len, digitStart + 1);
+      }
+    }
+
+    return [
+      {
+        id: 'prefix',
+        name: 'Zone 1: Vorne / Start (Empfohlen)',
+        description: 'Ersetzt die ersten zwei Zeichen am Anfang (Start mit Hint, Rest fließt aus dem Muskelgedächtnis)',
+        recommended: true,
+        available: true,
+        slots: [1, 2],
+        samplePreview: 'Htheim123',
+      },
+      {
+        id: 'frame',
+        name: 'Zone 2: Rahmen (Kopf & Schwanz)',
+        description: 'Ersetzt das allererste und das allerletzte Zeichen (Klammert dein Passwort sicher ein)',
+        recommended: false,
+        available: true,
+        slots: [1, -1],
+        samplePreview: 'Heheim12t',
+      },
+      {
+        id: 'suffix-digits',
+        name: 'Zone 3: Zahlen-Zone (Am Ende)',
+        description: 'Ersetzt die ersten zwei Ziffern am Ende (Ersetzt z.B. 123 durch Ht3)',
+        recommended: false,
+        available: z3Available,
+        slots: [z3Slot1, z3Slot2],
+        samplePreview: 'GeheimHt3',
+      },
+    ];
+  }
+
+  /**
    * Pre-configured standard cognitive profiles for easy selection
+   * Default: In-Place Overwrite (L = const, muscle memory) in Zone 1 (Prefix: [1, 2])
    */
   static getPresetProfiles(): Array<{
     id: string;
@@ -95,40 +158,40 @@ export class CognitiveOnboardingWizard {
   }> {
     return [
       {
-        id: 'slot-placement-audio',
-        name: 'Gesprochenes Audio-Wort (100% Schulterblick-sicher)',
-        description: 'Stimme spricht ein klares Wort (z. B. "Tiger" -> T...r an Slot 2 & 5)',
-        recommendedFor: 'Reisen, öffentliche Terminals, Kameraschutz',
-        difficulty: 'Easy (1s)',
-        rule: { type: 'slot-placement', slots: [2, 5], modality: 'audio' },
-        disguise: { mode: 'spoken-audio' },
-      },
-      {
-        id: 'slot-placement-questions',
-        name: 'Persönliche Lebensfragen (Höchste Sicherheitsstufe)',
-        description: 'Beantwortet 1 von 18+ biografischen Lebensfragen (z. B. Grundschule "Goethe" -> G...e)',
-        recommendedFor: 'Executive Access, Air-Gapped SCIF & High-Threat Umgebungen',
-        difficulty: 'Ultra-Secure (3m)',
-        rule: { type: 'slot-placement', slots: [2, 5], modality: 'personal-questions' },
-        disguise: { mode: 'personal-questions' },
-      },
-      {
         id: 'slot-placement-text',
-        name: 'Codename / Zufalls-Code (0-Latenz)',
-        description: 'Nutzt ersten und letzten Buchstaben eines Codenamens (z. B. "Falcon" -> F...n an Slot 2 & 5)',
-        recommendedFor: '90% aller Nutzer, höchste Geschwindigkeit',
+        name: 'Zone 1: Codename (In-Place Präfix - Empfohlen)',
+        description: 'Ersetzt die ersten zwei Zeichen durch den Codenamen (z. B. "Falcon" -> F...n an Slot 1 & 2)',
+        recommendedFor: '90% aller Nutzer, maximale Tipp-Geschwindigkeit & konstante Länge',
         difficulty: 'Instant (0s)',
-        rule: { type: 'slot-placement', slots: [2, 5], modality: 'text' },
+        rule: { type: 'slot-placement', slots: [1, 2], modality: 'text', mode: 'overwrite', zone: 'prefix' },
         disguise: { mode: 'codename-word' },
       },
       {
         id: 'slot-placement-image',
-        name: 'Bild-/Icon-Erkennung (Sprachbarriere-Schutz)',
-        description: 'Erkennt Alltagsgegenstände (z. B. 🎩 "Hut" -> H...t an Slot 2 & 5)',
+        name: 'Zone 1: Bild-/Icon-Erkennung (In-Place)',
+        description: 'Ersetzt die ersten zwei Zeichen durch Bild-Buchstaben (z. B. 🎩 "Hut" -> H...t an Slot 1 & 2)',
         recommendedFor: 'Reinräume, internationale Teams, Anti-OCR Schutz',
         difficulty: 'Instant (0s)',
-        rule: { type: 'slot-placement', slots: [2, 5], modality: 'image', locale: 'de' },
+        rule: { type: 'slot-placement', slots: [1, 2], modality: 'image', locale: 'de', mode: 'overwrite', zone: 'prefix' },
         disguise: { mode: 'pictorial-object', locale: 'de' },
+      },
+      {
+        id: 'slot-placement-audio',
+        name: 'Zone 1: Gesprochenes Audio-Wort (In-Place)',
+        description: 'Stimme spricht ein klares Wort (z. B. "Tiger" -> T...r an Slot 1 & 2)',
+        recommendedFor: 'Reisen, öffentliche Terminals, Kameraschutz',
+        difficulty: 'Easy (1s)',
+        rule: { type: 'slot-placement', slots: [1, 2], modality: 'audio', mode: 'overwrite', zone: 'prefix' },
+        disguise: { mode: 'spoken-audio' },
+      },
+      {
+        id: 'slot-placement-questions',
+        name: 'Zone 1: Persönliche Lebensfragen (Höchste Stufe)',
+        description: 'Beantwortet biografische Fragen (z. B. Grundschule "Goethe" -> G...e an Slot 1 & 2)',
+        recommendedFor: 'Executive Access, Air-Gapped SCIF & High-Threat Umgebungen',
+        difficulty: 'Ultra-Secure (3m)',
+        rule: { type: 'slot-placement', slots: [1, 2], modality: 'personal-questions', mode: 'overwrite', zone: 'prefix' },
+        disguise: { mode: 'personal-questions' },
       },
     ];
   }

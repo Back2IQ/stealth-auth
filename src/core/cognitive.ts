@@ -7,9 +7,9 @@
  */
 
 import { Radix26State, CognitiveRule, MathOperatorType } from '../types.js';
-import { executePipelineStep, executeRecipePipeline, applySlotTransformation, computeDynamicSlotShift } from './pipeline.js';
+import { executePipelineStep, executeRecipePipeline, applySlotTransformation, applySlotOverwrite, computeDynamicSlotShift } from './pipeline.js';
 
-export { applySlotTransformation, computeDynamicSlotShift };
+export { applySlotTransformation, applySlotOverwrite, computeDynamicSlotShift };
 
 /**
  * Executes cognitive transformation T(S, State, Rule) on the user's master salt S.
@@ -36,6 +36,8 @@ export function applyCognitiveTransformation(
     slots: rule.slots,
     modality: rule.modality,
     dynamicShift: rule.dynamicShift,
+    mode: rule.mode,
+    zone: rule.zone,
     exponent: rule.exponent,
     modulo: rule.modulo,
     gridPath: rule.gridPath,

@@ -160,6 +160,10 @@ export function executePipelineStep(
         last = last.toLowerCase();
       }
 
+      if (step.mode === 'overwrite') {
+        return applySlotOverwrite(currentPassword, first, last, slots);
+      }
+
       return applySlotTransformation(currentPassword, first, last, slots);
     }
 
@@ -231,6 +235,49 @@ export function applySlotTransformation(
   const p3 = safeBase.slice(s2 - 1);
 
   return `${p1}${c1}${p2}${c2}${p3}`;
+}
+
+/**
+ * In-Place Slot Overwrite Helper:
+ * Replaces characters at slot1 and slot2 with char1 and char2.
+ * Slots are 1-indexed. Supports negative slots (e.g. -1 = last char).
+ * Guarantees strict length invariance: result.length === base.length.
+ */
+export function applySlotOverwrite(
+  base: string,
+  char1: string,
+  char2: string,
+  slots?: [number, number]
+): string {
+  if (!base || base.length === 0) return '';
+  const len = base.length;
+  const chars = base.split('');
+
+  const rawS1 = Number(slots?.[0]);
+  const rawS2 = Number(slots?.[1]);
+
+  const resolveIndex = (slotVal: number, fallback: number): number => {
+    if (!Number.isFinite(slotVal) || slotVal === 0) return fallback;
+    if (slotVal < 0) {
+      return Math.max(0, Math.min(len - 1, len + slotVal));
+    }
+    return Math.max(0, Math.min(len - 1, Math.floor(slotVal) - 1));
+  };
+
+  const idx1 = resolveIndex(rawS1, 0);
+  const idx2 = resolveIndex(rawS2, Math.min(len - 1, idx1 + 1));
+
+  const minIdx = Math.min(idx1, idx2);
+  const maxIdx = Math.max(idx1, idx2);
+
+  if (char1 && char1.length > 0) {
+    chars[minIdx] = char1[0];
+  }
+  if (char2 && char2.length > 0) {
+    chars[maxIdx] = char2[0];
+  }
+
+  return chars.join('');
 }
 
 /**

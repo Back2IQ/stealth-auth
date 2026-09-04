@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>Back2IQ DynPass — Interaktiver Onboarding-Assistent</title>
+  <title>Back2IQ DynPass — Kognitives 3-Zonen-Onboarding & In-Place Slot Overwrite Engine</title>
   
   <!-- Tailwind CSS CDN & Fonts -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -57,9 +57,14 @@
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
+    .code-chip {
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      color: #22d3ee;
+    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500/30 selection:text-cyan-200 antialiased">
+<body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500/30 selection:text-cyan-200 antialiased overflow-x-hidden">
 
   <!-- Ambient Glow -->
   <div class="fixed inset-0 pointer-events-none glow-radial z-0"></div>
@@ -68,28 +73,28 @@
   <header class="relative z-50 border-b border-white/5 glass-panel sticky top-0 px-4 lg:px-8 py-3.5">
     <div class="max-w-4xl mx-auto flex items-center justify-between">
       <div class="flex items-center space-x-3">
-        <a href="index.html" class="flex items-center space-x-3 group">
-          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition">
+        <a href="index.html" class="flex items-center space-x-3 group min-w-0">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-600 to-blue-500 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition flex-shrink-0">
             <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
           </div>
-          <div>
-            <span class="font-bold text-lg tracking-tight text-white">Back2IQ <span class="text-cyan-400 font-medium">DynPass</span></span>
+          <div class="truncate">
+            <span class="font-bold text-base sm:text-lg tracking-tight text-white">Back2IQ <span class="text-cyan-400 font-medium">DynPass</span></span>
             <span class="hidden sm:inline-block ml-2 px-2 py-0.5 text-[10px] uppercase font-mono tracking-wider code-chip rounded">Onboarding Studio</span>
           </div>
         </a>
       </div>
 
-      <div class="flex items-center space-x-3">
-        <!-- Language Selector -->
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        <!-- Language Selector (DE, EN, TR, FR, ES) -->
         <div class="flex items-center bg-dark-card border border-dark-border rounded-lg p-1 text-xs">
-          <button onclick="setLanguage('de')" id="lang-de" class="px-2 py-1 rounded bg-cyan-500/20 text-cyan-300 font-medium">DE</button>
-          <button onclick="setLanguage('en')" id="lang-en" class="px-2 py-1 rounded text-slate-400 hover:text-white">EN</button>
-          <button onclick="setLanguage('tr')" id="lang-tr" class="px-2 py-1 rounded text-slate-400 hover:text-white">TR</button>
-          <button onclick="setLanguage('fr')" id="lang-fr" class="px-2 py-1 rounded text-slate-400 hover:text-white">FR</button>
-          <button onclick="setLanguage('es')" id="lang-es" class="px-2 py-1 rounded text-slate-400 hover:text-white">ES</button>
+          <button onclick="setLanguage('de')" id="lang-de" class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded bg-cyan-500/20 text-cyan-300 font-medium">DE</button>
+          <button onclick="setLanguage('en')" id="lang-en" class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-slate-400 hover:text-white">EN</button>
+          <button onclick="setLanguage('tr')" id="lang-tr" class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-slate-400 hover:text-white">TR</button>
+          <button onclick="setLanguage('fr')" id="lang-fr" class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-slate-400 hover:text-white">FR</button>
+          <button onclick="setLanguage('es')" id="lang-es" class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-slate-400 hover:text-white">ES</button>
         </div>
 
-        <a href="index.html" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs text-slate-300 transition flex items-center space-x-1">
+        <a href="index.html" class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs text-slate-300 transition flex items-center space-x-1 flex-shrink-0 min-h-[36px]">
           <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
           <span id="nav-back">Zurück</span>
         </a>
@@ -98,71 +103,139 @@
   </header>
 
   <!-- Main Container -->
-  <main class="relative z-10 flex-grow max-w-4xl mx-auto px-4 py-8 lg:py-12 w-full">
+  <main class="relative z-10 flex-grow max-w-4xl mx-auto px-3 sm:px-4 py-6 sm:py-10 w-full min-w-0">
 
     <!-- Progress Stepper -->
-    <div class="mb-10">
-      <div class="flex items-center justify-between relative max-w-2xl mx-auto">
-        <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-dark-border z-0"></div>
-        <div id="step-progress-bar" class="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 transition-all duration-300 z-0" style="width: 0%"></div>
+    <div class="mb-8 sm:mb-10">
+      <div class="flex items-center justify-between relative max-w-2xl mx-auto px-2">
+        <div class="absolute left-4 right-4 top-1/2 -translate-y-1/2 h-0.5 bg-dark-border z-0"></div>
+        <div id="step-progress-bar" class="absolute left-4 top-1/2 -translate-y-1/2 h-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 transition-all duration-300 z-0" style="width: 0%"></div>
 
         <div id="step-ind-1" class="relative z-10 flex flex-col items-center">
-          <div class="w-9 h-9 rounded-full bg-cyan-500 text-white font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a] shadow-lg shadow-cyan-500/30">1</div>
-          <span class="text-[11px] font-medium text-cyan-400 mt-1.5" id="lbl-step-1">Passwort & Slots</span>
+          <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-cyan-500 text-white font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a] shadow-lg shadow-cyan-500/30">1</div>
+          <span class="text-[10px] sm:text-[11px] font-medium text-cyan-400 mt-1.5 text-center" id="lbl-step-1">Zonen & Passwort</span>
         </div>
 
         <div id="step-ind-2" class="relative z-10 flex flex-col items-center">
-          <div class="w-9 h-9 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a]">2</div>
-          <span class="text-[11px] font-medium text-slate-400 mt-1.5" id="lbl-step-2">Modalität</span>
+          <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a]">2</div>
+          <span class="text-[10px] sm:text-[11px] font-medium text-slate-400 mt-1.5 text-center" id="lbl-step-2">Modalität</span>
         </div>
 
         <div id="step-ind-3" class="relative z-10 flex flex-col items-center">
-          <div class="w-9 h-9 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a]">3</div>
-          <span class="text-[11px] font-medium text-slate-400 mt-1.5" id="lbl-step-3">Anti-Phishing</span>
+          <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a]">3</div>
+          <span class="text-[10px] sm:text-[11px] font-medium text-slate-400 mt-1.5 text-center" id="lbl-step-3">Anti-Phishing</span>
         </div>
 
         <div id="step-ind-4" class="relative z-10 flex flex-col items-center">
-          <div class="w-9 h-9 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a]">4</div>
-          <span class="text-[11px] font-medium text-slate-400 mt-1.5" id="lbl-step-4">Trainer</span>
+          <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a]">4</div>
+          <span class="text-[10px] sm:text-[11px] font-medium text-slate-400 mt-1.5 text-center" id="lbl-step-4">Trainer</span>
         </div>
       </div>
     </div>
 
     <!-- WIZARD STEP CONTAINER -->
-    <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-white/10 shadow-2xl relative">
+    <div class="glass-panel p-4 sm:p-6 lg:p-8 rounded-2xl border border-white/10 shadow-2xl relative min-w-0">
 
-      <!-- STEP 1: BASIS PASSWORT & SLOTS -->
-      <div id="step-1" class="space-y-6">
+      <!-- STEP 1: BASIS PASSWORT & KOGNITIVE 3-ZONEN-ENGINE -->
+      <div id="step-1" class="space-y-5 sm:space-y-6">
         <div>
-          <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider">Schritt 1 von 4</span>
-          <h2 class="text-2xl font-bold text-white mt-1" id="s1-title">Wähle dein Basis-Passwort & deine Einfügestellen</h2>
-          <p class="text-xs sm:text-sm text-slate-400 mt-1" id="s1-sub">Dein Passwort kann ein Wort oder eine beliebige Zeichenfolge sein (z. B. 12345qwert). Der Server speichert davon 0 Byte.</p>
+          <div class="flex items-center space-x-2">
+            <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider" id="s1-step-tag">Schritt 1 von 4</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20" id="s1-engine-tag">In-Place Overwrite ($L = const$)</span>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-bold text-white mt-1 break-words" id="s1-title">Wähle dein Passwort & deine Kognitive Zone</h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1 leading-relaxed" id="s1-sub">Kein Verlängern des Wortes! Das Zeichen im Ziel-Slot wird <b>in-place ausgetauscht</b>. Dein Tippfluss (Muscle Memory) bleibt 100% erhalten.</p>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-2" id="lbl-inp-pwd">Dein Basis-Passwort:</label>
-          <input type="text" id="base-pwd-input" value="12345qwert" oninput="updatePassword()" class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-4 py-3 text-base text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition">
+          <label class="block text-xs font-semibold text-slate-300 mb-1.5" id="lbl-inp-pwd">Dein Basis-Passwort:</label>
+          <input type="text" id="base-pwd-input" value="Geheim123" oninput="updatePassword()" class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-4 py-3 text-sm sm:text-base text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition min-h-[44px]">
         </div>
 
-        <div class="p-4 rounded-xl bg-dark-bg border border-dark-border space-y-3">
+        <!-- 3 KOGNITIVE ZONEN AUSWAHL -->
+        <div class="space-y-2">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-semibold text-slate-300 block" id="lbl-slot-desc">Klicke auf die Positionen (Slots), an denen Buchstaben eingefügt werden:</span>
-            <span class="text-[11px] font-mono text-cyan-400" id="slot-badge">Gewählt: Slot 2 & Slot 5</span>
+            <label class="block text-xs font-semibold text-slate-300" id="lbl-zones-title">Kognitive Zone wählen (Intuitiver Einstieg):</label>
+            <span class="text-[11px] font-mono text-cyan-400" id="active-zone-badge">Aktiv: Zone 1 (Vorne)</span>
           </div>
           
-          <div id="char-grid" class="flex flex-wrap gap-1.5 font-mono text-sm pt-1"></div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+            
+            <!-- Zone 1: Vorne / Start (Empfohlen) -->
+            <button type="button" onclick="selectZone('prefix')" id="zone-btn-prefix" class="p-3.5 rounded-xl border border-cyan-500/50 bg-cyan-500/15 text-left transition relative group min-h-[44px]">
+              <div class="flex items-center justify-between mb-1">
+                <span class="font-bold text-cyan-300 text-xs flex items-center space-x-1.5">
+                  <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                  <span id="z1-name">Zone 1: Vorne</span>
+                </span>
+                <span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-400/20 text-cyan-200 font-mono font-bold" id="z1-badge">Empfohlen</span>
+              </div>
+              <p class="text-[11px] text-slate-300 leading-snug" id="z1-desc">Slots [1, 2] &rarr; Startet mit Hint, Rest fließt aus dem Muskelgedächtnis.</p>
+              <div class="text-[11px] font-mono text-cyan-300 mt-2 font-bold" id="z1-sample">z. B. Htheim123</div>
+            </button>
 
-          <div class="mt-3 pt-3 border-t border-white/5 text-xs">
-            <span class="text-slate-400">Live-Vorschau mit Challenge <b>"Hut"</b> (Buchstaben: <span class="text-cyan-300 font-bold">H</span> und <span class="text-cyan-300 font-bold">t</span>):</span>
-            <div class="mt-1.5 p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/30 font-mono text-emerald-400 font-bold flex items-center space-x-2 break-all">
-              <i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
-              <span id="preview-output">1 H 2 3 4 t q w e r t</span>
+            <!-- Zone 2: Rahmen (Kopf & Schwanz) -->
+            <button type="button" onclick="selectZone('frame')" id="zone-btn-frame" class="p-3.5 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition relative group min-h-[44px]">
+              <div class="flex items-center justify-between mb-1">
+                <span class="font-bold text-slate-300 text-xs flex items-center space-x-1.5">
+                  <span class="w-2 h-2 rounded-full bg-slate-500"></span>
+                  <span id="z2-name">Zone 2: Rahmen</span>
+                </span>
+                <span class="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-slate-400 font-mono" id="z2-badge">Kopf & Schwanz</span>
+              </div>
+              <p class="text-[11px] text-slate-400 leading-snug" id="z2-desc">Slot 1 & letztes Zeichen &rarr; Klammert das Passwort kognitiv ein.</p>
+              <div class="text-[11px] font-mono text-slate-400 mt-2 font-bold" id="z2-sample">z. B. Heheim12t</div>
+            </button>
+
+            <!-- Zone 3: Zahlen-Zone (Am Ende) -->
+            <button type="button" onclick="selectZone('suffix-digits')" id="zone-btn-suffix-digits" class="p-3.5 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition relative group min-h-[44px]">
+              <div class="flex items-center justify-between mb-1">
+                <span class="font-bold text-slate-300 text-xs flex items-center space-x-1.5">
+                  <span class="w-2 h-2 rounded-full bg-slate-500"></span>
+                  <span id="z3-name">Zone 3: Zahlen</span>
+                </span>
+                <span class="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-slate-400 font-mono" id="z3-badge">Am Ende</span>
+              </div>
+              <p class="text-[11px] text-slate-400 leading-snug" id="z3-desc">Ersetzt Ziffern am Ende. Wortstamm bleibt unberührt.</p>
+              <div class="text-[11px] font-mono text-slate-400 mt-2 font-bold" id="z3-sample">z. B. GeheimHt3</div>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- BUCHSTABEN-RASTER & SLOTS -->
+        <div class="p-4 rounded-xl bg-dark-bg border border-dark-border space-y-3">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <span class="text-xs font-semibold text-slate-300 block" id="lbl-slot-desc">Freie Slot-Wahl auf dem Buchstaben-Raster (Power-User):</span>
+            <span class="text-[11px] font-mono text-cyan-400" id="slot-badge">Gewählt: Slot 1 & Slot 2</span>
+          </div>
+          
+          <div id="char-grid" class="flex flex-wrap gap-1.5 font-mono text-xs sm:text-sm pt-1"></div>
+
+          <!-- LIVE VORSCHAU MIT IN-PLACE OVERWRITE DIFF -->
+          <div class="mt-3 pt-3 border-t border-white/5 text-xs space-y-2">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <span class="text-slate-400" id="lbl-preview-title">Live-Vorschau mit Challenge <b>"Hut"</b> (Buchstaben: <span class="text-cyan-300 font-bold">H</span> und <span class="text-cyan-300 font-bold">t</span>):</span>
+              <span class="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20" id="lbl-len-invariant">Länge invariant ($L = const$)</span>
+            </div>
+
+            <div class="p-3 rounded-lg bg-emerald-950/30 border border-emerald-500/30 font-mono text-emerald-400 font-bold flex items-center justify-between flex-wrap gap-2">
+              <div class="flex items-center space-x-2 break-all text-sm sm:text-base">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
+                <span id="preview-output">H t h e i m 1 2 3</span>
+              </div>
+              <span class="text-[11px] text-emerald-300 font-normal" id="preview-len-count">9 Zeichen (exakt unverändert)</span>
+            </div>
+
+            <div id="preview-diff-banner" class="text-[11px] font-mono text-slate-400 flex items-center space-x-2">
+              <i data-lucide="replace" class="w-3.5 h-3.5 text-cyan-400 flex-shrink-0"></i>
+              <span id="preview-diff-text">Austausch: <span class="line-through text-rose-400">G</span> &rarr; <b class="text-cyan-300">H</b>, <span class="line-through text-rose-400">e</span> &rarr; <b class="text-cyan-300">t</b></span>
             </div>
           </div>
         </div>
 
-        <div class="pt-4 flex justify-end">
-          <button onclick="goToStep(2)" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-sm shadow-lg shadow-cyan-500/25 transition flex items-center space-x-2">
+        <div class="pt-2 flex justify-end">
+          <button onclick="goToStep(2)" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs shadow-lg shadow-cyan-500/25 transition flex items-center justify-center space-x-2 min-h-[44px]">
             <span id="btn-next-1">Weiter zur Modalitäten-Auswahl</span>
             <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </button>
@@ -170,162 +243,162 @@
       </div>
 
       <!-- STEP 2: MODALITÄT -->
-      <div id="step-2" class="hidden space-y-6">
+      <div id="step-2" class="hidden space-y-5 sm:space-y-6">
         <div>
-          <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider">Schritt 2 von 4</span>
-          <h2 class="text-2xl font-bold text-white mt-1" id="s2-title">Wähle deine Sicherheits-Modalität</h2>
-          <p class="text-xs sm:text-sm text-slate-400 mt-1" id="s2-sub">Wie möchtest du beim Login deine Challenge erhalten?</p>
+          <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider" id="s2-step-tag">Schritt 2 von 4</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-white mt-1 break-words" id="s2-title">Wähle deine Sicherheits-Modalität</h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1 leading-relaxed" id="s2-sub">Wie möchtest du beim Login deine Challenge erhalten?</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <button onclick="setModality('text')" id="m-btn-text" class="p-4 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3">
+          <button onclick="setModality('text')" id="m-btn-text" class="p-4 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3 min-h-[44px]">
             <span class="text-2xl flex-shrink-0">🔤</span>
             <div class="min-w-0">
               <div class="flex items-center justify-between">
-                <span class="font-bold text-xs text-slate-200">Zufälliges Wort / Code</span>
+                <span class="font-bold text-xs text-slate-200" id="m1-t">Zufälliges Wort / Code</span>
                 <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono">🟡 30s</span>
               </div>
-              <div class="text-[11px] text-slate-400 mt-1 leading-tight">Zeigt z. B. <i>"Falcon"</i> &rarr; Nimmt <code class="text-cyan-300">F...n</code></div>
+              <div class="text-[11px] text-slate-400 mt-1 leading-tight" id="m1-d">Zeigt z. B. <i>"Falcon"</i> &rarr; Nimmt <code class="text-cyan-300">F...n</code></div>
             </div>
           </button>
 
-          <button onclick="setModality('image')" id="m-btn-image" class="p-4 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3">
+          <button onclick="setModality('image')" id="m-btn-image" class="p-4 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3 min-h-[44px]">
             <span class="text-2xl flex-shrink-0">🖼️</span>
             <div class="min-w-0">
               <div class="flex items-center justify-between">
-                <span class="font-bold text-xs text-slate-200">Visuelles Bild</span>
+                <span class="font-bold text-xs text-slate-200" id="m2-t">Visuelles Bild</span>
                 <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">🟢 45s</span>
               </div>
-              <div class="text-[11px] text-slate-400 mt-1 leading-tight">Zeigt 🎩 <i>"Hut"</i> &rarr; Nimmt <code class="text-cyan-300">H...t</code></div>
+              <div class="text-[11px] text-slate-400 mt-1 leading-tight" id="m2-d">Zeigt 🎩 <i>"Hut"</i> &rarr; Nimmt <code class="text-cyan-300">H...t</code></div>
             </div>
           </button>
 
-          <button onclick="setModality('audio')" id="m-btn-audio" class="p-4 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-left transition flex items-start space-x-3">
+          <button onclick="setModality('audio')" id="m-btn-audio" class="p-4 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-left transition flex items-start space-x-3 min-h-[44px]">
             <span class="text-2xl flex-shrink-0">🔊</span>
             <div class="min-w-0">
               <div class="flex items-center justify-between">
-                <span class="font-bold text-xs text-cyan-300">Gesprochenes Audio-Wort</span>
+                <span class="font-bold text-xs text-cyan-300" id="m3-t">Gesprochenes Audio-Wort</span>
                 <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">🟢 45s</span>
               </div>
-              <div class="text-[11px] text-slate-300 mt-1 leading-tight">Stimme sagt <i>„Tiger“</i> &rarr; Nimmt <code class="text-cyan-300">T...r</code></div>
+              <div class="text-[11px] text-slate-300 mt-1 leading-tight" id="m3-d">Stimme sagt <i>„Tiger“</i> &rarr; Nimmt <code class="text-cyan-300">T...r</code></div>
             </div>
           </button>
 
-          <button onclick="setModality('questions')" id="m-btn-questions" class="p-4 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3">
+          <button onclick="setModality('questions')" id="m-btn-questions" class="p-4 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3 min-h-[44px]">
             <span class="text-2xl flex-shrink-0">🛡️</span>
             <div class="min-w-0">
               <div class="flex items-center justify-between">
-                <span class="font-bold text-xs text-slate-200">Persönliche Lebensfragen</span>
+                <span class="font-bold text-xs text-slate-200" id="m4-t">Persönliche Lebensfragen</span>
                 <span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-500/30 text-cyan-200 font-mono font-bold">🛡️ Höchste Stufe</span>
               </div>
-              <div class="text-[11px] text-slate-400 mt-1 leading-tight">18+ Fragen-Pool &rarr; Antwort nur in deiner Biografie</div>
+              <div class="text-[11px] text-slate-400 mt-1 leading-tight" id="m4-d">18+ Fragen-Pool &rarr; Antwort nur in deiner Biografie</div>
             </div>
           </button>
         </div>
 
-        <div class="pt-4 flex items-center justify-between">
-          <button onclick="goToStep(1)" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs transition flex items-center space-x-1">
+        <div class="pt-2 flex items-center justify-between">
+          <button onclick="goToStep(1)" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs transition flex items-center space-x-1 min-h-[44px]">
             <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-            <span>Zurück</span>
+            <span id="btn-back-2">Zurück</span>
           </button>
-          <button onclick="goToStep(3)" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs shadow-lg shadow-cyan-500/25 transition flex items-center space-x-2">
-            <span>Weiter zu Anti-Phishing</span>
+          <button onclick="goToStep(3)" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs shadow-lg shadow-cyan-500/25 transition flex items-center space-x-2 min-h-[44px]">
+            <span id="btn-next-2">Weiter zu Anti-Phishing</span>
             <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </button>
         </div>
       </div>
 
       <!-- STEP 3: ANTI-PHISHING -->
-      <div id="step-3" class="hidden space-y-6">
+      <div id="step-3" class="hidden space-y-5 sm:space-y-6">
         <div>
-          <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider">Schritt 3 von 4</span>
-          <h2 class="text-2xl font-bold text-white mt-1" id="s3-title">Wähle deine Anti-Phishing Gegenlosung</h2>
-          <p class="text-xs sm:text-sm text-slate-400 mt-1" id="s3-sub">Der echte Server zeigt dir dieses Wort bei jedem Login an. Steht es nicht da, ist die Seite gefälscht.</p>
+          <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider" id="s3-step-tag">Schritt 3 von 4</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-white mt-1 break-words" id="s3-title">Wähle deine Anti-Phishing Gegenlosung</h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1 leading-relaxed" id="s3-sub">Der echte Server zeigt dir dieses Wort bei jedem Login an. Steht es nicht da, ist die Seite gefälscht.</p>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-2">Dein persönliches Erkennungswort (Gegenlosung):</label>
-          <input type="text" id="countersign-input" value="Blaue Tür" class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-4 py-3 text-base text-emerald-400 font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition">
+          <label class="block text-xs font-semibold text-slate-300 mb-1.5" id="lbl-inp-counter">Dein persönliches Erkennungswort (Gegenlosung):</label>
+          <input type="text" id="countersign-input" value="Blaue Tür" class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-4 py-3 text-base text-emerald-400 font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition min-h-[44px]">
         </div>
 
         <div class="p-4 rounded-xl bg-cyan-950/30 border border-cyan-500/20 text-xs text-cyan-200 flex items-start space-x-3">
           <i data-lucide="shield-alert" class="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5"></i>
           <div>
-            <span class="font-bold text-cyan-300">Warum das vor Phishing schützt:</span>
-            <p class="text-slate-300 mt-0.5 leading-relaxed">Ein Angreifer mit gefälschtem Login-Portal kennt dein Erkennungswort nicht. Du enttarnst Phishing auf den ersten Blick.</p>
+            <span class="font-bold text-cyan-300" id="box-phish-title">Warum das vor Phishing schützt:</span>
+            <p class="text-slate-300 mt-0.5 leading-relaxed" id="box-phish-desc">Ein Angreifer mit gefälschtem Login-Portal kennt dein Erkennungswort nicht. Du enttarnst Phishing auf den ersten Blick.</p>
           </div>
         </div>
 
-        <div class="pt-4 flex items-center justify-between">
-          <button onclick="goToStep(2)" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs transition flex items-center space-x-1">
+        <div class="pt-2 flex items-center justify-between">
+          <button onclick="goToStep(2)" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs transition flex items-center space-x-1 min-h-[44px]">
             <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-            <span>Zurück</span>
+            <span id="btn-back-3">Zurück</span>
           </button>
-          <button onclick="goToStep(4)" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs shadow-lg shadow-cyan-500/25 transition flex items-center space-x-2">
-            <span>Zum Trainer (3 Probe-Logins)</span>
+          <button onclick="goToStep(4)" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs shadow-lg shadow-cyan-500/25 transition flex items-center space-x-2 min-h-[44px]">
+            <span id="btn-next-3">Zum Trainer (3 Probe-Logins)</span>
             <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </button>
         </div>
       </div>
 
       <!-- STEP 4: TRAINER -->
-      <div id="step-4" class="hidden space-y-6">
+      <div id="step-4" class="hidden space-y-5 sm:space-y-6">
         <div>
-          <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider">Schritt 4 von 4</span>
-          <h2 class="text-2xl font-bold text-white mt-1" id="s4-title">Der Cognitive Trainer (3 Probeläufe)</h2>
-          <p class="text-xs sm:text-sm text-slate-400 mt-1" id="s4-sub">Absolviere 3 Probe-Logins mit deiner gewählten Modalität. Erst wenn alle 3 fehlerfrei sitzen, wird dein Profil scharf geschaltet.</p>
+          <span class="text-xs font-mono uppercase text-cyan-400 tracking-wider" id="s4-step-tag">Schritt 4 von 4</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-white mt-1 break-words" id="s4-title">Der Cognitive Trainer (3 Probeläufe)</h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1 leading-relaxed" id="s4-sub">Absolviere 3 Probe-Logins mit deiner gewählten Zone & Modalität. Erst wenn alle 3 fehlerfrei sitzen, wird dein Profil scharf geschaltet.</p>
         </div>
 
         <div class="grid grid-cols-3 gap-2 sm:gap-3 text-center text-xs font-mono">
-          <div id="tr-badge-1" class="p-3 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 font-bold">Runde 1 / 3</div>
-          <div id="tr-badge-2" class="p-3 rounded-xl border border-dark-border bg-dark-bg text-slate-500">Runde 2 / 3</div>
-          <div id="tr-badge-3" class="p-3 rounded-xl border border-dark-border bg-dark-bg text-slate-500">Runde 3 / 3</div>
+          <div id="tr-badge-1" class="p-2 sm:p-3 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 font-bold truncate">Runde 1 / 3</div>
+          <div id="tr-badge-2" class="p-2 sm:p-3 rounded-xl border border-dark-border bg-dark-bg text-slate-500 truncate">Runde 2 / 3</div>
+          <div id="tr-badge-3" class="p-2 sm:p-3 rounded-xl border border-dark-border bg-dark-bg text-slate-500 truncate">Runde 3 / 3</div>
         </div>
 
-        <div class="bg-[#080c14] border border-dark-border rounded-xl p-5 space-y-4">
-          <div class="flex items-center justify-between text-xs">
-            <span class="text-slate-400 font-mono">Gegenlosung: <b class="text-emerald-400" id="tr-counter">Blaue Tür ✅</b></span>
-            <span class="text-[11px] text-cyan-400 font-mono">⏱️ Stoppuhr aktiv</span>
+        <div class="bg-[#080c14] border border-dark-border rounded-xl p-4 sm:p-5 space-y-4">
+          <div class="flex items-center justify-between text-xs flex-wrap gap-1">
+            <span class="text-slate-400 font-mono" id="tr-counter-wrap">Gegenlosung: <b class="text-emerald-400" id="tr-counter">Blaue Tür ✅</b></span>
+            <span class="text-[11px] text-cyan-400 font-mono" id="tr-stopwatch-lbl">⏱️ In-Place Overwrite ($L = const$)</span>
           </div>
 
           <div class="p-4 rounded-lg bg-dark-card border border-dark-border text-center space-y-2">
-            <span class="text-xs text-slate-400 block">Deine Test-Challenge:</span>
-            <div id="tr-main-text" class="text-xl font-bold font-mono text-cyan-300">Wort: Tiger</div>
+            <span class="text-xs text-slate-400 block" id="tr-challenge-lbl">Deine Test-Challenge:</span>
+            <div id="tr-main-text" class="text-lg sm:text-xl font-bold font-mono text-cyan-300">Wort: Tiger</div>
             <div id="tr-audio-btn-wrap" class="hidden pt-1">
-              <button onclick="playTrainerAudio()" class="px-3 py-1.5 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 text-xs font-mono inline-flex items-center space-x-1.5 transition">
+              <button onclick="playTrainerAudio()" class="px-3 py-1.5 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 text-xs font-mono inline-flex items-center space-x-1.5 transition min-h-[36px]">
                 <i data-lucide="volume-2" class="w-4 h-4"></i>
-                <span>Wort anhören 🔊</span>
+                <span id="btn-listen-audio">Wort anhören 🔊</span>
               </button>
             </div>
           </div>
 
           <div class="space-y-2">
-            <input type="text" id="tr-input" placeholder="Passwort mit eingesetzten Buchstaben..." class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-4 py-3 text-sm text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition">
+            <input type="text" id="tr-input" placeholder="Passwort mit überschriebenen Zeichen..." class="w-full bg-dark-bg border border-dark-border focus:border-cyan-500 rounded-xl px-4 py-3 text-sm text-white font-mono tracking-wider focus:outline-none focus:ring-1 focus:ring-cyan-500 transition min-h-[44px]">
             
-            <button onclick="submitTrainerRound()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-500/20 transition flex items-center justify-center space-x-2">
+            <button onclick="submitTrainerRound()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-500/20 transition flex items-center justify-center space-x-2 min-h-[44px]">
               <i data-lucide="check" class="w-4 h-4"></i>
-              <span>Runde prüfen</span>
+              <span id="btn-verify-round">Runde prüfen</span>
             </button>
           </div>
 
           <div id="tr-feedback" class="hidden p-3 rounded-xl border text-xs font-mono"></div>
         </div>
 
-        <div id="activation-box" class="hidden p-5 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 text-center space-y-3 animate-fadeIn">
+        <div id="activation-box" class="hidden p-4 sm:p-5 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 text-center space-y-3 animate-fadeIn">
           <div class="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto text-xl">🎉</div>
-          <h4 class="text-lg font-bold text-white">Perfekt! 3 von 3 Logins bestanden!</h4>
-          <p class="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">Deine durchschnittliche Denkzeit lag bei <b class="text-emerald-400" id="avg-time">1.1 Sekunden</b>. Dein Profil ist nun scharf geschaltet.</p>
+          <h4 class="text-base sm:text-lg font-bold text-white" id="tr-success-title">Perfekt! 3 von 3 Logins bestanden!</h4>
+          <p class="text-xs text-slate-300 max-w-md mx-auto leading-relaxed" id="tr-success-desc">Deine durchschnittliche Denkzeit lag bei <b class="text-emerald-400" id="avg-time">1.1 Sekunden</b>. Dein Profil ist nun scharf geschaltet.</p>
           
-          <a href="index.html#simulator" class="inline-flex items-center justify-center space-x-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs shadow-xl shadow-cyan-500/30 transition transform hover:-translate-y-0.5">
-            <span>Zurück zur Hauptseite & Live-Terminal</span>
+          <a href="index.html#simulator" class="inline-flex items-center justify-center space-x-2 px-6 sm:px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs shadow-xl shadow-cyan-500/30 transition transform hover:-translate-y-0.5 min-h-[44px]">
+            <span id="btn-goto-terminal">Zurück zur Hauptseite & Live-Terminal</span>
             <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </a>
         </div>
 
-        <div id="tr-nav" class="pt-4 flex items-center justify-between">
-          <button onclick="goToStep(3)" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs transition flex items-center space-x-1">
+        <div id="tr-nav" class="pt-2 flex items-center justify-between">
+          <button onclick="goToStep(3)" class="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs transition flex items-center space-x-1 min-h-[44px]">
             <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
-            <span>Zurück</span>
+            <span id="btn-back-4">Zurück</span>
           </button>
         </div>
       </div>
@@ -342,24 +415,342 @@
   </footer>
 
   <script>
-    lucide.createIcons();
+    // 5-LANGUAGE TRANSLATION DICTIONARY
+    const I18N = {
+      de: {
+        navBack: 'Zurück',
+        lblStep1: 'Zonen & Passwort',
+        lblStep2: 'Modalität',
+        lblStep3: 'Anti-Phishing',
+        lblStep4: 'Trainer',
+        s1StepTag: 'Schritt 1 von 4',
+        s1EngineTag: 'In-Place Overwrite (L = const)',
+        s1Title: 'Wähle dein Passwort & deine Kognitive Zone',
+        s1Sub: 'Kein Verlängern des Wortes! Das Zeichen im Ziel-Slot wird in-place ausgetauscht. Dein Tippfluss (Muscle Memory) bleibt 100% erhalten.',
+        lblInpPwd: 'Dein Basis-Passwort:',
+        lblZonesTitle: 'Kognitive Zone wählen (Intuitiver Einstieg):',
+        activeZonePrefix: 'Aktiv: Zone 1 (Vorne)',
+        activeZoneFrame: 'Aktiv: Zone 2 (Rahmen)',
+        activeZoneDigits: 'Aktiv: Zone 3 (Zahlen)',
+        activeZoneCustom: 'Aktiv: Custom-Slots',
+        z1Name: 'Zone 1: Vorne',
+        z1Badge: 'Empfohlen',
+        z1Desc: 'Slots [1, 2] → Startet mit Hint, Rest fließt aus dem Muskelgedächtnis.',
+        z2Name: 'Zone 2: Rahmen',
+        z2Badge: 'Kopf & Schwanz',
+        z2Desc: 'Slot 1 & letztes Zeichen → Klammert das Passwort kognitiv ein.',
+        z3Name: 'Zone 3: Zahlen',
+        z3Badge: 'Am Ende',
+        z3Desc: 'Ersetzt Ziffern am Ende. Wortstamm bleibt unberührt.',
+        lblSlotDesc: 'Freie Slot-Wahl auf dem Buchstaben-Raster (Power-User):',
+        lblPreviewTitle: 'Live-Vorschau mit Challenge "Hut" (Buchstaben: H und t):',
+        lblLenInvariant: 'Länge invariant (L = const)',
+        btnNext1: 'Weiter zur Modalitäten-Auswahl',
+        s2StepTag: 'Schritt 2 von 4',
+        s2Title: 'Wähle deine Sicherheits-Modalität',
+        s2Sub: 'Wie möchtest du beim Login deine Challenge erhalten?',
+        m1T: 'Zufälliges Wort / Code',
+        m1D: 'Zeigt z. B. "Falcon" → Nimmt F...n',
+        m2T: 'Visuelles Bild',
+        m2D: 'Zeigt 🎩 "Hut" → Nimmt H...t',
+        m3T: 'Gesprochenes Audio-Wort',
+        m3D: 'Stimme sagt „Tiger“ → Nimmt T...r',
+        m4T: 'Persönliche Lebensfragen',
+        m4D: '18+ Fragen-Pool → Antwort nur in deiner Biografie',
+        btnBack2: 'Zurück',
+        btnNext2: 'Weiter zu Anti-Phishing',
+        s3StepTag: 'Schritt 3 von 4',
+        s3Title: 'Wähle deine Anti-Phishing Gegenlosung',
+        s3Sub: 'Der echte Server zeigt dir dieses Wort bei jedem Login an. Steht es nicht da, ist die Seite gefälscht.',
+        lblInpCounter: 'Dein persönliches Erkennungswort (Gegenlosung):',
+        boxPhishTitle: 'Warum das vor Phishing schützt:',
+        boxPhishDesc: 'Ein Angreifer mit gefälschtem Login-Portal kennt dein Erkennungswort nicht. Du enttarnst Phishing auf den ersten Blick.',
+        btnBack3: 'Zurück',
+        btnNext3: 'Zum Trainer (3 Probe-Logins)',
+        s4StepTag: 'Schritt 4 von 4',
+        s4Title: 'Der Cognitive Trainer (3 Probeläufe)',
+        s4Sub: 'Absolviere 3 Probe-Logins mit deiner gewählten Zone & Modalität. Erst wenn alle 3 fehlerfrei sitzen, wird dein Profil scharf geschaltet.',
+        trChallengeLbl: 'Deine Test-Challenge:',
+        btnListenAudio: 'Wort anhören 🔊',
+        btnVerifyRound: 'Runde prüfen',
+        btnBack4: 'Zurück',
+        trSuccessTitle: 'Perfekt! 3 von 3 Logins bestanden!',
+        btnGotoTerminal: 'Zurück zur Hauptseite & Live-Terminal'
+      },
+      en: {
+        navBack: 'Back',
+        lblStep1: 'Zones & Password',
+        lblStep2: 'Modality',
+        lblStep3: 'Anti-Phishing',
+        lblStep4: 'Trainer',
+        s1StepTag: 'Step 1 of 4',
+        s1EngineTag: 'In-Place Overwrite (L = const)',
+        s1Title: 'Select your Password & Cognitive Zone',
+        s1Sub: 'Zero string elongation! The character in the target slot is overwritten in-place, perfectly preserving your typing muscle memory.',
+        lblInpPwd: 'Your Base Password:',
+        lblZonesTitle: 'Choose Cognitive Zone (Intuitive Onboarding):',
+        activeZonePrefix: 'Active: Zone 1 (Prefix)',
+        activeZoneFrame: 'Active: Zone 2 (Frame)',
+        activeZoneDigits: 'Active: Zone 3 (Digits)',
+        activeZoneCustom: 'Active: Custom Slots',
+        z1Name: 'Zone 1: Prefix',
+        z1Badge: 'Recommended',
+        z1Desc: 'Slots [1, 2] → Starts with hint, remainder flows naturally from muscle memory.',
+        z2Name: 'Zone 2: Frame',
+        z2Badge: 'Head & Tail',
+        z2Desc: 'Slot 1 & final char → Encloses your password cognitively.',
+        z3Name: 'Zone 3: Digits',
+        z3Badge: 'At End',
+        z3Desc: 'Replaces ending digits. Word stem remains untouched.',
+        lblSlotDesc: 'Custom slot selection on letter grid (Power Users):',
+        lblPreviewTitle: 'Live Preview with Challenge "Hat" (Letters: H and t):',
+        lblLenInvariant: 'Length invariant (L = const)',
+        btnNext1: 'Proceed to Modality Selection',
+        s2StepTag: 'Step 2 of 4',
+        s2Title: 'Select your Security Modality',
+        s2Sub: 'How would you like to receive your login challenge?',
+        m1T: 'Random Word / Code',
+        m1D: 'Displays "Falcon" → Takes F...n',
+        m2T: 'Visual Image',
+        m2D: 'Shows 🎩 "Hat" → Takes H...t',
+        m3T: 'Spoken Audio Word',
+        m3D: 'Voice says "Tiger" → Takes T...r',
+        m4T: 'Personal Questions',
+        m4D: '18+ biographical questions → Answer in memory only',
+        btnBack2: 'Back',
+        btnNext2: 'Proceed to Anti-Phishing',
+        s3StepTag: 'Step 3 of 4',
+        s3Title: 'Choose your Anti-Phishing Countersign',
+        s3Sub: 'The genuine server displays this phrase on every login. If missing, the portal is fake.',
+        lblInpCounter: 'Your personal countersign phrase:',
+        boxPhishTitle: 'Why this stops phishing:',
+        boxPhishDesc: 'An attacker hosting a cloned login page does not know your countersign. You spot phishing instantly before typing.',
+        btnBack3: 'Back',
+        btnNext3: 'Start Trainer (3 Dry-Runs)',
+        s4StepTag: 'Step 4 of 4',
+        s4Title: 'The Cognitive Trainer (3 Dry-Runs)',
+        s4Sub: 'Complete 3 verification logins with your zone & modality. Your profile activates once all 3 succeed.',
+        trChallengeLbl: 'Your Test Challenge:',
+        btnListenAudio: 'Listen to word 🔊',
+        btnVerifyRound: 'Verify Attempt',
+        btnBack4: 'Back',
+        trSuccessTitle: 'Perfect! 3 of 3 logins verified!',
+        btnGotoTerminal: 'Return to Main Terminal'
+      },
+      tr: {
+        navBack: 'Geri',
+        lblStep1: 'Bölgeler & Şifre',
+        lblStep2: 'Modalite',
+        lblStep3: 'Anti-Phishing',
+        lblStep4: 'Eğitici',
+        s1StepTag: 'Adım 1 / 4',
+        s1EngineTag: 'Yerinde Üzerine Yazma (L = sabit)',
+        s1Title: 'Şifreni & Bilişsel Bölgini Seç',
+        s1Sub: 'Kelime asla uzamaz! Hedef yuvadaki karakter yerinde değiştirilir. Parmak hafızanız (Muscle Memory) bozulmaz.',
+        lblInpPwd: 'Temel Şifreniz:',
+        lblZonesTitle: 'Bilişsel Bölge Seçimi (Sezgisel Başlangıç):',
+        activeZonePrefix: 'Aktif: Bölge 1 (Ön / Baş)',
+        activeZoneFrame: 'Aktif: Bölge 2 (Çerçeve)',
+        activeZoneDigits: 'Aktif: Bölge 3 (Rakamlar)',
+        activeZoneCustom: 'Aktif: Özel Yuvalar',
+        z1Name: 'Bölge 1: Ön',
+        z1Badge: 'Önerilen',
+        z1Desc: 'Yuva [1, 2] → İpucuyla başla, geri kalanı parmak hafızasından akar.',
+        z2Name: 'Bölge 2: Çerçeve',
+        z2Badge: 'Baş & Son',
+        z2Desc: 'Yuva 1 & son karakter → Şifrenizi bilişsel olarak çerçeveler.',
+        z3Name: 'Bölge 3: Rakamlar',
+        z3Badge: 'Sonda',
+        z3Desc: 'Sondaki rakamları değiştirir. Kelime köküne dokunulmaz.',
+        lblSlotDesc: 'Harf ızgarasında serbest yuva seçimi (İleri Düzey):',
+        lblPreviewTitle: 'Örnek "Şapka" Testi ile Canlı Önizleme:',
+        lblLenInvariant: 'Uzunluk Sabit (L = const)',
+        btnNext1: 'Modalite Seçimine İlerle',
+        s2StepTag: 'Adım 2 / 4',
+        s2Title: 'Güvenlik Modalitesini Seç',
+        s2Sub: 'Giriş sırasında sorguyu nasıl almak istersiniz?',
+        m1T: 'Rastgele Kelime / Kod',
+        m1D: '"Falcon" gösterir → F...n alır',
+        m2T: 'Görsel Resim',
+        m2D: '🎩 "Şapka" gösterir → Ş...a alır',
+        m3T: 'Sesli Okunan Kelime',
+        m3D: 'Ses "Kaplan" der → K...n alır',
+        m4T: 'Biyografik Sorular',
+        m4D: '18+ soru havuzu → Cevap sadece zihninizde',
+        btnBack2: 'Geri',
+        btnNext2: 'Anti-Phishing Adımına İlerle',
+        s3StepTag: 'Adım 3 / 4',
+        s3Title: 'Anti-Phishing Parolanızı Seçin',
+        s3Sub: 'Gerçek sunucu bu kelimeyi her girişte gösterir. Görmüyorsanız site sahtedir.',
+        lblInpCounter: 'Kişisel Tanıma Kelimeniz (Gözdağı/Gezgin):',
+        boxPhishTitle: 'Phishing tuzaklarını nasıl önler:',
+        boxPhishDesc: 'Sahte portal kuran saldırgan tanıma kelimenizi bilemez. Tuzağı anında fark edersiniz.',
+        btnBack3: 'Geri',
+        btnNext3: 'Eğiticiye Geç (3 Deneme)',
+        s4StepTag: 'Adım 4 / 4',
+        s4Title: 'Bilişsel Eğitici (3 Deneme)',
+        s4Sub: 'Seçtiğiniz modalite ile 3 deneme tamamlayın. Üçü de başarılı olunca profiliniz devreye girer.',
+        trChallengeLbl: 'Test Sorgunuz:',
+        btnListenAudio: 'Kelimeyi Dinle 🔊',
+        btnVerifyRound: 'Denemeyi Doğrula',
+        btnBack4: 'Geri',
+        trSuccessTitle: 'Kusursuz! 3 denemenin 3ü de geçti!',
+        btnGotoTerminal: 'Giriş Terminaline Dön'
+      },
+      fr: {
+        navBack: 'Retour',
+        lblStep1: 'Zones & Mot de passe',
+        lblStep2: 'Modalité',
+        lblStep3: 'Anti-Phishing',
+        lblStep4: 'Entraîneur',
+        s1StepTag: 'Étape 1 sur 4',
+        s1EngineTag: 'Remplacement In-Place (L = const)',
+        s1Title: 'Choisissez votre mot de passe & zone cognitive',
+        s1Sub: 'Aucun allongement ! Le caractère ciblé est remplacé sur place, préservant ainsi la mémoire musculaire de frappe.',
+        lblInpPwd: 'Votre mot de passe de base :',
+        lblZonesTitle: 'Sélectionnez votre Zone Cognitive :',
+        activeZonePrefix: 'Actif : Zone 1 (Début)',
+        activeZoneFrame: 'Actif : Zone 2 (Cadre)',
+        activeZoneDigits: 'Actif : Zone 3 (Chiffres)',
+        activeZoneCustom: 'Actif : Slots personnalisés',
+        z1Name: 'Zone 1 : Début',
+        z1Badge: 'Recommandé',
+        z1Desc: 'Slots [1, 2] → Commence par l\'indice, le reste suit naturellement.',
+        z2Name: 'Zone 2 : Cadre',
+        z2Badge: 'Tête & Queue',
+        z2Desc: 'Slot 1 & dernier caractère → Encadre le mot de passe.',
+        z3Name: 'Zone 3 : Chiffres',
+        z3Badge: 'À la fin',
+        z3Desc: 'Remplace les chiffres à la fin. La racine reste intacte.',
+        lblSlotDesc: 'Sélection libre sur la grille de lettres (Experts) :',
+        lblPreviewTitle: 'Aperçu en direct avec l\'indice "Chapeau" :',
+        lblLenInvariant: 'Longueur constante (L = const)',
+        btnNext1: 'Continuer vers le choix de modalité',
+        s2StepTag: 'Étape 2 sur 4',
+        s2Title: 'Choisissez votre modalité de sécurité',
+        s2Sub: 'Comment souhaitez-vous recevoir votre défi lors de la connexion ?',
+        m1T: 'Mot aléatoire / Nom de code',
+        m1D: 'Affiche "Falcon" → Extrait F...n',
+        m2T: 'Image visuelle',
+        m2D: 'Montre 🎩 "Chapeau" → Extrait C...u',
+        m3T: 'Mot audio parlé',
+        m3D: 'La voix dit "Tigre" → Extrait T...e',
+        m4T: 'Questions personnelles',
+        m4D: 'Pool de 18+ questions → Réponse dans votre mémoire',
+        btnBack2: 'Retour',
+        btnNext2: 'Continuer vers Anti-Phishing',
+        s3StepTag: 'Étape 3 sur 4',
+        s3Title: 'Choisissez votre contre-signe Anti-Phishing',
+        s3Sub: 'Le vrai serveur affiche ce mot à chaque connexion. S\'il est absent, le site est un faux.',
+        lblInpCounter: 'Votre mot de reconnaissance personnel :',
+        boxPhishTitle: 'Pourquoi cela bloque le phishing :',
+        boxPhishDesc: 'Un faux clone ne connaît pas votre mot secret. Vous repérez la fraude immédiatement.',
+        btnBack3: 'Retour',
+        btnNext3: 'Lancer l\'entraînement (3 tests)',
+        s4StepTag: 'Étape 4 sur 4',
+        s4Title: 'L\'Entraîneur Cognitif (3 Essais)',
+        s4Sub: 'Réussissez 3 connexions d\'essai avec votre modalité pour activer votre profil.',
+        trChallengeLbl: 'Votre défi d\'essai :',
+        btnListenAudio: 'Écouter le mot 🔊',
+        btnVerifyRound: 'Vérifier l\'essai',
+        btnBack4: 'Retour',
+        trSuccessTitle: 'Parfait ! 3 connexions sur 3 réussies !',
+        btnGotoTerminal: 'Retour au terminal principal'
+      },
+      es: {
+        navBack: 'Volver',
+        lblStep1: 'Zonas & Contraseña',
+        lblStep2: 'Modalidad',
+        lblStep3: 'Anti-Phishing',
+        lblStep4: 'Entrenador',
+        s1StepTag: 'Paso 1 de 4',
+        s1EngineTag: 'Sobrescritura In-Place (L = const)',
+        s1Title: 'Elige tu contraseña y tu Zona Cognitiva',
+        s1Sub: '¡Sin alargamiento! El carácter del slot se sobrescribe en su lugar, manteniendo intacta la memoria muscular.',
+        lblInpPwd: 'Tu contraseña base:',
+        lblZonesTitle: 'Elige tu Zona Cognitiva (Inicio Intuitivo):',
+        activeZonePrefix: 'Activo: Zona 1 (Inicio)',
+        activeZoneFrame: 'Activo: Zona 2 (Marco)',
+        activeZoneDigits: 'Activo: Zona 3 (Dígitos)',
+        activeZoneCustom: 'Activo: Ranuras personalizadas',
+        z1Name: 'Zona 1: Inicio',
+        z1Badge: 'Recomendado',
+        z1Desc: 'Slots [1, 2] → Comienza con la pista, el resto fluye de la memoria.',
+        z2Name: 'Zona 2: Marco',
+        z2Badge: 'Cabeza & Cola',
+        z2Desc: 'Slot 1 y último carácter → Enmarca la contraseña.',
+        z3Name: 'Zona 3: Dígitos',
+        z3Badge: 'Al final',
+        z3Desc: 'Reemplaza dígitos finales. La raíz queda intacta.',
+        lblSlotDesc: 'Elección libre en la cuadrícula de letras (Avanzado):',
+        lblPreviewTitle: 'Vista previa en vivo con desafío "Sombrero":',
+        lblLenInvariant: 'Longitud invariante (L = const)',
+        btnNext1: 'Continuar a selección de modalidad',
+        s2StepTag: 'Paso 2 de 4',
+        s2Title: 'Elige tu modalidad de seguridad',
+        s2Sub: '¿Cómo deseas recibir tu desafío en el inicio de sesión?',
+        m1T: 'Palabra aleatoria / Código',
+        m1D: 'Muestra "Falcon" → Toma F...n',
+        m2T: 'Imagen visual',
+        m2D: 'Muestra 🎩 "Sombrero" → Toma S...o',
+        m3T: 'Palabra de audio hablada',
+        m3D: 'La voz dice "Tigre" → Toma T...e',
+        m4T: 'Preguntas personales',
+        m4D: '18+ preguntas biográficas → Respuesta solo en tu memoria',
+        btnBack2: 'Volver',
+        btnNext2: 'Continuar a Anti-Phishing',
+        s3StepTag: 'Paso 3 de 4',
+        s3Title: 'Elige tu contraseña de control anti-phishing',
+        s3Sub: 'El servidor auténtico muestra esta palabra. Si no está, el portal es falso.',
+        lblInpCounter: 'Tu palabra de reconocimiento personal:',
+        boxPhishTitle: 'Por qué bloquea el phishing:',
+        boxPhishDesc: 'Un clon falso no conoce tu palabra de control. Detectas el fraude al instante.',
+        btnBack3: 'Volver',
+        btnNext3: 'Iniciar entrenador (3 pruebas)',
+        s4StepTag: 'Paso 4 de 4',
+        s4Title: 'El Entrenador Cognitivo (3 Ensayos)',
+        s4Sub: 'Supera 3 ensayos con tu modalidad para activar tu perfil de seguridad.',
+        trChallengeLbl: 'Tu desafío de prueba:',
+        btnListenAudio: 'Escuchar palabra 🔊',
+        btnVerifyRound: 'Verificar ensayo',
+        btnBack4: 'Volver',
+        trSuccessTitle: '¡Perfecto! ¡3 de 3 accesos superados!',
+        btnGotoTerminal: 'Volver al terminal principal'
+      }
+    };
 
+    let currentLang = 'de';
     let curStep = 1;
-    let basePwd = "12345qwert";
-    let slots = [2, 5];
+    let basePwd = "Geheim123";
+    let activeZone = "prefix"; // 'prefix' | 'frame' | 'suffix-digits' | 'custom'
+    let slots = [1, 2];
     let modality = "audio";
     let countersign = "Blaue Tür";
     let trainerRound = 0;
     let roundStart = 0;
     let elapsed = [];
 
-    function transformWithSlots(base, char1, char2, sl) {
-      const s1 = Math.min(sl[0], sl[1]);
-      const s2 = Math.max(sl[0], sl[1]);
-      const p1 = base.slice(0, s1 - 1);
-      const p2 = base.slice(s1 - 1, s2 - 1);
-      const p3 = base.slice(s2 - 1);
-      return `${p1}${char1}${p2}${char2}${p3}`;
+    // IN-PLACE SLOT OVERWRITE ENGINE (L = CONST)
+    function applySlotOverwrite(base, char1, char2, sl) {
+      if (!base || base.length === 0) return '';
+      const len = base.length;
+      const chars = base.split('');
+
+      const resolveIndex = (slotVal, fallback) => {
+        if (!Number.isFinite(slotVal) || slotVal === 0) return fallback;
+        if (slotVal < 0) return Math.max(0, Math.min(len - 1, len + slotVal));
+        return Math.max(0, Math.min(len - 1, Math.floor(slotVal) - 1));
+      };
+
+      const idx1 = resolveIndex(sl[0], 0);
+      const idx2 = resolveIndex(sl[1], Math.min(len - 1, idx1 + 1));
+      const minIdx = Math.min(idx1, idx2);
+      const maxIdx = Math.max(idx1, idx2);
+
+      if (char1 && char1.length > 0) chars[minIdx] = char1[0];
+      if (char2 && char2.length > 0) chars[maxIdx] = char2[0];
+
+      return chars.join('');
     }
 
     const TRAINER_CHALLENGES = {
@@ -385,6 +776,102 @@
       ]
     };
 
+    function setLanguage(lang) {
+      currentLang = lang;
+      const dict = I18N[lang] || I18N.de;
+
+      ['de', 'en', 'tr', 'fr', 'es'].forEach(l => {
+        const btn = document.getElementById(`lang-${l}`);
+        if (btn) {
+          btn.className = (l === lang)
+            ? "px-1.5 sm:px-2 py-0.5 sm:py-1 rounded bg-cyan-500/20 text-cyan-300 font-medium"
+            : "px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-slate-400 hover:text-white";
+        }
+      });
+
+      Object.keys(dict).forEach(key => {
+        const kebabKey = key.replace(/([A-Z])/g, "-$1").toLowerCase();
+        const el = document.getElementById(kebabKey);
+        if (el) {
+          el.innerText = dict[key];
+        }
+      });
+
+      updateZoneBadges();
+      updateZonePillsPreview();
+    }
+
+    function selectZone(zoneId) {
+      activeZone = zoneId;
+      const len = basePwd.length || 9;
+
+      if (zoneId === 'prefix') {
+        slots = [1, 2];
+      } else if (zoneId === 'frame') {
+        slots = [1, len];
+      } else if (zoneId === 'suffix-digits') {
+        const digitMatch = basePwd.match(/\d+$/);
+        if (digitMatch && digitMatch.index !== undefined) {
+          const digitStart = digitMatch.index + 1;
+          slots = [digitStart, Math.min(len, digitStart + 1)];
+        } else {
+          slots = [Math.max(1, len - 1), len];
+        }
+      }
+
+      updateZoneBadges();
+      renderGrid();
+      updatePreview();
+    }
+
+    function updateZoneBadges() {
+      const dict = I18N[currentLang] || I18N.de;
+      const badgeEl = document.getElementById('active-zone-badge');
+      if (badgeEl) {
+        if (activeZone === 'prefix') badgeEl.innerText = dict.activeZonePrefix || 'Aktiv: Zone 1 (Vorne)';
+        else if (activeZone === 'frame') badgeEl.innerText = dict.activeZoneFrame || 'Aktiv: Zone 2 (Rahmen)';
+        else if (activeZone === 'suffix-digits') badgeEl.innerText = dict.activeZoneDigits || 'Aktiv: Zone 3 (Zahlen)';
+        else badgeEl.innerText = dict.activeZoneCustom || 'Aktiv: Custom-Slots';
+      }
+
+      ['prefix', 'frame', 'suffix-digits'].forEach(z => {
+        const btn = document.getElementById(`zone-btn-${z}`);
+        if (!btn) return;
+        if (z === activeZone) {
+          btn.className = "p-3.5 rounded-xl border border-cyan-500/50 bg-cyan-500/15 text-left transition relative group ring-1 ring-cyan-500/30 min-h-[44px]";
+          const title = btn.querySelector('.font-bold');
+          if (title) title.className = "font-bold text-cyan-300 text-xs flex items-center space-x-1.5";
+          const dot = btn.querySelector('.rounded-full');
+          if (dot) dot.className = "w-2 h-2 rounded-full bg-cyan-400";
+        } else {
+          btn.className = "p-3.5 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition relative group min-h-[44px]";
+          const title = btn.querySelector('.font-bold');
+          if (title) title.className = "font-bold text-slate-300 text-xs flex items-center space-x-1.5";
+          const dot = btn.querySelector('.rounded-full');
+          if (dot) dot.className = "w-2 h-2 rounded-full bg-slate-500";
+        }
+      });
+    }
+
+    function updateZonePillsPreview() {
+      const p1 = applySlotOverwrite(basePwd, 'H', 't', [1, 2]);
+      const p2 = applySlotOverwrite(basePwd, 'H', 't', [1, basePwd.length]);
+      let z3Slots = [Math.max(1, basePwd.length - 1), basePwd.length];
+      const match = basePwd.match(/\d+$/);
+      if (match && match.index !== undefined) {
+        const start = match.index + 1;
+        z3Slots = [start, Math.min(basePwd.length, start + 1)];
+      }
+      const p3 = applySlotOverwrite(basePwd, 'H', 't', z3Slots);
+
+      const z1Sample = document.getElementById('z1-sample');
+      const z2Sample = document.getElementById('z2-sample');
+      const z3Sample = document.getElementById('z3-sample');
+      if (z1Sample) z1Sample.innerText = `z. B. ${p1}`;
+      if (z2Sample) z2Sample.innerText = `z. B. ${p2}`;
+      if (z3Sample) z3Sample.innerText = `z. B. ${p3}`;
+    }
+
     function goToStep(s) {
       document.getElementById(`step-${curStep}`).classList.add('hidden');
       curStep = s;
@@ -396,9 +883,9 @@
       for (let i = 1; i <= 4; i++) {
         const el = document.getElementById(`step-ind-${i}`).querySelector('div');
         if (i <= s) {
-          el.className = "w-9 h-9 rounded-full bg-cyan-500 text-white font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a] shadow-lg shadow-cyan-500/30";
+          el.className = "w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-cyan-500 text-white font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a] shadow-lg shadow-cyan-500/30";
         } else {
-          el.className = "w-9 h-9 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a]";
+          el.className = "w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-dark-card border border-dark-border text-slate-400 font-bold text-xs flex items-center justify-center ring-4 ring-[#05070a]";
         }
       }
 
@@ -406,38 +893,55 @@
     }
 
     function updatePassword() {
-      basePwd = document.getElementById('base-pwd-input').value.trim() || "12345qwert";
-      renderGrid();
-      updatePreview();
+      basePwd = document.getElementById('base-pwd-input').value.trim() || "Geheim123";
+      updateZonePillsPreview();
+      selectZone(activeZone);
     }
 
     function renderGrid() {
       const grid = document.getElementById('char-grid');
       grid.innerHTML = "";
-      for (let i = 0; i < basePwd.length; i++) {
+      const len = basePwd.length;
+
+      const idx1 = Math.min(slots[0], slots[1]) - 1;
+      const idx2 = Math.max(slots[0], slots[1]) - 1;
+
+      for (let i = 0; i < len; i++) {
         const pos = i + 1;
         const char = basePwd[i];
-        const isSlot = slots.includes(pos);
-        const slotIdx = slots.indexOf(pos);
+        const isSlot1 = (i === idx1);
+        const isSlot2 = (i === idx2);
+        const isSlot = isSlot1 || isSlot2;
+
         let cardClass = isSlot
           ? "border-2 border-cyan-400 bg-cyan-500/20 text-cyan-200 ring-2 ring-cyan-500/30 font-extrabold scale-105"
           : "border border-dark-border bg-dark-card text-slate-300 hover:border-slate-500";
 
+        let slotLabel = `Pos ${pos}`;
+        if (isSlot1) slotLabel = `Slot 1 (ersetzt '${char}')`;
+        else if (isSlot2) slotLabel = `Slot 2 (ersetzt '${char}')`;
+
         grid.innerHTML += `
-          <button type="button" onclick="selectSlot(${pos})" class="flex flex-col items-center transition transform">
-            <span class="text-[10px] font-mono ${isSlot ? 'text-cyan-400 font-bold' : 'text-slate-500'} mb-0.5">
-              ${isSlot ? `Slot ${slotIdx + 1} (Pos ${pos})` : `Pos ${pos}`}
+          <button type="button" onclick="selectCustomSlot(${pos})" class="flex flex-col items-center transition transform">
+            <span class="text-[9px] sm:text-[10px] font-mono ${isSlot ? 'text-cyan-400 font-bold' : 'text-slate-500'} mb-0.5">
+              ${isSlot ? (isSlot1 ? `Slot 1` : `Slot 2`) : `Pos ${pos}`}
             </span>
-            <div class="w-9 h-10 rounded-lg ${cardClass} flex items-center justify-center font-bold font-mono shadow-sm">
+            <div class="w-8 h-9 sm:w-9 sm:h-10 rounded-lg ${cardClass} flex items-center justify-center font-bold font-mono shadow-sm">
               ${char}
             </div>
           </button>
         `;
       }
-      document.getElementById('slot-badge').innerText = `Gewählt: Slot ${slots[0]} & Slot ${slots[1]}`;
+
+      const s1 = Math.min(slots[0], slots[1]);
+      const s2 = Math.max(slots[0], slots[1]);
+      document.getElementById('slot-badge').innerText = `Gewählt: Slot ${s1} & Slot ${s2}`;
     }
 
-    function selectSlot(pos) {
+    function selectCustomSlot(pos) {
+      activeZone = 'custom';
+      updateZoneBadges();
+
       if (slots.includes(pos)) return;
       slots = [slots[1], pos].sort((a, b) => a - b);
       renderGrid();
@@ -445,20 +949,35 @@
     }
 
     function updatePreview() {
-      const transformed = transformWithSlots(basePwd, 'H', 't', slots);
-      const spaced = transformed.split('').map(c => (c === 'H' || c === 't' ? `<b class="text-cyan-300 font-extrabold underline">${c}</b>` : c)).join(' ');
+      const transformed = applySlotOverwrite(basePwd, 'H', 't', slots);
+      const len = basePwd.length;
+      const idx1 = Math.min(slots[0], slots[1]) - 1;
+      const idx2 = Math.max(slots[0], slots[1]) - 1;
+
+      const oldChar1 = basePwd[idx1] || '';
+      const oldChar2 = basePwd[idx2] || '';
+
+      const spaced = transformed.split('').map((c, i) => {
+        if (i === idx1) return `<b class="text-cyan-300 font-extrabold underline">${c}</b>`;
+        if (i === idx2) return `<b class="text-cyan-300 font-extrabold underline">${c}</b>`;
+        return c;
+      }).join(' ');
+
       document.getElementById('preview-output').innerHTML = spaced;
+      document.getElementById('preview-len-count').innerText = `${transformed.length} Zeichen (exakt unverändert, L = const)`;
+      document.getElementById('preview-diff-text').innerHTML = `Austausch: <span class="line-through text-rose-400">${oldChar1}</span> &rarr; <b class="text-cyan-300">H</b> (Slot ${idx1 + 1}), <span class="line-through text-rose-400">${oldChar2}</span> &rarr; <b class="text-cyan-300">t</b> (Slot ${idx2 + 1})`;
     }
 
     function setModality(m) {
       modality = m;
       ['text', 'image', 'audio', 'questions'].forEach(k => {
         const btn = document.getElementById(`m-btn-${k}`);
+        if (!btn) return;
         if (k === m) {
-          btn.className = "p-4 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-left transition flex items-start space-x-3";
+          btn.className = "p-4 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-left transition flex items-start space-x-3 min-h-[44px]";
           btn.querySelector('.font-bold').className = "font-bold text-xs text-cyan-300";
         } else {
-          btn.className = "p-4 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3";
+          btn.className = "p-4 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition flex items-start space-x-3 min-h-[44px]";
           btn.querySelector('.font-bold').className = "font-bold text-xs text-slate-200";
         }
       });
@@ -468,7 +987,7 @@
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(word);
-        utterance.lang = 'de-DE';
+        utterance.lang = currentLang === 'de' ? 'de-DE' : (currentLang === 'tr' ? 'tr-TR' : (currentLang === 'fr' ? 'fr-FR' : (currentLang === 'es' ? 'es-ES' : 'en-US')));
         utterance.rate = 0.95;
         window.speechSynthesis.speak(utterance);
       }
@@ -501,12 +1020,14 @@
       for (let r = 0; r < 3; r++) {
         const badge = document.getElementById(`tr-badge-${r + 1}`);
         if (r === trainerRound) {
-          badge.className = "p-3 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 font-bold";
+          badge.className = "p-2 sm:p-3 rounded-xl border border-cyan-500/40 bg-cyan-500/10 text-cyan-300 font-bold truncate";
+          badge.innerText = `Runde ${r + 1} / 3`;
         } else if (r < trainerRound) {
-          badge.className = "p-3 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 font-bold";
+          badge.className = "p-2 sm:p-3 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 font-bold truncate";
           badge.innerText = `Runde ${r + 1} ✅`;
         } else {
-          badge.className = "p-3 rounded-xl border border-dark-border bg-dark-bg text-slate-500";
+          badge.className = "p-2 sm:p-3 rounded-xl border border-dark-border bg-dark-bg text-slate-500 truncate";
+          badge.innerText = `Runde ${r + 1} / 3`;
         }
       }
 
@@ -523,7 +1044,7 @@
       const input = document.getElementById('tr-input').value.trim();
       const list = TRAINER_CHALLENGES[modality] || TRAINER_CHALLENGES.audio;
       const cur = list[trainerRound];
-      const expected = transformWithSlots(basePwd, cur.char1, cur.char2, slots);
+      const expected = applySlotOverwrite(basePwd, cur.char1, cur.char2, slots);
       const time = ((Date.now() - roundStart) / 1000).toFixed(1);
       const fb = document.getElementById('tr-feedback');
 
@@ -532,7 +1053,7 @@
       if (input === expected) {
         elapsed.push(parseFloat(time));
         fb.className = "p-3 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 text-xs font-mono flex items-center justify-between";
-        fb.innerHTML = `<span>Richtig gelöst in ${time}s! ✅</span><span class="text-emerald-400 font-bold">PASS</span>`;
+        fb.innerHTML = `<span>Richtig gelöst in ${time}s! (${cur.char1}...${cur.char2} an Slot ${slots[0]}, ${slots[1]}) ✅</span><span class="text-emerald-400 font-bold">PASS</span>`;
 
         trainerRound++;
         if (trainerRound < 3) {
@@ -547,12 +1068,14 @@
         }
       } else {
         fb.className = "p-3 rounded-xl border border-rose-500/40 bg-rose-500/10 text-rose-300 text-xs font-mono flex items-center justify-between";
-        fb.innerHTML = `<span>Falsche Eingabe für "${cur.word}". Erwartet: <b>${expected}</b></span><span class="text-rose-400 font-bold">FEHLER</span>`;
+        fb.innerHTML = `<span>Falsche Eingabe für "${cur.word}". Erwartet: <b>${expected}</b> (Länge: ${expected.length})</span><span class="text-rose-400 font-bold">FEHLER</span>`;
       }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       updatePassword();
+      setLanguage('de');
+      lucide.createIcons();
     });
     updatePassword();
   </script>
