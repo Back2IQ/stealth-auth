@@ -98,17 +98,13 @@ export class CognitiveOnboardingWizard {
     const len = isString ? pwd.length : Math.max(4, passwordOrLength);
 
     let z3Available = true;
-    let z3Slot1 = Math.max(1, len - 2);
-    let z3Slot2 = Math.max(z3Slot1 + 1, len - 1);
+    let z3Slot1 = Math.max(1, len - 1);
+    let z3Slot2 = len;
 
     if (isString) {
       const digitMatch = pwd.match(/\d+$/);
       if (!digitMatch) {
         z3Available = false;
-      } else {
-        const digitStart = (digitMatch.index ?? 0) + 1;
-        z3Slot1 = digitStart;
-        z3Slot2 = Math.min(len, digitStart + 1);
       }
     }
 
@@ -116,7 +112,7 @@ export class CognitiveOnboardingWizard {
       {
         id: 'prefix',
         name: 'Zone 1: Vorne / Start (Empfohlen)',
-        description: 'Ersetzt die ersten zwei Zeichen am Anfang (Start mit Hint, Rest fließt aus dem Muskelgedächtnis)',
+        description: 'Tippe zuerst den Hinweis – danach fließt dein gewohntes Passwort (z. B. [H t] + heim123 → Htheim123)',
         recommended: true,
         available: true,
         slots: [1, 2],
@@ -125,7 +121,7 @@ export class CognitiveOnboardingWizard {
       {
         id: 'frame',
         name: 'Zone 2: Rahmen (Kopf & Schwanz)',
-        description: 'Ersetzt das allererste und das allerletzte Zeichen (Klammert dein Passwort sicher ein)',
+        description: 'Erster Buchstabe ganz vorne, letzter Buchstabe ganz hinten – dazwischen dein Passwort (z. B. [H] + eheim12 + [t] → Heheim12t)',
         recommended: false,
         available: true,
         slots: [1, -1],
@@ -133,12 +129,12 @@ export class CognitiveOnboardingWizard {
       },
       {
         id: 'suffix-digits',
-        name: 'Zone 3: Zahlen-Zone (Am Ende)',
-        description: 'Ersetzt die ersten zwei Ziffern am Ende (Ersetzt z.B. 123 durch Ht3)',
+        name: 'Zone 3: Am Ende (Schlussakkord)',
+        description: 'Tippe dein Passwort wie gewohnt – nur die letzten 2 Zeichen sind der Hinweis (z. B. Geheim1 + [H t] → Geheim1Ht)',
         recommended: false,
         available: z3Available,
         slots: [z3Slot1, z3Slot2],
-        samplePreview: 'GeheimHt3',
+        samplePreview: 'Geheim1Ht',
       },
     ];
   }

@@ -365,43 +365,43 @@
             </div>
             
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
-              <!-- Zone 1: Vorne / Start (Empfohlen) -->
+              <!-- Zone 1: Am Anfang (Empfohlen) -->
               <button type="button" onclick="selectObZone('prefix')" id="ob-zone-btn-prefix" class="p-3.5 rounded-xl border border-cyan-500/50 bg-cyan-500/15 text-left transition relative group min-h-[44px]">
                 <div class="flex items-center justify-between mb-1">
                   <span class="font-bold text-cyan-300 text-xs flex items-center space-x-1.5">
                     <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
-                    <span>Zone 1: Vorne</span>
+                    <span id="ob-z1-name">Zone 1: Am Anfang</span>
                   </span>
-                  <span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-400/20 text-cyan-200 font-mono font-bold">Empfohlen</span>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-400/20 text-cyan-200 font-mono font-bold" id="ob-z1-badge">Empfohlen</span>
                 </div>
-                <p class="text-[11px] text-slate-300 leading-snug">Slots [1, 2] &rarr; Startet mit Hint, Rest fließt aus Muskelgedächtnis.</p>
-                <div class="text-[11px] font-mono text-cyan-300 mt-2 font-bold" id="ob-z1-sample">z. B. Htheim123</div>
+                <p class="text-[11px] text-slate-300 leading-snug" id="ob-z1-desc">Tippe zuerst den Hinweis – danach fließt dein gewohntes Passwort.</p>
+                <div class="text-[11px] font-mono text-cyan-300 mt-2 font-bold" id="ob-z1-sample">[H t] + heim123 &rarr; Htheim123</div>
               </button>
 
-              <!-- Zone 2: Rahmen (Kopf & Schwanz) -->
+              <!-- Zone 2: Als Rahmen (Kopf & Schwanz) -->
               <button type="button" onclick="selectObZone('frame')" id="ob-zone-btn-frame" class="p-3.5 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition relative group min-h-[44px]">
                 <div class="flex items-center justify-between mb-1">
                   <span class="font-bold text-slate-300 text-xs flex items-center space-x-1.5">
                     <span class="w-2 h-2 rounded-full bg-slate-500"></span>
-                    <span>Zone 2: Rahmen</span>
+                    <span id="ob-z2-name">Zone 2: Als Rahmen</span>
                   </span>
-                  <span class="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-slate-400 font-mono">Kopf & Schwanz</span>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-slate-400 font-mono" id="ob-z2-badge">Kopf & Schwanz</span>
                 </div>
-                <p class="text-[11px] text-slate-400 leading-snug">Slot 1 & Ende &rarr; Klammert das Passwort kognitiv ein.</p>
-                <div class="text-[11px] font-mono text-slate-400 mt-2 font-bold" id="ob-z2-sample">z. B. Heheim12t</div>
+                <p class="text-[11px] text-slate-400 leading-snug" id="ob-z2-desc">Erster Buchstabe ganz vorne, letzter Buchstabe ganz hinten – dazwischen dein Passwort.</p>
+                <div class="text-[11px] font-mono text-slate-400 mt-2 font-bold" id="ob-z2-sample">[H] + eheim12 + [t] &rarr; Heheim12t</div>
               </button>
 
-              <!-- Zone 3: Zahlen-Zone (Am Ende) -->
+              <!-- Zone 3: Am Ende (Schlussakkord) -->
               <button type="button" onclick="selectObZone('suffix-digits')" id="ob-zone-btn-suffix-digits" class="p-3.5 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition relative group min-h-[44px]">
                 <div class="flex items-center justify-between mb-1">
                   <span class="font-bold text-slate-300 text-xs flex items-center space-x-1.5">
                     <span class="w-2 h-2 rounded-full bg-slate-500"></span>
-                    <span>Zone 3: Zahlen</span>
+                    <span id="ob-z3-name">Zone 3: Am Ende</span>
                   </span>
-                  <span class="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-slate-400 font-mono">Am Ende</span>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-slate-400 font-mono" id="ob-z3-badge">Schlussakkord</span>
                 </div>
-                <p class="text-[11px] text-slate-400 leading-snug">Ersetzt Ziffern am Ende. Wortstamm bleibt unberührt.</p>
-                <div class="text-[11px] font-mono text-slate-400 mt-2 font-bold" id="ob-z3-sample">z. B. GeheimHt3</div>
+                <p class="text-[11px] text-slate-400 leading-snug" id="ob-z3-desc">Tippe dein Passwort wie gewohnt – nur die letzten 2 Zeichen sind der Hinweis.</p>
+                <div class="text-[11px] font-mono text-slate-400 mt-2 font-bold" id="ob-z3-sample">Geheim1 + [H t] &rarr; Geheim1Ht</div>
               </button>
             </div>
           </div>
@@ -913,10 +913,24 @@
         obStepLbl2: 'Modalität',
         obStepLbl3: 'Anti-Phish',
         obStepLbl4: 'Trainer',
-        s1H: 'Wähle dein Basis-Passwort & deine Einfügestellen',
-        s1D: 'Dein Passwort kann ein Wort oder eine beliebige Zeichenfolge sein (z. B. 12345qwert). Der Server speichert davon 0 Byte.',
+        s1H: 'Wähle dein Passwort & deine Kognitive Zone',
+        s1D: 'Kein Verlängern des Wortes! Das Zeichen im Ziel-Slot wird in-place ausgetauscht. Dein Tippfluss (Muscle Memory) bleibt 100% erhalten.',
         s1InputLbl: 'Dein Basis-Passwort:',
-        s1StructLbl: 'Klicke auf die Positionen (Slots), an denen Buchstaben eingefügt werden:',
+        lblObZonesTitle: 'Kognitive Zone wählen (Intuitiver Einstieg):',
+        activeZonePrefix: 'Aktiv: Zone 1 (Am Anfang)',
+        activeZoneFrame: 'Aktiv: Zone 2 (Als Rahmen)',
+        activeZoneDigits: 'Aktiv: Zone 3 (Am Ende)',
+        activeZoneCustom: 'Aktiv: Custom-Slots',
+        obZ1Name: 'Zone 1: Am Anfang',
+        obZ1Badge: 'Empfohlen',
+        obZ1Desc: 'Tippe zuerst den Hinweis – danach fließt dein gewohntes Passwort.',
+        obZ2Name: 'Zone 2: Als Rahmen',
+        obZ2Badge: 'Kopf & Schwanz',
+        obZ2Desc: 'Erster Buchstabe ganz vorne, letzter Buchstabe ganz hinten – dazwischen dein Passwort.',
+        obZ3Name: 'Zone 3: Am Ende',
+        obZ3Badge: 'Schlussakkord',
+        obZ3Desc: 'Tippe dein Passwort wie gewohnt – nur die letzten 2 Zeichen sind der Hinweis.',
+        s1StructLbl: 'Freie Slot-Wahl auf dem Buchstaben-Raster (Power-User):',
         btnOb1: 'Weiter zur Modalitäten-Auswahl',
         s2H: 'Wähle deine Sicherheits-Modalität',
         s2D: 'Wie möchtest du beim Login deine Challenge erhalten?',
@@ -1000,10 +1014,24 @@
         obStepLbl2: 'Modality',
         obStepLbl3: 'Anti-Phish',
         obStepLbl4: 'Trainer',
-        s1H: 'Choose Your Base Password & Slots',
-        s1D: 'Your password can be any word or arbitrary string (e.g. 12345qwert). Server stores 0 bytes of it.',
-        s1InputLbl: 'Your base password:',
-        s1StructLbl: 'Click positions (slots) where characters will be inserted:',
+        s1H: 'Select your Password & Cognitive Zone',
+        s1D: 'Zero string elongation! The character in the target slot is overwritten in-place, perfectly preserving your typing muscle memory.',
+        s1InputLbl: 'Your Base Password:',
+        lblObZonesTitle: 'Choose Cognitive Zone (Intuitive Onboarding):',
+        activeZonePrefix: 'Active: Zone 1 (At Start)',
+        activeZoneFrame: 'Active: Zone 2 (As Frame)',
+        activeZoneDigits: 'Active: Zone 3 (At End)',
+        activeZoneCustom: 'Active: Custom Slots',
+        obZ1Name: 'Zone 1: At Start',
+        obZ1Badge: 'Recommended',
+        obZ1Desc: 'Type the hint first – then your familiar password flows naturally.',
+        obZ2Name: 'Zone 2: As Frame',
+        obZ2Badge: 'Head & Tail',
+        obZ2Desc: 'First letter at start, last letter at the end – your password in between.',
+        obZ3Name: 'Zone 3: At End',
+        obZ3Badge: 'Ending Chord',
+        obZ3Desc: 'Type your password as usual – only the last 2 characters are the hint.',
+        s1StructLbl: 'Custom slot selection on letter grid (Power Users):',
         btnOb1: 'Continue to Modality Selection',
         s2H: 'Choose Your Security Modality',
         s2D: 'How do you want to receive your login challenge?',
@@ -1087,10 +1115,24 @@
         obStepLbl2: 'Modalite',
         obStepLbl3: 'Oltalama',
         obStepLbl4: 'Egitici',
-        s1H: 'Temel Sifrenizi ve Slotlari Secin',
-        s1D: 'Sifreniz herhangi bir kelime veya rastgele karakter dizisi olabilir (Orn: 12345qwert).',
-        s1InputLbl: 'Temel Sifreniz:',
-        s1StructLbl: 'Harflerin eklenecegi slot konumlarina tiklayin:',
+        s1H: 'Şifreni & Bilişsel Bölgini Seç',
+        s1D: 'Kelime asla uzamaz! Hedef yuvadaki karakter yerinde değiştirilir. Parmak hafızanız (Muscle Memory) bozulmaz.',
+        s1InputLbl: 'Temel Şifreniz:',
+        lblObZonesTitle: 'Bilişsel Bölge Seçimi (Sezgisel Başlangıç):',
+        activeZonePrefix: 'Aktif: Bölge 1 (Başta)',
+        activeZoneFrame: 'Aktif: Bölge 2 (Çerçeve)',
+        activeZoneDigits: 'Aktif: Bölge 3 (Sonda)',
+        activeZoneCustom: 'Aktif: Özel Yuvalar',
+        obZ1Name: 'Bölge 1: Başta',
+        obZ1Badge: 'Önerilen',
+        obZ1Desc: 'Önce ipucunu yaz – ardından alışık olduğun şifren kendiliğinden aksın.',
+        obZ2Name: 'Bölge 2: Çerçeve',
+        obZ2Badge: 'Baş & Son',
+        obZ2Desc: 'İlk harf en başta, son harf en sonda – şifren ikisinin arasında.',
+        obZ3Name: 'Bölge 3: Sonda',
+        obZ3Badge: 'Bitiş Vuruşu',
+        obZ3Desc: 'Şifreni her zamanki gibi yaz – sadece son 2 karakteri ipucu oluşturur.',
+        s1StructLbl: 'Harf ızgarasında serbest yuva seçimi (İleri Düzey):',
         btnOb1: 'Modalite Secimine Gec',
         s2H: 'Guvenlik Modalitenizi Secin',
         s2D: 'Giris aninda challenge’i nasil almak istersiniz?',
@@ -1174,10 +1216,24 @@
         obStepLbl2: 'Modalité',
         obStepLbl3: 'Anti-Phish',
         obStepLbl4: 'Entraîneur',
-        s1H: 'Choisissez votre mot de passe & vos emplacements',
-        s1D: 'Votre mot de passe peut être une chaîne quelconque (ex: 12345qwert). Le serveur n’en stocke rien.',
-        s1InputLbl: 'Mot de passe de base :',
-        s1StructLbl: 'Cliquez sur les emplacements (slots) d’insertion :',
+        s1H: 'Choisissez votre mot de passe & zone cognitive',
+        s1D: 'Aucun allongement ! Le caractère ciblé est remplacé sur place, préservant ainsi la mémoire musculaire de frappe.',
+        s1InputLbl: 'Votre mot de passe de base :',
+        lblObZonesTitle: 'Sélectionnez votre Zone Cognitive :',
+        activeZonePrefix: 'Actif : Zone 1 (Au début)',
+        activeZoneFrame: 'Actif : Zone 2 (En cadre)',
+        activeZoneDigits: 'Actif : Zone 3 (À la fin)',
+        activeZoneCustom: 'Actif : Slots personnalisés',
+        obZ1Name: 'Zone 1 : Au début',
+        obZ1Badge: 'Recommandé',
+        obZ1Desc: 'Tapez d\'abord l\'indice – votre mot de passe habituel suit naturellement.',
+        obZ2Name: 'Zone 2 : En cadre',
+        obZ2Badge: 'Tête & Queue',
+        obZ2Desc: 'Première lettre au début, dernière lettre à la fin – votre mot de passe entre les deux.',
+        obZ3Name: 'Zone 3 : À la fin',
+        obZ3Badge: 'Accord final',
+        obZ3Desc: 'Tapez votre mot de passe normalement – seuls les 2 derniers caractères sont l\'indice.',
+        s1StructLbl: 'Sélection libre sur la grille de lettres (Experts) :',
         btnOb1: 'Continuer vers le choix de modalité',
         s2H: 'Choisissez votre modalité de sécurité',
         s2D: 'Comment souhaitez-vous recevoir votre défi lors de la connexion ?',
@@ -1261,10 +1317,24 @@
         obStepLbl2: 'Modalidad',
         obStepLbl3: 'Anti-Phish',
         obStepLbl4: 'Entrenador',
-        s1H: 'Elige tu contraseña base y ranuras',
-        s1D: 'Tu contraseña puede ser cualquier texto (ej: 12345qwert). El servidor no guarda nada en texto claro.',
-        s1InputLbl: 'Contraseña base:',
-        s1StructLbl: 'Haz clic en las posiciones (slots) de inserción:',
+        s1H: 'Elige tu contraseña y tu Zona Cognitiva',
+        s1D: '¡Sin alargamiento! El carácter del slot se sobrescribe en su lugar, manteniendo intacta la memoria muscular.',
+        s1InputLbl: 'Tu contraseña base:',
+        lblObZonesTitle: 'Elige tu Zona Cognitiva (Inicio Intuitivo):',
+        activeZonePrefix: 'Activo: Zona 1 (Al inicio)',
+        activeZoneFrame: 'Activo: Zona 2 (Como marco)',
+        activeZoneDigits: 'Activo: Zona 3 (Al final)',
+        activeZoneCustom: 'Activo: Ranuras personalizadas',
+        obZ1Name: 'Zona 1: Al inicio',
+        obZ1Badge: 'Recomendado',
+        obZ1Desc: 'Escribe primero la pista – después tu contraseña habitual fluye de inmediato.',
+        obZ2Name: 'Zona 2: Como marco',
+        obZ2Badge: 'Cabeza & Cola',
+        obZ2Desc: 'Primera letra al inicio, última letra al final – tu contraseña en el medio.',
+        obZ3Name: 'Zona 3: Al final',
+        obZ3Badge: 'Acorde final',
+        obZ3Desc: 'Escribe tu contraseña como siempre – solo los últimos 2 caracteres son la pista.',
+        s1StructLbl: 'Elección libre en la cuadrícula de letras (Avanzado):',
         btnOb1: 'Continuar a selección de modalidad',
         s2H: 'Elige tu modalidad de seguridad',
         s2D: '¿Cómo deseas recibir tu desafío en el momento del acceso?',
@@ -1330,6 +1400,8 @@
         }
       });
 
+      updateObZoneBadges();
+      updateObZonePillsPreview();
       renderCurrentSimChallenge();
     }
 
@@ -1402,13 +1474,8 @@
       } else if (zoneId === 'frame') {
         obSlots = [1, len];
       } else if (zoneId === 'suffix-digits') {
-        const digitMatch = obBasePwd.match(/\d+$/);
-        if (digitMatch && digitMatch.index !== undefined) {
-          const digitStart = digitMatch.index + 1;
-          obSlots = [digitStart, Math.min(len, digitStart + 1)];
-        } else {
-          obSlots = [Math.max(1, len - 1), len];
-        }
+        // Zone 3: Am Ende (Schlussakkord) - replaces the last 2 characters
+        obSlots = [Math.max(1, len - 1), len];
       }
 
       updateObZoneBadges();
@@ -1418,12 +1485,13 @@
     }
 
     function updateObZoneBadges() {
+      const dict = I18N[currentLang] || I18N.de;
       const badgeEl = document.getElementById('ob-active-zone-badge');
       if (badgeEl) {
-        if (obActiveZone === 'prefix') badgeEl.innerText = 'Aktiv: Zone 1 (Vorne)';
-        else if (obActiveZone === 'frame') badgeEl.innerText = 'Aktiv: Zone 2 (Rahmen)';
-        else if (obActiveZone === 'suffix-digits') badgeEl.innerText = 'Aktiv: Zone 3 (Zahlen)';
-        else badgeEl.innerText = 'Aktiv: Custom-Slots';
+        if (obActiveZone === 'prefix') badgeEl.innerText = dict.activeZonePrefix || 'Aktiv: Zone 1 (Am Anfang)';
+        else if (obActiveZone === 'frame') badgeEl.innerText = dict.activeZoneFrame || 'Aktiv: Zone 2 (Als Rahmen)';
+        else if (obActiveZone === 'suffix-digits') badgeEl.innerText = dict.activeZoneDigits || 'Aktiv: Zone 3 (Am Ende)';
+        else badgeEl.innerText = dict.activeZoneCustom || 'Aktiv: Custom-Slots';
       }
 
       ['prefix', 'frame', 'suffix-digits'].forEach(z => {
@@ -1446,22 +1514,20 @@
     }
 
     function updateObZonePillsPreview() {
+      const len = obBasePwd.length || 9;
       const p1 = applySlotOverwrite(obBasePwd, 'H', 't', [1, 2]);
-      const p2 = applySlotOverwrite(obBasePwd, 'H', 't', [1, obBasePwd.length]);
-      let z3Slots = [Math.max(1, obBasePwd.length - 1), obBasePwd.length];
-      const match = obBasePwd.match(/\d+$/);
-      if (match && match.index !== undefined) {
-        const start = match.index + 1;
-        z3Slots = [start, Math.min(obBasePwd.length, start + 1)];
-      }
-      const p3 = applySlotOverwrite(obBasePwd, 'H', 't', z3Slots);
+      const p2 = applySlotOverwrite(obBasePwd, 'H', 't', [1, len]);
+      const p3 = applySlotOverwrite(obBasePwd, 'H', 't', [Math.max(1, len - 1), len]);
 
       const z1Sample = document.getElementById('ob-z1-sample');
       const z2Sample = document.getElementById('ob-z2-sample');
       const z3Sample = document.getElementById('ob-z3-sample');
-      if (z1Sample) z1Sample.innerText = `z. B. ${p1}`;
-      if (z2Sample) z2Sample.innerText = `z. B. ${p2}`;
-      if (z3Sample) z3Sample.innerText = `z. B. ${p3}`;
+      const stem1 = obBasePwd.slice(2);
+      const stem2 = obBasePwd.slice(1, -1);
+      const stem3 = obBasePwd.slice(0, -2);
+      if (z1Sample) z1Sample.innerHTML = `[H t] + ${stem1} &rarr; <b class="text-cyan-300 font-bold">${p1}</b>`;
+      if (z2Sample) z2Sample.innerHTML = `[H] + ${stem2} + [t] &rarr; <b class="text-slate-300 font-bold">${p2}</b>`;
+      if (z3Sample) z3Sample.innerHTML = `${stem3} + [H t] &rarr; <b class="text-cyan-300 font-bold">${p3}</b>`;
     }
 
     function setObStep(step) {

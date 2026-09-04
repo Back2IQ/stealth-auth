@@ -34,11 +34,16 @@ describe('DynPass In-Place Slot Overwrite Engine ($L = const$)', () => {
       expect(result.length).toBe(masterPassword.length);
     });
 
-    it('Zone 3 (Suffix Digits): replaces target digit slots and preserves length', () => {
-      // In 'Geheim123', characters at 1-based positions 7 and 8 are '1' and '2'
-      const result = applySlotOverwrite(masterPassword, 'H', 't', [7, 8]);
-      expect(result).toBe('GeheimHt3');
+    it('Zone 3 (Ending Schlussakkord [-2, -1]): replaces last two characters and preserves length', () => {
+      // In 'Geheim123', characters at 1-based positions 8 and 9 are '2' and '3'
+      const result = applySlotOverwrite(masterPassword, 'H', 't', [8, 9]);
+      expect(result).toBe('Geheim1Ht');
       expect(result.length).toBe(masterPassword.length);
+
+      // Negative indices [-2, -1] universally point to the last two characters
+      const negResult = applySlotOverwrite(masterPassword, 'H', 't', [-2, -1]);
+      expect(negResult).toBe('Geheim1Ht');
+      expect(negResult.length).toBe(masterPassword.length);
     });
 
     it('handles inverted slot order gracefully [2, 1] vs [1, 2]', () => {
@@ -89,6 +94,7 @@ describe('DynPass In-Place Slot Overwrite Engine ($L = const$)', () => {
       const digitsZone = zones.find((z) => z.id === 'suffix-digits');
       expect(digitsZone).toBeDefined();
       expect(digitsZone?.available).toBe(true);
+      expect(digitsZone?.samplePreview).toBe('Geheim1Ht');
       // 'MySecurePass99' has length 14, digits at 13 and 14
       expect(digitsZone?.slots).toEqual([13, 14]);
     });

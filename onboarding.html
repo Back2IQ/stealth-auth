@@ -161,43 +161,43 @@
           
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
             
-            <!-- Zone 1: Vorne / Start (Empfohlen) -->
+            <!-- Zone 1: Am Anfang (Empfohlen) -->
             <button type="button" onclick="selectZone('prefix')" id="zone-btn-prefix" class="p-3.5 rounded-xl border border-cyan-500/50 bg-cyan-500/15 text-left transition relative group min-h-[44px]">
               <div class="flex items-center justify-between mb-1">
                 <span class="font-bold text-cyan-300 text-xs flex items-center space-x-1.5">
                   <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
-                  <span id="z1-name">Zone 1: Vorne</span>
+                  <span id="z1-name">Zone 1: Am Anfang</span>
                 </span>
                 <span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-400/20 text-cyan-200 font-mono font-bold" id="z1-badge">Empfohlen</span>
               </div>
-              <p class="text-[11px] text-slate-300 leading-snug" id="z1-desc">Slots [1, 2] &rarr; Startet mit Hint, Rest fließt aus dem Muskelgedächtnis.</p>
-              <div class="text-[11px] font-mono text-cyan-300 mt-2 font-bold" id="z1-sample">z. B. Htheim123</div>
+              <p class="text-[11px] text-slate-300 leading-snug" id="z1-desc">Tippe zuerst den Hinweis – danach fließt dein gewohntes Passwort.</p>
+              <div class="text-[11px] font-mono text-cyan-300 mt-2 font-bold" id="z1-sample">[H t] + heim123 &rarr; Htheim123</div>
             </button>
 
-            <!-- Zone 2: Rahmen (Kopf & Schwanz) -->
+            <!-- Zone 2: Als Rahmen (Kopf & Schwanz) -->
             <button type="button" onclick="selectZone('frame')" id="zone-btn-frame" class="p-3.5 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition relative group min-h-[44px]">
               <div class="flex items-center justify-between mb-1">
                 <span class="font-bold text-slate-300 text-xs flex items-center space-x-1.5">
                   <span class="w-2 h-2 rounded-full bg-slate-500"></span>
-                  <span id="z2-name">Zone 2: Rahmen</span>
+                  <span id="z2-name">Zone 2: Als Rahmen</span>
                 </span>
                 <span class="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-slate-400 font-mono" id="z2-badge">Kopf & Schwanz</span>
               </div>
-              <p class="text-[11px] text-slate-400 leading-snug" id="z2-desc">Slot 1 & letztes Zeichen &rarr; Klammert das Passwort kognitiv ein.</p>
-              <div class="text-[11px] font-mono text-slate-400 mt-2 font-bold" id="z2-sample">z. B. Heheim12t</div>
+              <p class="text-[11px] text-slate-400 leading-snug" id="z2-desc">Erster Buchstabe ganz vorne, letzter Buchstabe ganz hinten – dazwischen dein Passwort.</p>
+              <div class="text-[11px] font-mono text-slate-400 mt-2 font-bold" id="z2-sample">[H] + eheim12 + [t] &rarr; Heheim12t</div>
             </button>
 
-            <!-- Zone 3: Zahlen-Zone (Am Ende) -->
+            <!-- Zone 3: Am Ende (Schlussakkord) -->
             <button type="button" onclick="selectZone('suffix-digits')" id="zone-btn-suffix-digits" class="p-3.5 rounded-xl border border-dark-border bg-dark-bg hover:bg-dark-hover text-left transition relative group min-h-[44px]">
               <div class="flex items-center justify-between mb-1">
                 <span class="font-bold text-slate-300 text-xs flex items-center space-x-1.5">
                   <span class="w-2 h-2 rounded-full bg-slate-500"></span>
-                  <span id="z3-name">Zone 3: Zahlen</span>
+                  <span id="z3-name">Zone 3: Am Ende</span>
                 </span>
-                <span class="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-slate-400 font-mono" id="z3-badge">Am Ende</span>
+                <span class="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-slate-400 font-mono" id="z3-badge">Schlussakkord</span>
               </div>
-              <p class="text-[11px] text-slate-400 leading-snug" id="z3-desc">Ersetzt Ziffern am Ende. Wortstamm bleibt unberührt.</p>
-              <div class="text-[11px] font-mono text-slate-400 mt-2 font-bold" id="z3-sample">z. B. GeheimHt3</div>
+              <p class="text-[11px] text-slate-400 leading-snug" id="z3-desc">Tippe dein Passwort wie gewohnt – nur die letzten 2 Zeichen sind der Hinweis.</p>
+              <div class="text-[11px] font-mono text-slate-400 mt-2 font-bold" id="z3-sample">Geheim1 + [H t] &rarr; Geheim1Ht</div>
             </button>
 
           </div>
@@ -429,19 +429,19 @@
         s1Sub: 'Kein Verlängern des Wortes! Das Zeichen im Ziel-Slot wird in-place ausgetauscht. Dein Tippfluss (Muscle Memory) bleibt 100% erhalten.',
         lblInpPwd: 'Dein Basis-Passwort:',
         lblZonesTitle: 'Kognitive Zone wählen (Intuitiver Einstieg):',
-        activeZonePrefix: 'Aktiv: Zone 1 (Vorne)',
-        activeZoneFrame: 'Aktiv: Zone 2 (Rahmen)',
-        activeZoneDigits: 'Aktiv: Zone 3 (Zahlen)',
+        activeZonePrefix: 'Aktiv: Zone 1 (Am Anfang)',
+        activeZoneFrame: 'Aktiv: Zone 2 (Als Rahmen)',
+        activeZoneDigits: 'Aktiv: Zone 3 (Am Ende)',
         activeZoneCustom: 'Aktiv: Custom-Slots',
-        z1Name: 'Zone 1: Vorne',
+        z1Name: 'Zone 1: Am Anfang',
         z1Badge: 'Empfohlen',
-        z1Desc: 'Slots [1, 2] → Startet mit Hint, Rest fließt aus dem Muskelgedächtnis.',
-        z2Name: 'Zone 2: Rahmen',
+        z1Desc: 'Tippe zuerst den Hinweis – danach fließt dein gewohntes Passwort.',
+        z2Name: 'Zone 2: Als Rahmen',
         z2Badge: 'Kopf & Schwanz',
-        z2Desc: 'Slot 1 & letztes Zeichen → Klammert das Passwort kognitiv ein.',
-        z3Name: 'Zone 3: Zahlen',
-        z3Badge: 'Am Ende',
-        z3Desc: 'Ersetzt Ziffern am Ende. Wortstamm bleibt unberührt.',
+        z2Desc: 'Erster Buchstabe ganz vorne, letzter Buchstabe ganz hinten – dazwischen dein Passwort.',
+        z3Name: 'Zone 3: Am Ende',
+        z3Badge: 'Schlussakkord',
+        z3Desc: 'Tippe dein Passwort wie gewohnt – nur die letzten 2 Zeichen sind der Hinweis.',
         lblSlotDesc: 'Freie Slot-Wahl auf dem Buchstaben-Raster (Power-User):',
         lblPreviewTitle: 'Live-Vorschau mit Challenge "Hut" (Buchstaben: H und t):',
         lblLenInvariant: 'Länge invariant (L = const)',
@@ -489,19 +489,19 @@
         s1Sub: 'Zero string elongation! The character in the target slot is overwritten in-place, perfectly preserving your typing muscle memory.',
         lblInpPwd: 'Your Base Password:',
         lblZonesTitle: 'Choose Cognitive Zone (Intuitive Onboarding):',
-        activeZonePrefix: 'Active: Zone 1 (Prefix)',
-        activeZoneFrame: 'Active: Zone 2 (Frame)',
-        activeZoneDigits: 'Active: Zone 3 (Digits)',
+        activeZonePrefix: 'Active: Zone 1 (At Start)',
+        activeZoneFrame: 'Active: Zone 2 (As Frame)',
+        activeZoneDigits: 'Active: Zone 3 (At End)',
         activeZoneCustom: 'Active: Custom Slots',
-        z1Name: 'Zone 1: Prefix',
+        z1Name: 'Zone 1: At Start',
         z1Badge: 'Recommended',
-        z1Desc: 'Slots [1, 2] → Starts with hint, remainder flows naturally from muscle memory.',
-        z2Name: 'Zone 2: Frame',
+        z1Desc: 'Type the hint first – then your familiar password flows naturally.',
+        z2Name: 'Zone 2: As Frame',
         z2Badge: 'Head & Tail',
-        z2Desc: 'Slot 1 & final char → Encloses your password cognitively.',
-        z3Name: 'Zone 3: Digits',
-        z3Badge: 'At End',
-        z3Desc: 'Replaces ending digits. Word stem remains untouched.',
+        z2Desc: 'First letter at start, last letter at the end – your password in between.',
+        z3Name: 'Zone 3: At End',
+        z3Badge: 'Ending Chord',
+        z3Desc: 'Type your password as usual – only the last 2 characters are the hint.',
         lblSlotDesc: 'Custom slot selection on letter grid (Power Users):',
         lblPreviewTitle: 'Live Preview with Challenge "Hat" (Letters: H and t):',
         lblLenInvariant: 'Length invariant (L = const)',
@@ -549,19 +549,19 @@
         s1Sub: 'Kelime asla uzamaz! Hedef yuvadaki karakter yerinde değiştirilir. Parmak hafızanız (Muscle Memory) bozulmaz.',
         lblInpPwd: 'Temel Şifreniz:',
         lblZonesTitle: 'Bilişsel Bölge Seçimi (Sezgisel Başlangıç):',
-        activeZonePrefix: 'Aktif: Bölge 1 (Ön / Baş)',
+        activeZonePrefix: 'Aktif: Bölge 1 (Başta)',
         activeZoneFrame: 'Aktif: Bölge 2 (Çerçeve)',
-        activeZoneDigits: 'Aktif: Bölge 3 (Rakamlar)',
+        activeZoneDigits: 'Aktif: Bölge 3 (Sonda)',
         activeZoneCustom: 'Aktif: Özel Yuvalar',
-        z1Name: 'Bölge 1: Ön',
+        z1Name: 'Bölge 1: Başta',
         z1Badge: 'Önerilen',
-        z1Desc: 'Yuva [1, 2] → İpucuyla başla, geri kalanı parmak hafızasından akar.',
+        z1Desc: 'Önce ipucunu yaz – ardından alışık olduğun şifren kendiliğinden aksın.',
         z2Name: 'Bölge 2: Çerçeve',
         z2Badge: 'Baş & Son',
-        z2Desc: 'Yuva 1 & son karakter → Şifrenizi bilişsel olarak çerçeveler.',
-        z3Name: 'Bölge 3: Rakamlar',
-        z3Badge: 'Sonda',
-        z3Desc: 'Sondaki rakamları değiştirir. Kelime köküne dokunulmaz.',
+        z2Desc: 'İlk harf en başta, son harf en sonda – şifren ikisinin arasında.',
+        z3Name: 'Bölge 3: Sonda',
+        z3Badge: 'Bitiş Vuruşu',
+        z3Desc: 'Şifreni her zamanki gibi yaz – sadece son 2 karakteri ipucu oluşturur.',
         lblSlotDesc: 'Harf ızgarasında serbest yuva seçimi (İleri Düzey):',
         lblPreviewTitle: 'Örnek "Şapka" Testi ile Canlı Önizleme:',
         lblLenInvariant: 'Uzunluk Sabit (L = const)',
@@ -609,19 +609,19 @@
         s1Sub: 'Aucun allongement ! Le caractère ciblé est remplacé sur place, préservant ainsi la mémoire musculaire de frappe.',
         lblInpPwd: 'Votre mot de passe de base :',
         lblZonesTitle: 'Sélectionnez votre Zone Cognitive :',
-        activeZonePrefix: 'Actif : Zone 1 (Début)',
-        activeZoneFrame: 'Actif : Zone 2 (Cadre)',
-        activeZoneDigits: 'Actif : Zone 3 (Chiffres)',
+        activeZonePrefix: 'Actif : Zone 1 (Au début)',
+        activeZoneFrame: 'Actif : Zone 2 (En cadre)',
+        activeZoneDigits: 'Actif : Zone 3 (À la fin)',
         activeZoneCustom: 'Actif : Slots personnalisés',
-        z1Name: 'Zone 1 : Début',
+        z1Name: 'Zone 1 : Au début',
         z1Badge: 'Recommandé',
-        z1Desc: 'Slots [1, 2] → Commence par l\'indice, le reste suit naturellement.',
-        z2Name: 'Zone 2 : Cadre',
+        z1Desc: 'Tapez d\'abord l\'indice – votre mot de passe habituel suit naturellement.',
+        z2Name: 'Zone 2 : En cadre',
         z2Badge: 'Tête & Queue',
-        z2Desc: 'Slot 1 & dernier caractère → Encadre le mot de passe.',
-        z3Name: 'Zone 3 : Chiffres',
-        z3Badge: 'À la fin',
-        z3Desc: 'Remplace les chiffres à la fin. La racine reste intacte.',
+        z2Desc: 'Première lettre au début, dernière lettre à la fin – votre mot de passe entre les deux.',
+        z3Name: 'Zone 3 : À la fin',
+        z3Badge: 'Accord final',
+        z3Desc: 'Tapez votre mot de passe normalement – seuls les 2 derniers caractères sont l\'indice.',
         lblSlotDesc: 'Sélection libre sur la grille de lettres (Experts) :',
         lblPreviewTitle: 'Aperçu en direct avec l\'indice "Chapeau" :',
         lblLenInvariant: 'Longueur constante (L = const)',
@@ -669,19 +669,19 @@
         s1Sub: '¡Sin alargamiento! El carácter del slot se sobrescribe en su lugar, manteniendo intacta la memoria muscular.',
         lblInpPwd: 'Tu contraseña base:',
         lblZonesTitle: 'Elige tu Zona Cognitiva (Inicio Intuitivo):',
-        activeZonePrefix: 'Activo: Zona 1 (Inicio)',
-        activeZoneFrame: 'Activo: Zona 2 (Marco)',
-        activeZoneDigits: 'Activo: Zona 3 (Dígitos)',
+        activeZonePrefix: 'Activo: Zona 1 (Al inicio)',
+        activeZoneFrame: 'Activo: Zona 2 (Como marco)',
+        activeZoneDigits: 'Activo: Zona 3 (Al final)',
         activeZoneCustom: 'Activo: Ranuras personalizadas',
-        z1Name: 'Zona 1: Inicio',
+        z1Name: 'Zona 1: Al inicio',
         z1Badge: 'Recomendado',
-        z1Desc: 'Slots [1, 2] → Comienza con la pista, el resto fluye de la memoria.',
-        z2Name: 'Zona 2: Marco',
+        z1Desc: 'Escribe primero la pista – después tu contraseña habitual fluye de inmediato.',
+        z2Name: 'Zona 2: Como marco',
         z2Badge: 'Cabeza & Cola',
-        z2Desc: 'Slot 1 y último carácter → Enmarca la contraseña.',
-        z3Name: 'Zona 3: Dígitos',
-        z3Badge: 'Al final',
-        z3Desc: 'Reemplaza dígitos finales. La raíz queda intacta.',
+        z2Desc: 'Primera letra al inicio, última letra al final – tu contraseña en el medio.',
+        z3Name: 'Zona 3: Al final',
+        z3Badge: 'Acorde final',
+        z3Desc: 'Escribe tu contraseña como siempre – solo los últimos 2 caracteres son la pista.',
         lblSlotDesc: 'Elección libre en la cuadrícula de letras (Avanzado):',
         lblPreviewTitle: 'Vista previa en vivo con desafío "Sombrero":',
         lblLenInvariant: 'Longitud invariante (L = const)',
@@ -810,13 +810,8 @@
       } else if (zoneId === 'frame') {
         slots = [1, len];
       } else if (zoneId === 'suffix-digits') {
-        const digitMatch = basePwd.match(/\d+$/);
-        if (digitMatch && digitMatch.index !== undefined) {
-          const digitStart = digitMatch.index + 1;
-          slots = [digitStart, Math.min(len, digitStart + 1)];
-        } else {
-          slots = [Math.max(1, len - 1), len];
-        }
+        // Zone 3: Am Ende (Schlussakkord) - replaces the last 2 characters
+        slots = [Math.max(1, len - 1), len];
       }
 
       updateZoneBadges();
@@ -828,9 +823,9 @@
       const dict = I18N[currentLang] || I18N.de;
       const badgeEl = document.getElementById('active-zone-badge');
       if (badgeEl) {
-        if (activeZone === 'prefix') badgeEl.innerText = dict.activeZonePrefix || 'Aktiv: Zone 1 (Vorne)';
-        else if (activeZone === 'frame') badgeEl.innerText = dict.activeZoneFrame || 'Aktiv: Zone 2 (Rahmen)';
-        else if (activeZone === 'suffix-digits') badgeEl.innerText = dict.activeZoneDigits || 'Aktiv: Zone 3 (Zahlen)';
+        if (activeZone === 'prefix') badgeEl.innerText = dict.activeZonePrefix || 'Aktiv: Zone 1 (Am Anfang)';
+        else if (activeZone === 'frame') badgeEl.innerText = dict.activeZoneFrame || 'Aktiv: Zone 2 (Als Rahmen)';
+        else if (activeZone === 'suffix-digits') badgeEl.innerText = dict.activeZoneDigits || 'Aktiv: Zone 3 (Am Ende)';
         else badgeEl.innerText = dict.activeZoneCustom || 'Aktiv: Custom-Slots';
       }
 
@@ -854,22 +849,20 @@
     }
 
     function updateZonePillsPreview() {
+      const len = basePwd.length || 9;
       const p1 = applySlotOverwrite(basePwd, 'H', 't', [1, 2]);
-      const p2 = applySlotOverwrite(basePwd, 'H', 't', [1, basePwd.length]);
-      let z3Slots = [Math.max(1, basePwd.length - 1), basePwd.length];
-      const match = basePwd.match(/\d+$/);
-      if (match && match.index !== undefined) {
-        const start = match.index + 1;
-        z3Slots = [start, Math.min(basePwd.length, start + 1)];
-      }
-      const p3 = applySlotOverwrite(basePwd, 'H', 't', z3Slots);
+      const p2 = applySlotOverwrite(basePwd, 'H', 't', [1, len]);
+      const p3 = applySlotOverwrite(basePwd, 'H', 't', [Math.max(1, len - 1), len]);
 
       const z1Sample = document.getElementById('z1-sample');
       const z2Sample = document.getElementById('z2-sample');
       const z3Sample = document.getElementById('z3-sample');
-      if (z1Sample) z1Sample.innerText = `z. B. ${p1}`;
-      if (z2Sample) z2Sample.innerText = `z. B. ${p2}`;
-      if (z3Sample) z3Sample.innerText = `z. B. ${p3}`;
+      const stem1 = basePwd.slice(2);
+      const stem2 = basePwd.slice(1, -1);
+      const stem3 = basePwd.slice(0, -2);
+      if (z1Sample) z1Sample.innerHTML = `[H t] + ${stem1} &rarr; <b class="text-cyan-300 font-bold">${p1}</b>`;
+      if (z2Sample) z2Sample.innerHTML = `[H] + ${stem2} + [t] &rarr; <b class="text-slate-300 font-bold">${p2}</b>`;
+      if (z3Sample) z3Sample.innerHTML = `${stem3} + [H t] &rarr; <b class="text-cyan-300 font-bold">${p3}</b>`;
     }
 
     function goToStep(s) {
